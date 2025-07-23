@@ -1,0 +1,9 @@
+/* module-key = 'com.atlassian.auiplugin:split_aui.splitchunk.vendors--7c76061134', location = 'aui.splitchunk.vendors--7c76061134.css' */
+/*!
+ * jQuery UI Selectable 1.13.2
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */.ui-selectable{touch-action:none}.ui-selectable-helper{position:absolute;z-index:100;border:1px dotted #000}

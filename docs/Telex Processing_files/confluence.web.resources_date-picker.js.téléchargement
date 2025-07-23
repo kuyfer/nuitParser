@@ -1,0 +1,15 @@
+WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
+;
+try {
+/* module-key = 'confluence.web.resources:date-picker', location = '/includes/js/amd/shim/aui-datepicker-amd.js' */
+define("aui/datepicker",function(){return AJS.DatePicker});
+}catch(e){WRMCB(e)};
+;
+try {
+/* module-key = 'confluence.web.resources:date-picker', location = '/includes/js/date-picker-localisation.js' */
+require(["aui/datepicker"],function(a){var b="";a&&(a.prototype.localisations.dayNames=["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi",
+"Samedi"],a.prototype.localisations.dayNamesMin=["Dim","Lun","Mar","Mer","Jeu","Ven",
+"Sam"],a.prototype.localisations.firstDay="0",a.prototype.localisations.isRTL="true"==="faux",a.prototype.localisations.monthNames=["Janvier","F\u00e9vrier","Mars",
+"Avril","Mai","Juin","Juillet","Ao\u00fbt","Septembre","Octobre","Novembre",
+"D\u00e9cembre"],a.prototype.localisations.showMonthAfterYear="true"==="faux",a.prototype.localisations.yearSuffix=b&&"null"!==b?b:"")});
+}catch(e){WRMCB(e)};

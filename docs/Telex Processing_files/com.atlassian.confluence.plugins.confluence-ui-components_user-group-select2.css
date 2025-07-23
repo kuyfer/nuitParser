@@ -1,0 +1,2 @@
+/* module-key = 'com.atlassian.confluence.plugins.confluence-ui-components:user-group-select2', location = '/css/user-group-select2.less' */
+form.aui .aui-select2-container.users-autocomplete{border:1px solid #c1c7d0}form.aui .aui-select2-container.users-autocomplete .select2-choices{border:none}form.aui .aui-select2-container.users-autocomplete .select2-choices:before{content:initial}

@@ -1,0 +1,8 @@
+/* module-key = 'com.atlassian.confluence.plugins.confluence-create-content-plugin:user-select2', location = 'user-select2/user-select2.less' */
+form.aui .aui-select2-container.users-autocomplete {
+  border: 1px solid #ccc;
+}
+form.aui .aui-select2-container.users-autocomplete .select2-choices {
+  border-radius: 0;
+  border: none;
+}

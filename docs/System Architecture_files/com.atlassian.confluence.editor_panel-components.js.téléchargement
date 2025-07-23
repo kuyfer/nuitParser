@@ -1,0 +1,229 @@
+WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
+;
+try {
+/* module-key = 'com.atlassian.confluence.editor:panel-components', location = 'files/file-item/file-item.soy' */
+// This file was automatically generated from file-item.soy.
+// Please don't edit this file by hand.
+
+/**
+ * @fileoverview Templates in namespace Confluence.Templates.File.
+ */
+
+if (typeof Confluence == 'undefined') { var Confluence = {}; }
+if (typeof Confluence.Templates == 'undefined') { Confluence.Templates = {}; }
+if (typeof Confluence.Templates.File == 'undefined') { Confluence.Templates.File = {}; }
+
+
+Confluence.Templates.File.fileDialogListItem = function(opt_data, opt_ignored) {
+  return '<li class="attached-file loading" data-attachment-id="' + soy.$$escapeHtml(opt_data.file.id) + '" data-owner-id="' + soy.$$escapeHtml(opt_data.file.ownerId) + '" data-file-name="' + soy.$$escapeHtml(opt_data.file.fileName) + '"><div class="file-container" title="' + soy.$$escapeHtml(opt_data.tooltip) + '">' + ((opt_data.file.isImage) ? '<img class="thumbnail hidden" src="' + soy.$$escapeHtml(opt_data.file.nonceUrl) + '" ><a href="' + soy.$$escapeHtml(opt_data.file.downloadUrl) + '" class="abs-icon zoom">Zoom</a><p class="hidden image-preview-throbber">&nbsp;</p>' : (opt_data.file.isPreviewable) ? '<span class="thumbnail ' + soy.$$escapeHtml(opt_data.file.iconClass) + '" ><i class="aui-icon size-48 svg-icon ' + soy.$$escapeHtml(opt_data.file.iconAUIClass) + '">File</i></span><a href="' + soy.$$escapeHtml(opt_data.file.downloadUrl) + '" class="abs-icon zoom">Zoom</a><p class="hidden image-preview-throbber">&nbsp;</p>' : '<span class="thumbnail ' + soy.$$escapeHtml(opt_data.file.iconClass) + '" ><i class="aui-icon size-48 svg-icon ' + soy.$$escapeHtml(opt_data.file.iconAUIClass) + '">File</i></span>') + '<i class="abs-icon select">Select</i></div><span class="caption filename" title="' + soy.$$escapeHtml(opt_data.file.fileName) + '">' + soy.$$filterNoAutoescape(opt_data.highlightedImageNameContent) + '</span>' + ((opt_data.highlightedParentTitleContent) ? '<span class="caption owner-title" title="' + soy.$$escapeHtml(opt_data.file.parentTitle) + '">' + soy.$$filterNoAutoescape(opt_data.highlightedParentTitleContent) + '</span>' : '') + '</li>';
+};
+if (goog.DEBUG) {
+  Confluence.Templates.File.fileDialogListItem.soyTemplateName = 'Confluence.Templates.File.fileDialogListItem';
+}
+
+
+Confluence.Templates.File.fileDialogListItemPlaceHolder = function(opt_data, opt_ignored) {
+  return '<li class="attached-file loading" data-attachment-id="' + soy.$$escapeHtml(opt_data.file.id) + '" data-file-name="' + soy.$$escapeHtml(opt_data.file.fileName) + '"><div class="file-container" title="' + soy.$$escapeHtml(opt_data.file.fileName) + '">' + ((opt_data.file.isImage && opt_data.file.url) ? '<img class="thumbnail" src="' + soy.$$escapeHtml(opt_data.file.url) + '">' : '<span class="thumbnail"><i class="aui-icon size-48 svg-icon ' + soy.$$escapeHtml(opt_data.file.iconAUIClass) + '">File</i></span>') + '<div id="docs-progress-bar-' + soy.$$escapeHtml(opt_data.file.fileId) + '" class="aui-progress-indicator"><span class="aui-progress-indicator-value"></span></div><div class="overlay"></div><i class="aui-icon aui-icon-small aui-iconfont-close-dialog abs-icon cancel">Cancel</i></div><span class="caption filename" title="' + soy.$$escapeHtml(opt_data.file.fileName) + '">' + soy.$$escapeHtml(opt_data.file.fileName) + '</span><span class="caption owner-title hidden" title=""></span></li>';
+};
+if (goog.DEBUG) {
+  Confluence.Templates.File.fileDialogListItemPlaceHolder.soyTemplateName = 'Confluence.Templates.File.fileDialogListItemPlaceHolder';
+}
+
+}catch(e){WRMCB(e)};
+;
+try {
+/* module-key = 'com.atlassian.confluence.editor:panel-components', location = 'files/file-item/file-item-model.js' */
+define("confluence-editor/files/file-item/file-item-model",["backbone","confluence/legacy","confluence/api/constants","ajs"],function(e,c,f,d){return e.Model.extend({defaults:{id:-1,ownerId:-1,fileName:"",nonceUrl:"",isImage:!1,isFilePlaceHolder:!1,isSelect:!1,thumbnailUrl:"",downloadUrl:""},initialize:function(){var a=this;this._findDownloadUrl();this._findThumbnailUrl();this.findMetadata();this.findVersion();this.findContainer();this.set("fileName",this.getFileName());this.set("nonceUrl",this.getNonceUrl());
+this.set("isImage",this.isImage());this.set("isPreviewable",this.isPreviewable());this.get("isFilePlaceHolder")&&this.set("id",this.get("fileId"));this.listenTo(this,"change:link",function(){a.set("nonceUrl",a.getNonceUrl());a._findDownloadUrl()});this.set("iconAUIClass",this._parseFileNameToAuiIconClass(this.get("fileName")))},isImage:function(){return this.get("isImage")?!0:!!this.get("thumbnailUrl")},isPreviewable:function(){return"application/pdf"===(this.get("niceType")||"").toLocaleLowerCase()||
+this.isImage()},getFileName:function(){return this.get("fileName")||this.get("title")||""},getDestinationUrl:function(){return d.REST.wikiLink(this.attributes).destination},getNonceUrl:function(){var a=this.get("thumbnailUrl");if(0<=a.indexOf("modificationDate"))return a;var b=this.get("lastModifiedDate"),b=b?b.date:+new Date,b=encodeURIComponent(b);a&&(a+=(a.indexOf("?")+1?"&":"?")+"nonce="+b);return a},getRelativeUrl:function(a){var b=a;if(!a)return a;0===a.indexOf(c.getBaseUrl())&&(b=a.replace(c.getBaseUrl(),
+""));return f.CONTEXT_PATH+b},_findThumbnailUrl:function(){var a=this.get("_links");!this.get("thumbnailUrl")&&(a&&a.thumbnail)&&this.set("thumbnailUrl",this.getRelativeUrl(a.thumbnail))},_findDownloadUrl:function(){var a=this.get("_links");!this.get("downloadUrl")&&a&&this.set("downloadUrl",this.getRelativeUrl(a.download))},findMetadata:function(){var a=this.get("metadata");!this.get("contentType")&&a&&(this.set("niceType",a.mediaType),this.set("contentType",a.mediaType))},findVersion:function(){var a=
+this.get("version");!this.get("versionNumber")&&a&&this.set("versionNumber",a.number)},findContainer:function(){var a=this.get("container");a&&(-1===this.get("ownerId")&&this.set("ownerId",a.id),this.get("parentTitle")||this.set("parentTitle",a.title))},_getFileExtension:function(a){return a.substr(a.lastIndexOf(".")+1)},_parseFileNameToAuiIconClass:function(a){return d.Confluence.FileTypesUtils.getAUIIconFromExt(this._getFileExtension(a))}})});
+require("confluence/module-exporter").exportModuleAsGlobal("confluence-editor/files/file-item/file-item-model","Confluence.Editor.FileDialog.FileItemModel");
+}catch(e){WRMCB(e)};
+;
+try {
+/* module-key = 'com.atlassian.confluence.editor:panel-components', location = 'files/file-item/file-item-view.js' */
+define("confluence-editor/files/file-item/file-item-view","backbone confluence/templates confluence/highlighter raphael underscore wrm jquery".split(" "),function(f,g,h,i,d,j,c){return f.View.extend({template:g.File.fileDialogListItem,model:null,initialize:function(a){var b=this;this.eventListener=a.eventListener;this.model=a.model;this.showContainerInfo=a.showContainerInfo;this.highlighter=a.highlighter;this.listenTo(this.model,"change:isSelect",function(){b.$el.toggleClass("selected",b.model.get("isSelect"))})},
+render:function(){var a=this.highlighter||new h,b=this.model.get("space"),e=this.model.getFileName(),a={file:this.model.attributes,tooltip:this.showContainerInfo&&b?e+" ("+b.name+")":e,highlightedImageNameContent:a.highlight(e),highlightedParentTitleContent:this.showContainerInfo?a.highlight(this.model.get("container").title):null};this.$el=c(this.template(a));this.el=this.$el[0];this.delegateEvents();this.$el.find(".file-container").tooltip({aria:true});this.$el.attr("data-destination",this.model.getDestinationUrl());
+this.model.get("isImage")?this._renderLoadingSpinner():this.$el.removeClass("loading");this.model.get("isPreviewable")&&this._renderPreviewButton();return this},_renderPreviewButton:function(){this.$(".zoom").on("click",d.bind(function(a){a.preventDefault();a={src:this.model.get("downloadUrl"),thumbnail:this.model.get("nonceUrl")||this.model.get("downloadUrl"),type:this.model.get("contentType"),rank:0,title:this.model.getFileName(),id:this.model.get("id"),ownerId:this.model.get("ownerId"),version:this.model.get("versionNumber")};
+this._setupAndShowPreviewer(a)},this))},_setupAndShowPreviewer:function(a){var b=d.bind(function(a,b){this.loader=require("cp/confluence/file-preview-loader");var c=this.loader.setupPreviewForSingleFile([a],b);c.on("fv.open",b.openPreviewCallback);c.on("fv.close",b.closePreviewCallback);c.open();c.showFileWhere()},this);if(!this.dfd)this.dfd=j.require("wr!com.atlassian.confluence.plugins.confluence-previews:confluence-previews-resources");this.dfd.then(d.partial(b,a,{viewMode:"simple",openPreviewCallback:function(){c("#insert-image-dialog").hide();
+c(".aui-blanket").hide()},closePreviewCallback:function(){c("#insert-image-dialog").show();c(".aui-blanket").show()}}))},_renderLoadingSpinner:function(){var a=this,b=this.$el.find(".image-preview-throbber").removeClass("hidden"),c=i.spinner(b[0],8,"#666"),d=this.$el.find("img").load(function(){c();b.remove();d.removeClass("hidden");a.$el.removeClass("loading")})}})});require("confluence/module-exporter").exportModuleAsGlobal("confluence-editor/files/file-item/file-item-view","Confluence.Editor.FileDialog.FileItemView");
+}catch(e){WRMCB(e)};
+;
+try {
+/* module-key = 'com.atlassian.confluence.editor:panel-components', location = 'files/file-item/file-placeholder-view.js' */
+define("confluence-editor/files/file-item/file-placeholder-view",["backbone","confluence/templates","underscore","ajs","jquery"],function(b,d,e,f,g){return b.View.extend({model:null,template:d.File.fileDialogListItemPlaceHolder,initialize:function(a){this.model=a.model;this.eventListener=a.eventListener;this.eventListener.on("file.placeholder.process",e.bind(this._setUploadInProgress,this))},events:{"click .cancel":"_cancelUpload"},render:function(){this.$el=g(this.template({file:this.model.attributes}));
+this.el=this.$el[0];this.delegateEvents();return this},_setUploadInProgress:function(a,b){var c=this.$el.find("#docs-progress-bar-"+b||"");c.length&&(1===a&&this.$(".cancel").hide(),c.show(),f.progressBars.update(c,a))},_cancelUpload:function(){this.eventListener.trigger("uploadingfile.cancelled",this.model.get("fileId"))}})});require("confluence/module-exporter").exportModuleAsGlobal("confluence-editor/files/file-item/file-placeholder-view","Confluence.Editor.FileDialog.FilePlaceHolderView");
+}catch(e){WRMCB(e)};
+;
+try {
+/* module-key = 'com.atlassian.confluence.editor:panel-components', location = 'files/file-list/file-list-collection.js' */
+define("confluence-editor/files/file-list/file-list-collection",["backbone","confluence-editor/files/file-item/file-item-model","underscore"],function(c,d,e){return c.Collection.extend({model:d,clearSelection:function(){this.each(function(a){a.get("isSelect")&&a.set("isSelect",!1)});this.trigger("clear.selection")},getAllSelectItems:function(){return this.filter(function(a){return a.get("isSelect")})},setSelection:function(a){e.each(a,function(a){return a.set("isSelect",!0)})},resetFiles:function(a){this.reset();
+for(var b=0;b<a.length;b++)this.addFile(a[b])},addFile:function(a){a=this.add(a);this.trigger("add-file",a.at(a.length-1))},removeFile:function(a){this.remove(a);this.trigger("remove-file",a)},replaceFile:function(a,b){this.remove(a);this.add(b);this.trigger("replace-file",a,b)}})});require("confluence/module-exporter").exportModuleAsGlobal("confluence-editor/files/file-list/file-list-collection","Confluence.Editor.FileDialog.FileListCollection");
+}catch(e){WRMCB(e)};
+;
+try {
+/* module-key = 'com.atlassian.confluence.editor:panel-components', location = 'files/file-list/file-list-view.js' */
+define("confluence-editor/files/file-list/file-list-view","backbone confluence-editor/files/file-item/file-item-view confluence-editor/files/file-item/file-item-model confluence-editor/files/file-item/file-placeholder-view confluence/api/constants jquery".split(" "),function(f,g,h,i,j,c){return f.View.extend({eventListener:null,events:{click:"_clearSelection","click li.attached-file":"_clickItem","dblclick li.attached-file":"_doubleClickItem"},initialize:function(a){var b=this;this.collection=a.collection;
+if(a.eventListener){this.eventListener=a.eventListener;this.listenTo(this.eventListener,"uploadingfile.completed",this._addUploadedFile);this.listenTo(this.eventListener,"uploadingfile.cancelled",this._cancelUploadingFile)}this.listenTo(this.collection,"reset",this._clearFileList);this.listenTo(this.collection,"add-file",this._renderNewItem);this.listenTo(this.collection,"remove-file",this._removeItem);this.listenTo(this.collection,"replace-file",this._replaceItem);this.listenTo(this.collection,"change:isSelect",
+function(){this.context.setSelectItems(this.collection.getAllSelectItems())});this.listenTo(this.collection,"change:link",function(a){b.collection.removeFile(a);b.collection.addFile(a)});this.updateDialogContext(a.context);this.updatePanelContext(a.panelContext)},_addUploadedFile:function(a,b){var d=this;c.get(j.CONTEXT_PATH+"/rest/api/content/"+b+"?expand=version,container,space").done(function(b){var b=new h(b),c=d.collection.get(a);c||(c=d.collection.findWhere({fileName:b.get("fileName")}));c?
+d.collection.replaceFile(c,b):d.collection.addFile(b)})},_cancelUploadingFile:function(a){(a=this.collection.get(a))&&(a.get("previousUploadedFile")?this.collection.replaceFile(a,a.get("previousUploadedFile")):this.collection.removeFile(a))},render:function(){return this},resetFileList:function(a,b){b=b||{};this.$el.find(".loading-message").addClass("hidden");this.$el.find(".no-files").remove();this.collection.resetFiles(a);this.collection.length===0&&this.$fileList.before(c("<p></p>").addClass("no-files").text(this.noFileMessage));
+b.shouldClearSelection&&this.collection.clearSelection();this._checkError(b.errors);this.$el.sizeToFit()},_getViewFromModel:function(a){return a.get("isFilePlaceHolder")?(new i({model:a,eventListener:this.eventListener})).render():(new g({model:a,showContainerInfo:this.showContainerInfo,highlighter:this.highlighter,eventListener:this.eventListener})).render()},_renderNewItem:function(a){if(this.$fileList&&this.$fileList.length){var b=this._getViewFromModel(a);this.$fileList.prepend(b.el);a.get("isFilePlaceHolder")||
+a.set("isSelect",true)}},_removeItem:function(a){if(this.$fileList&&this.$fileList.length)(a=this._getDomElementByFileName(a.get("fileName")))&&a.remove()},_replaceItem:function(a,b){if(this.$fileList&&this.$fileList.length){var c=this._getViewFromModel(b),e=this._getDomElementByFileName(a.get("fileName"));e&&e.length?e.replaceWith(c.el):this.$fileList.prepend(c.el);b.set("isSelect",true)}},_getDomElementByFileName:function(a){var b=null;this.$fileList.find("li").each(function(){var d=c(this);d.attr("data-file-name")===
+a&&(b=d)});return b},updatePanelContext:function(a){if(a){this.panelContext=a;this.errors=this.panelContext.errors||[];this.$el=this.fileContainer=this.panelContext.fileContainer;this.el=this.$el[0];this.$fileList=this.$el.find(".file-list");this.delegateEvents();this.noFileMessage=this.panelContext.noFileMessage;this.showContainerInfo=this.panelContext.showContainerInfo;this.highlighter=this.panelContext.highlighter;this.displayErrors=this.panelContext.displayErrors}},updateDialogContext:function(a){if(a){this.context=
+a;this.contextOptions=this.context.options}},_checkError:function(a){(a=a||[])&&a.length&&this.displayErrors(a)},_clearSelection:function(a){a=a&&c(a.target);if(!a||!a.hasClass("close-tip")){this.collection.clearSelection();this.$el.find(".current").removeClass("current")}},_clearFileList:function(){this.$fileList&&this.$fileList.empty()},_clickItem:function(a){a.stopPropagation();a.preventDefault();var b=c(a.target);if(!b.closest(".zoom").length){a.isTrigger||this.$fileList.find(".current").removeClass("current");
+a=b.closest("li").attr("data-attachment-id");(a=this.collection.get(a))&&!a.get("isFilePlaceHolder")&&a.set("isSelect",!a.get("isSelect"))}},_doubleClickItem:function(a){var a=c(a.target).closest("li"),b=a.attr("data-attachment-id");if((b=this.collection.get(b))&&!b.get("isFilePlaceHolder")){a.click();this.context.insert()}}})});require("confluence/module-exporter").exportModuleAsGlobal("confluence-editor/files/file-list/file-list-view","Confluence.Editor.FileDialog.FileListView");
+}catch(e){WRMCB(e)};
+;
+try {
+/* module-key = 'com.atlassian.confluence.editor:panel-components', location = 'files/base-panel/base-panel-view.js' */
+define("confluence-editor/files/base-panel/base-panel-view",["backbone","ajs","jquery"],function(b,a,c){return b.View.extend({context:null,cssContainer:"",cssPanel:"",textErrorSearch:"Erreur de recherche des pi\u00e8ces jointes de Confluence. Le serveur n\u2019est peut \u00eatre pas disponible.",textErrorRetrieving:"Erreur de r\u00e9cup\u00e9ration des fichiers dans Confluence. Le serveur n\u2019est peut \u00eatre pas disponible.",textDefaultErrorMessage:"Impossible de charger le fichier dans Confluence. Le serveur n\u2019est peut \u00eatre pas disponible.",textUploading:"T\u00e9l\u00e9chargement de l\u2019image...",initialize:function(){},createPanel:function(d){this.context=
+d;this.render();var a=this;if(d=this.context.getPanel(this.panelId))d.onselect=function(){a.context.clearSelection();a.focus&&a.focus()}},render:function(){return this},getPanelElement:function(){return c(this.cssPanel,this.context.baseElement)},getContainer:function(){return c(this.cssContainer)},getForm:function(){return c("form",this.getPanelElement())},clearContainer:function(){var a=this.getContainer();a.find(".loading-message").removeClass("hidden");a.find(".warning").addClass("hidden")},clearErrors:function(){this.messenger.clearMessages()},
+displayErrors:function(a){this.uploader.displayErrors(a);this.getContainer().sizeToFit()},getNoFileContainer:function(){return this.getPanelElement().find(".no-files")},getFileListContainer:function(){return this.getPanelElement().find("ul.file-list")}})});
+require("confluence/module-exporter").exportModuleAsGlobal("confluence-editor/files/base-panel/base-panel-view","Confluence.Editor.FileDialog.BasePanel",function(){var b=require("underscore"),a=require("backbone");require("confluence/legacy").Editor.FileDialog.eventListener=b.extend({},a.Events)});
+}catch(e){WRMCB(e)};
+;
+try {
+/* module-key = 'com.atlassian.confluence.editor:panel-components', location = 'files/attachments-panel/attachments-panel.soy' */
+// This file was automatically generated from attachments-panel.soy.
+// Please don't edit this file by hand.
+
+/**
+ * @fileoverview Templates in namespace Confluence.Templates.File.
+ */
+
+if (typeof Confluence == 'undefined') { var Confluence = {}; }
+if (typeof Confluence.Templates == 'undefined') { Confluence.Templates = {}; }
+if (typeof Confluence.Templates.File == 'undefined') { Confluence.Templates.File = {}; }
+
+
+Confluence.Templates.File.uploadFileForm = function(opt_data, opt_ignored) {
+  return '' + ((opt_data.hasAttachPermission) ? '<div id="upload-attachment">' + ((opt_data.isNonSupportDragDrop) ? '<form action="' + soy.$$escapeHtml("") + '/pages/attachfile.action" method="post" enctype="multipart/form-data">' : '<form>') + '<button id="upload-files-button" class="aui-button upload-files"><span class="file-upload-icon aui-icon aui-icon-small aui-iconfont-upload"></span>&nbsp;&nbsp;' + soy.$$escapeHtml('Charger les fichiers') + ((opt_data.isNonSupportDragDrop) ? '<input name="file_0" type="file" class="upfile invisible">' : '') + '</button>' + ((opt_data.isNonSupportDragDrop) ? '<input type="hidden" name="minorEdit_0" value="true" /><input type="hidden" name="atl_token" value="' + soy.$$escapeHtml(opt_data.atlToken) + '" />' : '') + '</form>' + ((opt_data.isNonSupportDragDrop) ? '<div class="upload-in-progress hidden">' + soy.$$escapeHtml('T\xe9l\xe9chargement de l\u2019image...') + '</div>' : '') + '</div>' : '') + ((opt_data.hasAttachPermission) ? '<div class="divider"></div>' : '');
+};
+if (goog.DEBUG) {
+  Confluence.Templates.File.uploadFileForm.soyTemplateName = 'Confluence.Templates.File.uploadFileForm';
+}
+
+
+Confluence.Templates.File.attachedFilesPanel = function(opt_data, opt_ignored) {
+  return '<div id="attached-files" class="scroll-wrapper">' + aui.message.warning({title: '', closeable: 'true', content: ''}) + '<div class="loading-message hidden">' + soy.$$escapeHtml('Chargement...') + '</div><ul class="file-list"></ul></div>';
+};
+if (goog.DEBUG) {
+  Confluence.Templates.File.attachedFilesPanel.soyTemplateName = 'Confluence.Templates.File.attachedFilesPanel';
+}
+
+}catch(e){WRMCB(e)};
+;
+try {
+/* module-key = 'com.atlassian.confluence.editor:panel-components', location = 'files/attachments-panel/attachments-panel-view.js' */
+define("confluence-editor/files/attachments-panel/attachments-panel-view","confluence-editor/files/file-list/file-list-view confluence-editor/files/file-item/file-item-model confluence-editor/files/file-list/file-list-collection confluence-editor/files/base-panel/base-panel-view confluence/templates confluence/legacy confluence/api/constants ajs confluence/meta underscore window jquery".split(" "),function(n,i,o,j,k,p,l,e,h,m,f,g){return j.extend({id:"attachments",panelId:"",cssPanel:".attachments-panel",
+cssContainer:"#attached-files",textNoFileMessage:"Il n\u0027y a pas de fichiers joints sur cette page.",textPanelTitle:"En pi\u00e8ce jointe de cette page",initialize:function(a){j.prototype.initialize.call(this);this.eventListener=a.eventListener;this.context=null;this.collection=new o;this.fileListView=new n({collection:this.collection,eventListener:this.eventListener});this.xhrCount=0},render:function(){var a=this;this.eventListener.trigger("AttachmentsPanelView.render",this);this.fileListView.updateDialogContext(this.context);
+this.panelId=this.context.addPanel(this.textPanelTitle,this.getPanel(),"attachments-panel");this.el=this.getPanelElement();this.$el=g(this.el);this.delegateEvents();this.fileListView.updatePanelContext({fileContainer:this.getContainer(),noFileMessage:this.textNoFileMessage,showContainerInfo:false,errors:[],displayErrors:function(b){a.uploader.clearErrors();a.uploader.displayErrors(b)}});this.uploader=this.getUploaderController(this.context);this.messenger=this.uploader.getMessageHandler();this.collection.reset();
+this._canAttachFiles()?this.refresh({shouldClearSelection:true}):this.refresh({errors:["Une autorisation est n\u00e9cessaire pour ins\u00e9rer des fichiers ici"],shouldClearSelection:true});return this},getPanel:function(){return k.File.uploadFileForm({isNonSupportDragDrop:!this._hasXhrSupport(),atlToken:h.get("atl-token"),hasAttachPermission:this._canAttachFiles()})+k.File.attachedFilesPanel()},_overideUploaderClientForNonDragDropSupport:function(){var a=this;return{onUploadSuccess:function(b){for(var c=0;c<b.length;c++){var d=
+b[c].id,e=a.collection.get(d);e&&a.collection.removeFile(e);g.get(l.CONTEXT_PATH+"/rest/api/content/"+d+"?expand=version,container,space").done(function(b){b=new i(b);a.collection.addFile(b)})}},pack:function(){a.getContainer().sizeToFit()},getDefaultErrorMessage:function(){return a.textDefaultErrorMessage},getDefaultUploadingMessage:function(){return a.textUploading},displayErrors:function(b){this.getMessageHandler().displayMessages(b);a._showErrorIconInMessageBox();this.pack()}}},getUploaderController:function(){return p.AttachmentUploader({baseElement:this.getPanelElement()},
+m.bind(this._overideUploaderClientForNonDragDropSupport,this))},refresh:function(a){var b=this,c=a.shouldClearSelection?this.getPanelElement().find(".loading-message"):false,d=this.xhrCount=this.xhrCount+1;e.getJSONWrap({url:this._getUrlREST(),messageHandler:this.messenger,loadingElement:c,errorMessage:this.textErrorRetrieving,successCallback:function(c){if(d===b.xhrCount){a.data=c;b._onSuccessLoadFiles(a)}},errorCallback:m.bind(this._onErrorLoadFiles,this)})},_onSuccessLoadFiles:function(a){this.fileListView.resetFileList(a.data.results,
+a)},_onErrorLoadFiles:function(){this._showErrorIconInMessageBox()},_showErrorIconInMessageBox:function(){var a=this.messenger.getMessageContainer().find("ul");a.toggleClass("one-message",a.find("li").length===1)},setUploadInProgress:function(a,b){this.eventListener.trigger("file.placeholder.process",a,b)},attachmentUploaded:function(a,b){this.eventListener.trigger("uploadingfile.completed",a,b)},attachmentUploadingCancelled:function(a){this.eventListener.trigger("uploadingfile.cancelled",a)},_hasXhrSupport:function(){var a,
+b;try{a=new XMLHttpRequest;b=!(!a.sendAsBinary&&!a.upload)&&!(g.browser.mozilla&&g.browser.version.indexOf("1.9.1")>-1)}catch(c){b=false}return b},addPreviewImage:function(a){if(f.File&&f.FileReader&&f.FileList&&f.Blob){var b=this;a.isImage=a.nativeFile&&a.nativeFile.type&&this._isImageType(a.nativeFile.type);if(a.isImage&&a.nativeFile.size<5242880){var c=new FileReader;c.onload=function(){b._addFilePlaceHolderToCollection(a,c.result)};c.readAsDataURL(a.nativeFile)}else this._addFilePlaceHolderToCollection(a,
+null)}},_addFilePlaceHolderToCollection:function(a,b){var c=null,d=this.collection.findWhere({fileName:a.name});if(d){this.collection.removeFile(d);d.get("isFilePlaceHolder")?d.get("previousUploadedFile")&&(c=d.get("previousUploadedFile")):c=d}c=new i({isFilePlaceHolder:true,fileName:a.name,fileId:a.id,fileNative:a.nativeFile,url:b||"",isImage:a.isImage,niceType:a.isImage?"Image":"",fileType:a.nativeFile.type,thumbnailUrl:b||"",previousUploadedFile:c});this.collection.addFile(c)},_isImageType:function(a){return e.Confluence.FileTypesUtils.isImage(a)},
+_canAttachFiles:function(){return h.getBoolean("can-attach-files")},_getUrlREST:function(){var a=parseInt(h.get("attachment-source-content-id"),10);return l.CONTEXT_PATH+"/rest/api/content/"+a+"/child/attachment?expand=version,container,space"},focus:function(){this.collection.clearSelection()}})});require("confluence/module-exporter").exportModuleAsGlobal("confluence-editor/files/attachments-panel/attachments-panel-view","Confluence.Editor.FileDialog.AttachmentsPanelView");
+}catch(e){WRMCB(e)};
+;
+try {
+/* module-key = 'com.atlassian.confluence.editor:panel-components', location = 'files/external-panel/external-panel.soy' */
+// This file was automatically generated from external-panel.soy.
+// Please don't edit this file by hand.
+
+/**
+ * @fileoverview Templates in namespace Confluence.Templates.File.
+ */
+
+if (typeof Confluence == 'undefined') { var Confluence = {}; }
+if (typeof Confluence.Templates == 'undefined') { Confluence.Templates = {}; }
+if (typeof Confluence.Templates.File == 'undefined') { Confluence.Templates.File = {}; }
+
+
+Confluence.Templates.File.webPanel = function(opt_data, opt_ignored) {
+  return '<div class="insert-web-image"><form id="insert-web-image-form" action="#" class="aui"><fieldset class="inline"><div class="web-image-input"><label for="insert-web-image-image-url" id="insert-web-image-image-url-label">' + soy.$$escapeHtml('Image URL :') + '</label><input type="text" class="text image-url" id="insert-web-image-image-url" name="insert-web-image-image-url"></div><input type="submit" class="image-preview aui-button" value="' + soy.$$escapeHtml('Aper\xe7u') + '"></fieldset></form><p class="faraway image-preview-area"></p><p class="hidden image-preview-error">' + soy.$$escapeHtml('Impossible de charger l\x27aper\xe7u de cette image. Veuillez v\xe9rifier l\u2019URL.') + '</p><p class="hidden image-preview-throbber">&nbsp;</p></div>';
+};
+if (goog.DEBUG) {
+  Confluence.Templates.File.webPanel.soyTemplateName = 'Confluence.Templates.File.webPanel';
+}
+
+}catch(e){WRMCB(e)};
+;
+try {
+/* module-key = 'com.atlassian.confluence.editor:panel-components', location = 'files/external-panel/external-panel-view.js' */
+define("confluence-editor/files/external-panel/external-panel-view",["confluence-editor/files/base-panel/base-panel-view","confluence/templates","jquery","raphael","ajs"],function(c,e,d,f,g){return c.extend({id:"external",panelId:"",cssPanel:".web-image-panel",cssContainer:".insert-web-image",textPanelTitle:"Images du Web",template:e.File.searchPanel,events:{"submit form":"_submit","keyup input.image-url":"_checkAllowInsert","click input.image-url":"_checkAllowInsert",
+"blur input.image-url":"_checkAllowInsert"},initialize:function(){c.prototype.initialize.call(this);this.context=null;this.token=0},render:function(){this.panelId=this.context.addPanel(this.textPanelTitle,this.getPanel(),"web-image-panel");this.container=this.getContainer();this.preview=this.container.find(".image-preview-area");this.throbber=this.container.find(".image-preview-throbber");this.killSpinner=null;this.error=this.container.find(".image-preview-error")},focus:function(){this._getImageInput().focus();
+this._checkAllowInsert()},getPanel:function(){this.$el=d(e.File.webPanel());this.el=this.$el[0];this.delegateEvents();return this.el},_getImageInput:function(){return d("input.image-url",this.context.baseElement)},_submit:function(b){b.preventDefault();b.stopPropagation();var a=this,b=this._getImageInput().val();if("http://"===b)return!1;this.token++;var c=this.token;this.preview.addClass("faraway").html("");this.throbber.removeClass("hidden");this.killSpinner||(this.killSpinner=f.spinner(this.throbber[0],
+60,"#666"));this.error.addClass("hidden");d("<img>").load(function(){if(c===a.token){a.killSpinner();a.killSpinner=null;a.throbber.addClass("hidden");a.preview.removeClass("faraway");a._checkAllowInsert()}}).error(function(){if(c===a.token){a.killSpinner();a.killSpinner=null;a.throbber.addClass("hidden");a.error.removeClass("hidden");a._checkAllowInsert()}}).appendTo(this.preview).attr("src",b)},_checkAllowInsert:function(){var b=this.$el.find("input.image-url").val();this.context.setSelectItems(""!==
+b&&"http://"!==b?b:[])}})});require("confluence/module-exporter").exportModuleAsGlobal("confluence-editor/files/external-panel/external-panel-view","Confluence.Editor.FileDialog.ExternalPanelView");
+}catch(e){WRMCB(e)};
+;
+try {
+/* module-key = 'com.atlassian.confluence.editor:panel-components', location = 'files/search-panel/search-panel.soy' */
+// This file was automatically generated from search-panel.soy.
+// Please don't edit this file by hand.
+
+/**
+ * @fileoverview Templates in namespace Confluence.Templates.File.
+ */
+
+if (typeof Confluence == 'undefined') { var Confluence = {}; }
+if (typeof Confluence.Templates == 'undefined') { Confluence.Templates = {}; }
+if (typeof Confluence.Templates.File == 'undefined') { Confluence.Templates.File = {}; }
+
+
+Confluence.Templates.File.searchPanel = function(opt_data, opt_ignored) {
+  return '<div class="search-panel-wrapper"><div id="search-image"><form class="aui search-form" id="search-image-form" action="#"><fieldset class="inline"><div class="search-input"><label for="search-image" class="assistive">' + soy.$$escapeHtml('Rechercher') + '</label><input autofocus type="text" class="text search-image-text" size="50" autocomplete="off"></div><select class="search-space select" id="search-image-space-select"><option value="">' + soy.$$escapeHtml('Tous les espaces') + '</option><option value="' + soy.$$escapeHtml(opt_data.spaceKey) + '">' + soy.$$escapeHtml(opt_data.spaceName) + '</option></select><button type="submit" class="aui-button search-button">' + soy.$$escapeHtml('Rechercher') + '</button></fieldset></form></div><div id="searched-images" class="scroll-wrapper"><div class="loading-message hidden">' + soy.$$escapeHtml('Recherche en cours...') + '</div><ul class="file-list"></ul></div></div>';
+};
+if (goog.DEBUG) {
+  Confluence.Templates.File.searchPanel.soyTemplateName = 'Confluence.Templates.File.searchPanel';
+}
+
+}catch(e){WRMCB(e)};
+;
+try {
+/* module-key = 'com.atlassian.confluence.editor:panel-components', location = 'files/search-panel/search-panel-view.js' */
+define("confluence-editor/files/search-panel/search-panel-view","confluence-editor/files/file-item/file-item-model confluence-editor/files/file-list/file-list-view confluence-editor/files/file-list/file-list-collection confluence-editor/files/base-panel/base-panel-view confluence/templates confluence/meta confluence/defaults confluence/highlighter confluence/api/constants underscore ajs jquery".split(" "),function(n,h,i,d,j,e,k,l,m,f,g,c){return d.extend({id:"search",panelId:"",cssPanel:".search-panel",
+cssContainer:"#searched-images",template:j.File.searchPanel,events:{"submit form":"_submit"},initialize:function(){d.prototype.initialize.call(this);this.context=null;this.collection=new i;this.fileListView=new h({collection:this.collection})},getPanel:function(){this.$el=c(this.template({spaceKey:e.get("space-key"),spaceName:e.get("space-name")}));this.el=this.$el[0];this.delegateEvents();return this.el},render:function(){this.fileListView.updateDialogContext(this.context);this.panelId=this.context.addPanel("Rechercher sur d\u0027autres pages",
+this.getPanel(),"search-panel");this.fileListView.updatePanelContext({fileContainer:this.getContainer(),noFileMessage:"Cette recherche n\u0027a renvoy\u00e9 aucun r\u00e9sultat.",showContainerInfo:true})},_submit:function(a){a.preventDefault();a.stopPropagation();if(this._getQuery()){this.clearContainer();this.collection.reset();this._loadImages().then(f.bind(this._onSuccessLoadFiles,this),f.bind(this._onErrorLoadFiles,this))}},_loadImages:function(){var a=this.getForm().find(".search-space").val(),b=this._getQuery(),
+b='(title ~ "'+b+'*" OR parent.title ~ "'+b+'*") AND type = attachment';a&&a!==""&&(b=b+(" AND space.key = "+a));return c.ajax({type:"GET",dataType:"json",url:m.CONTEXT_PATH+"/rest/api/search",data:{cql:b,expand:"content.version,content.container,content.space",limit:k.maxResults}})},_onSuccessLoadFiles:function(a){a=a.results.map(function(a){return a.content});this.fileListView.highlighter=new l(this._getQuery().split(" "));this.fileListView.resetFileList(a,{shouldClearSelection:true})},_onErrorLoadFiles:function(){var a=
+this.getContainer();a.find(".loading-message").addClass("hidden");a.append(c("<p class='warning'>"+c(this.textErrorSearch).text()+"</p>"))},_getSearchText:function(){return c("input.search-image-text",this.getForm())},_getQuery:function(){return this._getSearchText().val()||""},focus:function(){this.collection.clearSelection();this._getSearchText().focus()}})});require("confluence/module-exporter").exportModuleAsGlobal("confluence-editor/files/search-panel/search-panel-view","Confluence.Editor.FileDialog.SearchPanelView");
+}catch(e){WRMCB(e)};
+;
+try {
+/* module-key = 'com.atlassian.confluence.editor:panel-components', location = 'files/file-dialog/file-dialog.soy' */
+// This file was automatically generated from file-dialog.soy.
+// Please don't edit this file by hand.
+
+/**
+ * @fileoverview Templates in namespace Confluence.Templates.File.
+ */
+
+if (typeof Confluence == 'undefined') { var Confluence = {}; }
+if (typeof Confluence.Templates == 'undefined') { Confluence.Templates = {}; }
+if (typeof Confluence.Templates.File == 'undefined') { Confluence.Templates.File = {}; }
+
+
+Confluence.Templates.File.helpLink = function(opt_data, opt_ignored) {
+  return '<div class="dialog-help-link"><a href="' + soy.$$escapeHtml("https://docs.atlassian.com/confluence/docs-85/Display+Files+and+Images") + '" target="_blank">' + soy.$$escapeHtml('Aide') + '</a></div>';
+};
+if (goog.DEBUG) {
+  Confluence.Templates.File.helpLink.soyTemplateName = 'Confluence.Templates.File.helpLink';
+}
+
+}catch(e){WRMCB(e)};
+;
+try {
+/* module-key = 'com.atlassian.confluence.editor:panel-components', location = 'files/file-dialog/file-dialog-view.js' */
+define("confluence-editor/files/file-dialog/file-dialog-view","backbone ajs confluence/templates underscore jquery document window".split(" "),function(l,f,m,h,e,j,n){function k(a,d){d.forEach(function(b){a.forEach(function(a){a(b)})})}return l.View.extend({dialogId:"insert-image-dialog",ESC_KEY_CODE:27,width:840,height:530,initialize:function(a){this.urlExternalImg="";this.selectItems=[];this.submitCallback=a.submitCallback;this.cancelCallback=a.cancelCallback;var d=a.beforeShowListeners||[],b,c;
+if(d&&(!d.subscribe||!d.unsubscribe)){b=d.push;c=[];Object.assign(d,{push:function(){var a=Array.prototype.slice.apply(arguments);b.apply(d,a);k(c,a)},subscribe:function(a){c.push(a);k([a],d)},unsubscribe:function(){c.length=0}})}this.beforeShowListeners=d;this.panelComponents=a.panelComponents},render:function(){this._createDialog();this.clearSelection();e(j).on("keydown.insert-image",h.bind(this._onNavigationByKey,this));return this},_createDialog:function(){var a=new f.Dialog(this.width,this.height,
+this.dialogId),d="Ins\u00e9rer des fichiers et des images",b="Ins\u00e9rer";this.dialog=a;a.addHeader(d);a.addButton(b,h.bind(this._submitDialog,this),"insert");a.addCancel("Fermer",h.bind(this._killDialog,this));this.el=a.popup.element;this.$el=e(this.el);this.baseElement=this.el;this.$el.attr("data-tab-default","0");this.$insertButton=this.$el.find(".dialog-button-panel .insert");e("#"+this.dialogId+" .dialog-components .dialog-title").prepend(m.File.helpLink());
+this.$el.find(".dialog-button-panel").append(e("<div></div>").addClass("dialog-tip").html("Astuce\u00a0: saisissez \u00ab\u00a0\u003cstrong\u003e!\u003c/strong\u003e\u00a0\u00bb dans l\u0027\u00e9diteur afin d\u0027ins\u00e9rer des images jointes sur la page."));this._createPanels();this.beforeShowListeners.subscribe(function(a){typeof a==="function"&&a()});f.debug(this.beforeShowListeners.length+" beforeShow listeners registered.");e(j).on("hideLayer",h.bind(function(c,b,d){if(!(b!=="popup"||d!==a.popup)){d.remove();this.teardown();typeof this.cancelCallback==="function"&&this.cancelCallback()}},this));f.bind("remove.dialog",
+h.bind(function(a,b){b.dialog.id===this.dialog.id&&this.teardown()},this));a.show();return a},_createPanels:function(){var a=this;e.each(this.panelComponents,function(){this&&typeof this.createPanel==="function"&&this.createPanel(a)})},teardown:function(){e(j).unbind(".insert-image");e(".tipsy").remove();this.undelegateEvents();this.beforeShowListeners.unsubscribe()},_killDialog:function(){this.dialog.remove();this.clearSelection();typeof this.cancelCallback==="function"&&this.cancelCallback()},_submitDialog:function(){var a=
+{url:this.urlExternalImg,contentId:f.Meta.get("attachment-source-content-id"),selectItems:this.selectItems};this.dialog.remove();typeof this.submitCallback==="function"&&this.submitCallback(a)},setSelectItems:function(a){if(typeof a==="string"){this.urlExternalImg=a;this.selectItems=[]}else{this.urlExternalImg="";this.selectItems=a}a=this.selectItems.length>0||this.urlExternalImg;if(this.$insertButton){this.$insertButton.prop("disabled",!a);this.$insertButton.attr("aria-disabled",!a)}},clearSelection:function(){this.setSelectItems([])},
+insert:function(){this.$insertButton&&(!this.$insertButton.is(":disabled")||!this.$insertButton.attr("aria-disabled"))&&this.$insertButton.click()},addPanel:function(a,d,b,c){var e=this.dialog.getPage(0).panel.length;this.dialog.addPanel(a,d,b,c);return e},getPanel:function(a){return this.dialog.getPanel(a)},_onNavigationByKey:function(a){if(!e("#"+this.dialog.id).is(":hidden")){var d=this.dialog.getCurrentPanel().body,b=d.find(".attached-file");if(!(b.length===0||e(j.activeElement).is("input[type=text], select, button"))){var c=
+n.tinymce.VK;switch(a.which){case c.LEFT:case c.UP:case c.RIGHT:case c.DOWN:var f=a.which,g;g=b.filter(".current");g.length||(g=b.filter(".selected"));if(g.length){g=b.index(g);var h=b.length,i={};i[c.LEFT]=-1;i[c.RIGHT]=1;i[c.UP]=-4;i[c.DOWN]=4;c=g+(i[f]?i[f]:0);b=b.eq(c<0||c>=h?g:c)}else b=b.first();b.parent().find("li.attached-file.current").removeClass("current");b.addClass("current");b.length&&d.find(".scroll-wrapper").simpleScrollTo(b);a.stopPropagation();return false;case c.SPACEBAR:d.find("li.attached-file.current").click();
+a.stopPropagation();return false;case c.ENTER:this.insert();a.stopPropagation();return false}}}}})});require("confluence/module-exporter").exportModuleAsGlobal("confluence-editor/files/file-dialog/file-dialog-view","Confluence.Editor.FileDialog.FileDialogView");
+}catch(e){WRMCB(e)};

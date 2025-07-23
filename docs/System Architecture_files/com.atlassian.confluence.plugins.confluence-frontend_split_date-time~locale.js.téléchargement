@@ -1,0 +1,6 @@
+WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
+;
+try {
+/* module-key = 'com.atlassian.confluence.plugins.confluence-frontend:split_date-time~locale', location = 'date-time~locale.js' */
+(window.atlassianWebpackJsonpe19a4f58490c3d96a3072d1e47cd0e73=window.atlassianWebpackJsonpe19a4f58490c3d96a3072d1e47cd0e73||[]).push([[9],{235:function(e,a){e.exports=require("confluence/meta")},50:function(e,a,c){"use strict";c.r(a),c.d(a,"getUserLocale",(function(){return s}));var n=c(235),t=c.n(n);const s=()=>t.a.get("user-locale").replace("_","-").match(/^([a-zA-Z]{2,5}(-[a-zA-Z]+)?)/)[0]}}]);
+}catch(e){WRMCB(e)};

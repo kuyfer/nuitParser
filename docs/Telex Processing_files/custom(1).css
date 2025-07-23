@@ -1,0 +1,44 @@
+button.enlarge-table-button {
+  display: none;
+}
+
+.article__toc .js-contentByLabel, .table-overlay__toc .contentByLabel {
+    /*border-top: 1px solid #DFE1E6;*/
+    padding-left: 1rem;
+}
+
+.tablesorter-custom {
+  font-family: "roboto-regular",Helvetica,Roboto,Arial,sans-serif;
+}
+
+.versions-picker {
+  overflow: auto;
+  height: 58vh;
+}
+
+.article .article__content article table.confluenceTable tbody tr td p{
+margin-bottom: calc(0.4 * 1rem);
+  margin-top: calc(0.4 * 1rem);
+}
+
+.expand-control {
+  margin-bottom: 0px;
+}
+
+.article .article__content article #content p.panel-macros--tip__content--heading {
+    font-family: "roboto-bold",Helvetica,Roboto,Arial,sans-serif;
+    margin-bottom: 0.5rem;
+}
+.article .article__content article #content p.panel-macros--info__content--heading {
+    font-family: "roboto-bold",Helvetica,Roboto,Arial,sans-serif;
+    margin-bottom: 0.5rem;
+}
+.article .article__content article #content p.panel-macros--note__content--heading {
+    font-family: "roboto-bold",Helvetica,Roboto,Arial,sans-serif;
+    margin-bottom: 0.5rem;
+}
+
+div.rwui_steps.rwui_size_small.conf-macro.output-block {
+    background-color: white;
+}
+

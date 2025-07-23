@@ -1,0 +1,4 @@
+clean ui that shows an image of the aircraft and the logo of the airline 
+frontend and mobile ui 
+
+asmMessage model might need to change

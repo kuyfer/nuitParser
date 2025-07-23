@@ -1,0 +1,122 @@
+[
+    {
+        "type": "ASM",
+        "description": "Availability Status Message"
+    },
+    {
+        "type": "SSM",
+        "description": "Special Service Message"
+    },
+    {
+        "type": "MVT",
+        "description": "Movement Message"
+    },
+    {
+        "type": "OFP",
+        "description": "Operational Flight Plan"
+    },
+    {
+        "type": "FPL",
+        "description": "Flight Plan"
+    },
+    {
+        "type": "ETD",
+        "description": "Estimated Time of Departure"
+    },
+    {
+        "type": "ETA",
+        "description": "Estimated Time of Arrival"
+    },
+    {
+        "type": "TDR",
+        "description": "Traffic Demand Report"
+    },
+    {
+        "type": "PAX",
+        "description": "Passenger Information"
+    },
+    {
+        "type": "CNL",
+        "description": "Cancel Message"
+    },
+    {
+        "type": "DLY",
+        "description": "Delay Message"
+    },
+    {
+        "type": "RTE",
+        "description": "Route Message"
+    },
+    {
+        "type": "CRO",
+        "description": "Crew Rostering"
+    },
+    {
+        "type": "SIT",
+        "description": "Seat Information"
+    },
+    {
+        "type": "LDM",
+        "description": "Load Message"
+    },
+    {
+        "type": "LTA",
+        "description": "Load and Trim Aircraft"
+    },
+    {
+        "type": "DOC",
+        "description": "Document Message"
+    },
+    {
+        "type": "IRR",
+        "description": "Irregularity Report"
+    },
+    {
+        "type": "MNM",
+        "description": "Minimum Connection Time"
+    },
+    {
+        "type": "SB",
+        "description": "Scheduled Booking"
+    },
+    {
+        "type": "DIB",
+        "description": "Direct Inbound Booking"
+    },
+    {
+        "type": "AFT",
+        "description": "After Departure"
+    },
+    {
+        "type": "VIB",
+        "description": "Very Important Booking"
+    },
+    {
+        "type": "CSD",
+        "description": "Customer Service Data"
+    },
+    {
+        "type": "PNS",
+        "description": "Passenger No-show"
+    },
+    {
+        "type": "TTR",
+        "description": "Traffic Transfer"
+    },
+    {
+        "type": "FAL",
+        "description": "Flight Activity Log"
+    },
+    {
+        "type": "SVC",
+        "description": "Service Change"
+    },
+    {
+        "type": "BULK",
+        "description": "Bulk Cargo Message"
+    },
+    {
+        "type": "ADM",
+        "description": "Advisory Message"
+    }
+]

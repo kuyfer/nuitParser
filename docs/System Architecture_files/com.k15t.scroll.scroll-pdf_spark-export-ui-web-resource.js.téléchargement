@@ -1,0 +1,202 @@
+WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
+;
+try {
+/* module-key = 'com.k15t.scroll.scroll-pdf:spark-export-ui-web-resource', location = 'com/k15t/scroll/exporter/ui/pdf-export-ui-bootstrap.js' */
+require(['ajs'], function(AJS) {
+    AJS.toInit(function() {
+
+        'use strict';
+
+        var $ = AJS.$;
+        var exportWebItem = $('#k15t-exp-pdf-export-dialog-web-item');
+
+        function getVariantInformation() {
+            var scroll = window.Scroll;
+            return scroll &&
+                scroll.Versions &&
+                scroll.Versions.Context &&
+                scroll.Versions.Context.page &&
+                scroll.Versions.Context.page.variants;
+        }
+
+        function isPageAvailable() {
+            // Untranslated pages output a paragraph with single class 'sv-content-notavailable'
+            var contentAvailable = !$('div#main-content > p[class="sv-content-notavailable"]').length;
+            // information about whether a page is in the current variant is only available since SCM 3.8.0. Default to true otherwise.
+            var availableInVariant = true;
+            var variantInformation = getVariantInformation();
+            if (variantInformation) {
+                availableInVariant = variantInformation.isAvailableInCurrentVariant;
+            }
+            return contentAvailable && availableInVariant;
+        }
+
+        // Error dialog that is shown in case the user tries to export a page that is not available.
+        exportWebItem.append('' +
+            '<section role="dialog" id="k15t-exp-pdf-no-export-dialog" class="aui-layer aui-dialog2 aui-dialog2-small aui-dialog2-warning"' +
+            '         aria-hidden="true">' +
+            '    <header class="aui-dialog2-header">' +
+            '        <h2 class="aui-dialog2-header-main">Page Not Available</h2>' +
+            '        <a class="aui-dialog2-header-close">' +
+            '            <span class="aui-icon aui-icon-small aui-iconfont-close-dialog">Close</span>' +
+            '        </a>' +
+            '    </header>' +
+            '    <div class="aui-dialog2-content">' +
+            '        <p>You cannot export this page, because it is not available in the current version, variant, or language.</p>' +
+            '    </div>' +
+            '    <footer class="aui-dialog2-footer">' +
+            '        <div class="aui-dialog2-footer-actions">' +
+            '            <button id="k15t-exp-pdf-no-export-dialog-close-button" class="aui-button aui-button-link">Close</button>' +
+            '        </div>' +
+            '        <div class="aui-dialog2-footer-hint">' +
+            '           <span style="' +
+            '  background: linear-gradient(to right, #1062fb 0, #1062fb 33.3%, #2eb785 33.3%, #2eb785 66.6%, #ffc420 66.6%);' +
+            '  height: .5em;' +
+            '  width: 2.625em;' +
+            '  display: inline-block;' +
+            '  position: relative;' +
+            '           "></span>' +
+            '         </div>' +
+            '    </footer>' +
+            '</section>'
+        );
+        AJS.$('#k15t-exp-pdf-no-export-dialog-close-button').click(function(e) {
+            e.preventDefault();
+            AJS.dialog2('#k15t-exp-pdf-no-export-dialog').hide();
+        });
+
+        // Register event handler for the export menu entry.
+        exportWebItem.on('click', function(event) {
+            event.preventDefault();
+            if (isPageAvailable()) {
+                window['com.k15t.scroll.scroll-pdf:app-loaders']['k15t-cxp-export-pdf']();
+            } else {
+                AJS.dialog2('#k15t-exp-pdf-no-export-dialog').show();
+            }
+        });
+
+        // Disable native PDF export unless it is explicitly enabled.
+        if (!AJS.Meta.get('k15t-cxp-pdf-native-export-available')) {
+            $("#action-export-pdf-link").parent().remove();
+        }
+
+        // Custom launcher support. Find export launchers that may be on the page and register an event handler that launches the export
+        // dialog in regular or quick start mode.
+        $('.scroll-pdf-launcher').each(function(index, element) {
+            var templateId = $(element).attr('data-template-id');
+            var spaceKey = $(element).attr('data-space-key');
+            var pageId = $(element).attr('data-page-id');
+            var pageSet = $(element).attr('data-scope');
+            var quickStartRaw = $(element).attr('data-quick-start');
+            var quickStart = !quickStartRaw || quickStartRaw.toLowerCase() === 'true'; // this option defaults to true if missing
+
+            $(element).on('click', function(event) {
+                event.preventDefault();
+                if (quickStart && !templateId) {
+                    alert('Error: quick start enabled but no template ID provided.');
+                } else {
+                    window['com.k15t.scroll.scroll-pdf:app-loaders']['k15t-cxp-export-pdf']({
+                        overrides: {
+                            spaceKey: spaceKey,
+                            pageId: pageId,
+                            templateId: templateId,
+                            pageSet: pageSet
+                        },
+                        quickStart: quickStart
+                    });
+                }
+            })
+        });
+
+    });
+});
+
+// Module for integrating other apps with the exporters.
+define('k15t/pdf/integration', ['jquery'], function($) {
+    function ping() {
+        return {
+            features: {
+                favoriteTemplates: true,
+                templateLoading: true,
+                templateType: true,
+                templateLabels: true,
+                templateLastModification: true,
+                defaultExportOptionsForDocuments: true,
+                templateDescription: true
+            }
+        }
+    }
+
+    function openExportDialog(options) {
+        window['com.k15t.scroll.scroll-pdf:app-loaders']['k15t-cxp-export-pdf']({
+            overrides: {
+                spaceKey: options.spaceKey,
+                pageId: options.contentId,
+                pageSet: options.pageSet,
+                variantId: options.variantId
+            },
+            disableScopeSelection: options.disableScopeSelection,
+            disableTemplateSelection: options.disableTemplateSelection
+        });
+    }
+
+
+    function getTemplates(parameters) {
+        var confluenceBaseUrl = document.getElementById('confluence-base-url').content;
+        var apiPath = confluenceBaseUrl + '/plugins/servlet/scroll-pdf/api/templates?spaceKey=' + parameters.spaceKey;
+        return $.get(apiPath)
+            .then(function(result, status, xhr) {
+                    var isJsonResponse = /^application\/json\s*(?:;|$)/.test(xhr.getResponseHeader("content-type"));
+                    if (isJsonResponse) {
+                        return result.map(function(template) {
+                            return {
+                                id: template.id,
+                                name: template.name,
+                                spaceKey: template.spaceKey,
+                                state: template.state,
+                                type: template.type,
+                                labels: template.labels,
+                                lastModifier: template.lastModifier || template.creator,
+                                lastModificationDate: template.lastModificationDate || template.creationDate,
+                                description: template.description
+                            };
+                        });
+                    }
+                    throw new Error('Error: response body was not of content type application/json.');
+                }
+            );
+    }
+
+    function getFavoriteTemplates() {
+        return new Promise((resolve) => {
+            const value = localStorage.getItem('k15t/cxp/export/favoriteTemplates');
+            if (value !== null) {
+                resolve(value.split(','));
+                return;
+            }
+
+            resolve([]);
+        });
+    }
+
+    function setFavoriteTemplates(parameters) {
+        return new Promise((resolve, reject) => {
+            try {
+                localStorage.setItem('k15t/cxp/export/favoriteTemplates', parameters.favoriteTemplates.join(','));
+                resolve();
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
+    return {
+        ping: ping,
+        openExportDialog: openExportDialog,
+        getTemplates: getTemplates,
+        getFavoriteTemplates: getFavoriteTemplates,
+        setFavoriteTemplates: setFavoriteTemplates
+    }
+});
+
+}catch(e){WRMCB(e)};

@@ -1,0 +1,31 @@
+WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
+;
+try {
+/* module-key = 'com.atlassian.confluence.plugins.confluence-create-content-plugin:user-select2', location = 'user-select2/avatar.soy' */
+// This file was automatically generated from avatar.soy.
+// Please don't edit this file by hand.
+
+/**
+ * @fileoverview Templates in namespace CreateContent.avatar.
+ */
+
+if (typeof CreateContent == 'undefined') { var CreateContent = {}; }
+if (typeof CreateContent.avatar == 'undefined') { CreateContent.avatar = {}; }
+
+
+CreateContent.avatar.avatarWithName = function(opt_data, opt_ignored) {
+  return '' + aui.avatar.avatar({size: opt_data.size, avatarImageUrl: opt_data.avatarImageUrl, accessibilityText: opt_data.displayName, title: opt_data.displayName, extraAttributes: {'data-username': opt_data.userId}}) + soy.$$escapeHtml(opt_data.displayName);
+};
+if (goog.DEBUG) {
+  CreateContent.avatar.avatarWithName.soyTemplateName = 'CreateContent.avatar.avatarWithName';
+}
+
+}catch(e){WRMCB(e)};
+;
+try {
+/* module-key = 'com.atlassian.confluence.plugins.confluence-create-content-plugin:user-select2', location = 'user-select2/user-multiselect.js' */
+(function(k){k("confluence-ui-components/js/confluence-select");Confluence.Binder=Confluence.Binder||{};Confluence.Binder.autocompleteMultiUser=function(e){e=e||document.body;var c=AJS.$,l=function(){var b=c(".select2-drop-active \x3e .select2-results");0===b.children(".select2-result-selectable").length&&b.children(".select2-disabled").length&&b.append('\x3cli class\x3d"select2-no-results"\x3e'+AJS.escapeHtml("Aucun r\u00e9sultat trouv\u00e9")+"\x3c/li\x3e")};c("input.autocomplete-multiuser[data-autocomplete-bound !\x3d 'true']",
+e).each(function(){var b=c(this);b.confluenceSelect({multiple:!0,minimumInputLength:2,formatInputTooShort:function(){return "Commencez \u00e0 taper pour rechercher un utilisateur"},ajax:{transport:function(a){var d=a.success;delete a.success;return c.ajax.apply(c.ajax,arguments).done(d).done(l)},data:function(a){return{"max-results":6,query:a}},dataType:"json",url:Confluence.getContextPath()+"/rest/prototype/1/search/user.json",results:function(a){var d=[];c.each(a.result,function(){d.push({id:this.username,
+userKey:this.userKey,text:this.title,imgSrc:this.thumbnailLink.href})});return{results:d}},quietMillis:300},formatResult:function(a){return CreateContent.avatar.avatarWithName({size:"small",displayName:a.text,userId:a.id,avatarImageUrl:a.imgSrc})},escapeMarkup:function(a){return a},formatSelection:function(a){return CreateContent.avatar.avatarWithName({size:"xsmall",displayName:a.text,userId:a.id,avatarImageUrl:a.imgSrc})},dropdownCssClass:"users-dropdown",containerCssClass:"users-autocomplete",hasAvatar:!0});
+if(b.data("autofill-user")){var f=AJS.Meta.get("remote-user"),m=AJS.Meta.get("remote-user-key"),g=AJS.Meta.get("current-user-fullname"),h=AJS.Meta.get("current-user-avatar-uri-reference");f&&g&&h&&b.confluenceSelect("data",[{id:f,userKey:m,text:g,imgSrc:h}])}})}})(require);
+}catch(e){WRMCB(e)};
