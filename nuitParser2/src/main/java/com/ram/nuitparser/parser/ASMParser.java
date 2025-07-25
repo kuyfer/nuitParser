@@ -1,23 +1,56 @@
 package com.ram.nuitparser.parser;
 
 import com.ram.nuitparser.model.telex.asm.AsmMessage;
+import com.ram.nuitparser.parser.TelexParser;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
-public class ASMParser {
+public class ASMParser implements TelexParser<AsmMessage> {
 
+    @Override
     public AsmMessage parse(String body, String sender, String receivers) {
-        AsmMessage message = new AsmMessage();
+        AsmMessage asm = new AsmMessage();
+        asm.setSender(sender);
+        asm.setReceivers(receivers);
+        asm.setRawBody(body);
 
-        message.setRawTelex(body);
-        message.setSender(sender);
-        message.setReceivers(receivers);
+        String[] lines = body.lines()
+                .filter(l -> !l.isBlank())
+                .toArray(String[]::new);
 
-        System.out.println("Parsed ASM Message:");
-        System.out.println("Sender: " + sender);
-        System.out.println("Receivers: " + receivers);
-        System.out.println("Body:\n" + body);
-
-        return message;
+        // Exemple simplifié : on repère action, vol, date, DEIs, aéroport, etc.
+        for (String line : lines) {
+            if (line.matches("^(NEW|CNL|RPL|ADM|CON|EQT|FLT|RRT|TIM).*")) {
+                asm.setAction(line.trim());
+            }
+            if (line.contains("/13JUL25")) {
+                String[] parts = line.split(" ");
+                asm.setFlightDesignator(parts[0]);
+                asm.setFlightDate(parts[1]);
+                // extraire DEI
+                List<String> de = new ArrayList<>();
+                for (int i = 2; i < parts.length; i++) {
+                    if (parts[i].contains("/")) de.add(parts[i]);
+                }
+                asm.setDeIdentifiers(de);
+            }
+            if (line.startsWith("J")) {
+                asm.setAircraftType(line.split(" ")[1]);
+                asm.setEquipmentVersion(line.split("\\.")[1]);
+            }
+            if (line.startsWith("CDG")) {
+                asm.setDepartureAirport("CDG");
+                asm.setDepartureTime(line.substring(3,9));
+            }
+            if (line.startsWith("OUD")) {
+                asm.setArrivalAirport("OUD");
+                asm.setArrivalTime(line.substring(3,9));
+            }
+        }
+        System.out.println(asm);
+        return asm;
     }
 }

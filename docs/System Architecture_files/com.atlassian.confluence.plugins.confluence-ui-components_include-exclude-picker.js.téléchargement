@@ -1,7 +1,0 @@
-WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
-;
-try {
-/* module-key = 'com.atlassian.confluence.plugins.confluence-ui-components:include-exclude-picker', location = '/js/include-exclude-picker.js' */
-define("confluence-ui-components/js/include-exclude-picker",["jquery","underscore"],function(d,e){function g(a){var b=a.charAt(0);e.contains(["-"],b)?(c=b,a=a.substring(1)):c="";return a}function f(a){a=d.extend({},a);a.children?a.children=e.map(a.children,f):(a.id=c+a.id,a.text=c+a.text);return a}function h(a){return function(b){b=g(b);return a(b)}}function k(a){return function(b){b=a?a(b):b;c&&(b.results=e.map(b.results,f));return b}}function l(a){return function(b){return a(b,g,f)}}function m(a){if("-"===
-a.text.charAt(0))return"select2-search-choice-subtle"}var c="";return{build:function(a){a=d.extend({formatSelectionCssClass:m},a);a.query?a.query=l(a.query):(a.ajax=d.extend({},a.ajax),a.ajax.data=h(a.ajax.data),a.ajax.results=k(a.ajax.results));return a}}});
-}catch(e){WRMCB(e)};

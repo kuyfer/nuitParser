@@ -1,6 +1,0 @@
-WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
-;
-try {
-/* module-key = 'com.atlassian.confluence.plugins.confluence-editor-plugin:split_vendors~core~page-editor-quit-dialog', location = 'vendors~core~page-editor-quit-dialog.js' */
-(window.atlassianWebpackJsonp1126d6c3ec4535e33734b1025bd581ff=window.atlassianWebpackJsonp1126d6c3ec4535e33734b1025bd581ff||[]).push([["vendors~core~page-editor-quit-dialog"],{0:function(e,t,o){"use strict";(function(t){e.exports="object"==typeof self&&self.self===self&&self||"object"==typeof t&&t.global===t&&t||this}).call(this,o(45))},45:function(e,t){var o;o=function(){return this}();try{o=o||new Function("return this")()}catch(e){"object"==typeof window&&(o=window)}e.exports=o}}]);
-}catch(e){WRMCB(e)};

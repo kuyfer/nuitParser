@@ -1,6 +1,0 @@
-WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
-;
-try {
-/* module-key = 'com.atlassian.auiplugin:split_jquery.ui.droppable', location = 'aui.chunk.f4ff7256b491a5ef7929--55fb1e1b7e81256de6f7.js' */
-(window.__auiJsonp=window.__auiJsonp||[]).push([["jquery.ui.droppable"],{qe8r:function(u,i,n){"use strict";n.r(i);n("PTCr");i.default="jquery"}},[["qe8r","runtime","aui.splitchunk.vendors--20a97d6a33","aui.splitchunk.vendors--d18e3cafa7","aui.splitchunk.vendors--db57146687","aui.splitchunk.vendors--51504ebf10","aui.splitchunk.vendors--9c8c8c1546","aui.splitchunk.vendors--351ae504d7","aui.splitchunk.vendors--06bc6ae5d7","aui.splitchunk.vendors--825acd7236","aui.splitchunk.0d131bcbf1"]]]);
-}catch(e){WRMCB(e)};

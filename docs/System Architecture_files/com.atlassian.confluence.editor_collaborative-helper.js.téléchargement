@@ -1,7 +1,0 @@
-WRMCB=function(e){var c=console;if(c&&c.log&&c.error){c.log('Error running batched script.');c.error(e);}}
-;
-try {
-/* module-key = 'com.atlassian.confluence.editor:collaborative-helper', location = 'loader/collaborative-helper.js' */
-define("confluence-editor/loader/collaborative-helper",["jquery","ajs","confluence/meta","confluence/legacy"],function(g,h,d,i){function b(a){var c=a||{},a=c.id||i.getContentId(),b=c.type||d.get("content-type"),c=c.editMode||d.get("edit-mode");return"collaborative"===c&&("page"===b||"blogpost"===b)&&a&&"0"!==a}var e,f=g.Deferred();return{registerPlugin:function(a){e=a;f.resolve()},isCollaborativeEditingAvailable:b,getEditorContent:function(){return f.pipe(function(){return b()&&"fake"!==d.get("collaborative-editor-status")?
-e.getSynchronisedEditorContent():{content:h.Rte.getEditor().getContent()}})}}});
-}catch(e){WRMCB(e)};
