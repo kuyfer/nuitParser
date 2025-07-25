@@ -1,7 +1,7 @@
 package com.ram.nuitparser.parser;
 
-import com.ram.nuitparser.model.enums.TelexType;
-import com.ram.nuitparser.parser.ASMParser;
+import com.ram.nuitparser.enums.TelexType;
+import com.ram.nuitparser.parser.asm.ASMParser;
 import org.springframework.stereotype.Component;
 
 @Component

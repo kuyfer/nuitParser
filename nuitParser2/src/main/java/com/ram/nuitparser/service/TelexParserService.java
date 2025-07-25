@@ -1,6 +1,6 @@
 package com.ram.nuitparser.service;
 
-import com.ram.nuitparser.model.enums.TelexType;
+import com.ram.nuitparser.enums.TelexType;
 import com.ram.nuitparser.parser.TelexRouter;
 import org.springframework.stereotype.Service;
 
