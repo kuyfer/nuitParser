@@ -3,7 +3,7 @@ package com.ram.nuitparser.enums;
 
 public enum TelexType {
     // Common Schedule & Operational Telex Types
-    ASM,    // Aircraft Schedule Message
+    ASM,    // adhoc Schedule Message
     SSM,    // Slot/Supplementary Schedule Message
     MVT,    // Movement Message
     LDM,    // Load Message
