@@ -19,6 +19,14 @@ public class AsmMessage {
     private String arrivalTime;        // ex. 140110
     private String rawBody;            // corps complet pour traçabilité
 
+    // Enrichment fields
+    private String airlineName;
+    private String airlineCountry;
+    private String departureAirportName;
+    private String departureTimezone;
+    private String arrivalAirportName;
+    private String arrivalTimezone;
+
 
 
     @Override
