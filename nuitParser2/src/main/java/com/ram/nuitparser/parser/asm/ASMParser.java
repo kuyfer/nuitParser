@@ -1,56 +1,80 @@
 package com.ram.nuitparser.parser.asm;
 
 import com.ram.nuitparser.model.telex.asm.AsmMessage;
-import com.ram.nuitparser.parser.TelexParser;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
-public class ASMParser implements TelexParser<AsmMessage> {
+public class ASMParser {
+    private static final Pattern ACTION_PATTERN = Pattern.compile("^(NEW|CNL|RPL|ADM|CON|EQT|FLT|RRT|TIM)\\b");
+    private static final Pattern FLIGHT_PATTERN = Pattern.compile("\\b([A-Z]{2}\\d{3,4})/(\\d{1,2}[A-Z]{3}\\d{2})\\b");
+    private static final Pattern DEI_PATTERN = Pattern.compile("\\b(\\d+/[A-Z0-9]+)\\b");
+    private static final Pattern AIRCRAFT_PATTERN = Pattern.compile("([A-Z]\\w{2,3})\\s*\\.([A-Z]\\d+)");
+    private static final Pattern AIRPORT_PATTERN = Pattern.compile("([A-Z]{3})(\\d{6})");
 
-    @Override
     public AsmMessage parse(String body, String sender, String receivers) {
-        AsmMessage asm = new AsmMessage();
-        asm.setSender(sender);
-        asm.setReceivers(receivers);
-        asm.setRawBody(body);
+        AsmMessage message = new AsmMessage();
+        message.setSender(sender);
+        message.setReceivers(receivers);
+        message.setRawBody(body);
 
-        String[] lines = body.lines()
-                .filter(l -> !l.isBlank())
-                .toArray(String[]::new);
+        List<String> deiList = new ArrayList<>();
+        List<String> airports = new ArrayList<>();
 
-        // Exemple simplifié : on repère action, vol, date, DEIs, aéroport, etc.
-        for (String line : lines) {
-            if (line.matches("^(NEW|CNL|RPL|ADM|CON|EQT|FLT|RRT|TIM).*")) {
-                asm.setAction(line.trim());
+        for (String line : body.split("\\n")) {
+            line = line.trim();
+
+            // Parse action
+            Matcher actionMatcher = ACTION_PATTERN.matcher(line);
+            if (actionMatcher.find()) {
+                message.setAction(actionMatcher.group(1));
             }
-            if (line.contains("/13JUL25")) {
-                String[] parts = line.split(" ");
-                asm.setFlightDesignator(parts[0]);
-                asm.setFlightDate(parts[1]);
-                // extraire DEI
-                List<String> de = new ArrayList<>();
-                for (int i = 2; i < parts.length; i++) {
-                    if (parts[i].contains("/")) de.add(parts[i]);
+
+            // Parse flight info
+            Matcher flightMatcher = FLIGHT_PATTERN.matcher(line);
+            if (flightMatcher.find()) {
+                message.setFlightDesignator(flightMatcher.group(1));
+                message.setFlightDate(flightMatcher.group(2));
+            }
+
+            // Parse DEIs
+            Matcher deiMatcher = DEI_PATTERN.matcher(line);
+            while (deiMatcher.find()) {
+                deiList.add(deiMatcher.group(1));
+            }
+
+            // Parse aircraft
+            Matcher acMatcher = AIRCRAFT_PATTERN.matcher(line);
+            if (acMatcher.find()) {
+                message.setAircraftType(acMatcher.group(1));
+                message.setEquipmentVersion(acMatcher.group(2));
+            }
+
+            // Parse airports
+            Matcher aptMatcher = AIRPORT_PATTERN.matcher(line);
+            while (aptMatcher.find()) {
+                airports.add(aptMatcher.group(1));
+                if (aptMatcher.group(2) != null) {
+                    if (message.getDepartureTime() == null) {
+                        message.setDepartureTime(aptMatcher.group(2));
+                    } else {
+                        message.setArrivalTime(aptMatcher.group(2));
+                    }
                 }
-                asm.setDeIdentifiers(de);
-            }
-            if (line.startsWith("J")) {
-                asm.setAircraftType(line.split(" ")[1]);
-                asm.setEquipmentVersion(line.split("\\.")[1]);
-            }
-            if (line.startsWith("CDG")) {
-                asm.setDepartureAirport("CDG");
-                asm.setDepartureTime(line.substring(3,9));
-            }
-            if (line.startsWith("OUD")) {
-                asm.setArrivalAirport("OUD");
-                asm.setArrivalTime(line.substring(3,9));
             }
         }
-        System.out.println(asm);
-        return asm;
+
+        if (airports.size() >= 2) {
+            message.setDepartureAirport(airports.get(0));
+            message.setArrivalAirport(airports.get(1));
+        }
+
+        message.setDeIdentifiers(deiList);
+        System.out.println(message);
+        return message;
     }
 }
