@@ -1,48 +1,53 @@
 package com.ram.nuitparser.service.reader;
 
+import com.ram.nuitparser.service.ParsedTelexHolder;
 import com.ram.nuitparser.service.TelexParserService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 @Service
 public class LogFileReaderService {
 
     private final TelexParserService telexParserService;
+    private final ParsedTelexHolder parsedTelexHolder;
 
-    public LogFileReaderService(TelexParserService telexParserService) {
+    // Add ParsedTelexHolder dependency
+    public LogFileReaderService(
+            TelexParserService telexParserService,
+            ParsedTelexHolder parsedTelexHolder
+    ) {
         this.telexParserService = telexParserService;
+        this.parsedTelexHolder = parsedTelexHolder;
     }
 
     @PostConstruct
     public void readTelexLog() {
         try (InputStream inputStream = getClass().getResourceAsStream("/logs/telex.log")) {
             if (inputStream == null) {
-                System.err.println("Telex log file not found.");
+                System.err.println("Telex log file not found in /logs/telex.log");
                 return;
             }
 
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-                StringBuilder telexBuilder = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    telexBuilder.append(line).append("\n");
-                }
+            // Read entire file at once for simplicity
+            String rawTelex = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8).trim();
 
-                String rawTelex = telexBuilder.toString().trim();
-                if (!rawTelex.isEmpty()) {
-                    telexParserService.parse(rawTelex);
-                } else {
-                    System.err.println("Telex log file is empty.");
-                }
+            if (rawTelex.isEmpty()) {
+                System.err.println("Telex log file is empty");
+                return;
             }
 
+            // Store raw telex immediately
+            parsedTelexHolder.store(null, rawTelex);
+
+            // Process through pipeline
+            telexParserService.parse(rawTelex);
+
         } catch (Exception e) {
-            System.err.println("Error reading telex log file: " + e.getMessage());
+            System.err.println("Critical error reading telex log: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.ram.nuitparser.parser;
 
 import com.ram.nuitparser.enums.TelexType;
+import com.ram.nuitparser.model.telex.asm.AsmMessage;
 import com.ram.nuitparser.parser.asm.ASMParser;
 import org.springframework.stereotype.Component;
 
@@ -13,13 +14,18 @@ public class TelexRouter {
         this.asmParser = asmParser;
     }
 
-    public void route(String messageBody, TelexType type, String sender, String receivers) {
+    public AsmMessage route(String messageBody, TelexType type, String sender, String receivers) {
         switch (type) {
             case ASM -> {
-                asmParser.parse(messageBody, sender, receivers);
+                return asmParser.parse(messageBody, sender, receivers);
             }
             case SSM, MVT, UNKNOWN -> {
                 System.err.println("Unsupported or unimplemented telex type: " + type);
+                return null;
+            }
+            default -> {
+                System.err.println("Unknown telex type encountered: " + type);
+                return null;
             }
         }
     }

@@ -1,14 +1,12 @@
 package com.ram.nuitparser.service;
 
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.ram.nuitparser.model.enrichment.Aircraft;
 import com.ram.nuitparser.model.enrichment.Airline;
 import com.ram.nuitparser.model.enrichment.AirportExtended;
 import com.ram.nuitparser.model.enrichment.Country;
-
+import com.ram.nuitparser.model.telex.asm.AsmMessage;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +18,11 @@ public class EnrichmentService {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private Map<String, Airline> airlinesByIcao = new HashMap<>();
-    private Map<String, AirportExtended> airportsByIata = new HashMap<>();
-    private Map<String, Aircraft> aircraftByIata = new HashMap<>();
-    private Map<String, Country> countriesByCode = new HashMap<>();
+    // Changed to Lists since JSON files contain arrays
+    private List<Airline> airlines = new ArrayList<>();
+    private List<AirportExtended> airports = new ArrayList<>();
+    private List<Aircraft> aircraftList = new ArrayList<>();
+    private List<Country> countries = new ArrayList<>();
 
     @PostConstruct
     public void init() {
@@ -35,11 +34,10 @@ public class EnrichmentService {
 
     private void loadAirlines() {
         try (InputStream input = getClass().getResourceAsStream("/data/airlines.json")) {
-            List<Airline> airlines = objectMapper.readValue(input, new TypeReference<>() {});
-            for (Airline airline : airlines) {
-                if (airline.getIcao() != null) {
-                    airlinesByIcao.put(airline.getIcao(), airline);
-                }
+            if (input != null) {
+                airlines = objectMapper.readValue(input, new TypeReference<List<Airline>>() {});
+            } else {
+                System.err.println("Airlines JSON file not found");
             }
         } catch (Exception e) {
             System.err.println("Failed to load airlines: " + e.getMessage());
@@ -48,11 +46,10 @@ public class EnrichmentService {
 
     private void loadAirports() {
         try (InputStream input = getClass().getResourceAsStream("/data/airportsExtended.json")) {
-            List<AirportExtended> airports = objectMapper.readValue(input, new TypeReference<>() {});
-            for (AirportExtended airport : airports) {
-                if (airport.getIata() != null) {
-                    airportsByIata.put(airport.getIata(), airport);
-                }
+            if (input != null) {
+                airports = objectMapper.readValue(input, new TypeReference<List<AirportExtended>>() {});
+            } else {
+                System.err.println("Airports JSON file not found");
             }
         } catch (Exception e) {
             System.err.println("Failed to load airports: " + e.getMessage());
@@ -61,11 +58,10 @@ public class EnrichmentService {
 
     private void loadAircraft() {
         try (InputStream input = getClass().getResourceAsStream("/data/aircraft.json")) {
-            List<Aircraft> aircraftList = objectMapper.readValue(input, new TypeReference<>() {});
-            for (Aircraft aircraft : aircraftList) {
-                if (aircraft.getIataCode() != null) {
-                    aircraftByIata.put(aircraft.getIataCode(), aircraft);
-                }
+            if (input != null) {
+                aircraftList = objectMapper.readValue(input, new TypeReference<List<Aircraft>>() {});
+            } else {
+                System.err.println("Aircraft JSON file not found");
             }
         } catch (Exception e) {
             System.err.println("Failed to load aircraft data: " + e.getMessage());
@@ -74,29 +70,73 @@ public class EnrichmentService {
 
     private void loadCountries() {
         try (InputStream input = getClass().getResourceAsStream("/data/countries.json")) {
-            List<Country> countries = objectMapper.readValue(input, new TypeReference<>() {});
-            for (Country country : countries) {
-                countriesByCode.put(country.getIso_code(), country);
+            if (input != null) {
+                countries = objectMapper.readValue(input, new TypeReference<List<Country>>() {});
+            } else {
+                System.err.println("Countries JSON file not found");
             }
         } catch (Exception e) {
             System.err.println("Failed to load countries: " + e.getMessage());
         }
     }
 
-
-    public Optional<Airline> getAirlineByIcao(String icao) {
-        return Optional.ofNullable(airlinesByIcao.get(icao));
+    // Lookup methods
+    public Optional<Airline> getAirlineByIata(String iata) {
+        return airlines.stream()
+                .filter(airline -> iata != null && iata.equals(airline.getIata()))
+                .findFirst();
     }
 
     public Optional<AirportExtended> getAirportByIata(String iata) {
-        return Optional.ofNullable(airportsByIata.get(iata));
+        return airports.stream()
+                .filter(airport -> iata != null && iata.equals(airport.getIata()))
+                .findFirst();
     }
 
     public Optional<Aircraft> getAircraftByIata(String iata) {
-        return Optional.ofNullable(aircraftByIata.get(iata));
+        return aircraftList.stream()
+                .filter(aircraft -> iata != null && iata.equals(aircraft.getIataCode()))
+                .findFirst();
     }
 
     public Optional<Country> getCountryByCode(String code) {
-        return Optional.ofNullable(countriesByCode.get(code));
+        return countries.stream()
+                .filter(country -> code != null && code.equals(country.getIso_code()))
+                .findFirst();
+    }
+
+    // ADD THIS MISSING METHOD
+    public void enrich(AsmMessage message) {
+        if (message == null) {
+            System.err.println("Enrichment skipped: null message");
+            return;
+        }
+
+        // Enrich airline information
+        if (message.getFlightDesignator() != null && message.getFlightDesignator().length() >= 2) {
+            String airlineCode = message.getFlightDesignator().substring(0, 2);
+            getAirlineByIata(airlineCode).ifPresent(airline -> {
+                message.setAirlineName(airline.getName());
+                message.setAirlineCountry(airline.getCountry());
+            });
+        }
+
+        // Enrich departure airport
+        if (message.getDepartureAirport() != null) {
+            getAirportByIata(message.getDepartureAirport()).ifPresent(airport -> {
+                message.setDepartureAirportName(airport.getName());
+                message.setDepartureTimezone(airport.getTzDatabaseTimezone());
+            });
+        }
+
+        // Enrich arrival airport
+        if (message.getArrivalAirport() != null) {
+            getAirportByIata(message.getArrivalAirport()).ifPresent(airport -> {
+                message.setArrivalAirportName(airport.getName());
+                message.setArrivalTimezone(airport.getTzDatabaseTimezone());
+            });
+        }
+
+        // Aircraft enrichment would go here if needed
     }
 }
