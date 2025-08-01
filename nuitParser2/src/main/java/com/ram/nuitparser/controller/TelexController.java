@@ -3,12 +3,14 @@ package com.ram.nuitparser.controller;
 import com.ram.nuitparser.model.telex.asm.AsmMessage;
 import com.ram.nuitparser.service.ParsedTelexHolder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/telex")
+@CrossOrigin(origins = "http://localhost:5173")
 public class TelexController {
 
     private final ParsedTelexHolder holder;
