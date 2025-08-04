@@ -1,0 +1,16 @@
+com.ram.nuitparser
+com.ram.nuitparser.config
+com.ram.nuitparser.controller
+com.ram.nuitparser.enums
+com.ram.nuitparser.model
+com.ram.nuitparser.model.core
+com.ram.nuitparser.model.enrichment
+com.ram.nuitparser.model.telex.asm
+com.ram.nuitparser.parser
+com.ram.nuitparser.parser.asm
+com.ram.nuitparser.parser.mvt
+com.ram.nuitparser.parser.ssm
+com.ram.nuitparser.repository
+com.ram.nuitparser.service
+com.ram.nuitparser.service.reader
+com.ram.nuitparser.util
