@@ -2,12 +2,11 @@ package com.ram.nuitparser.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ram.nuitparser.model.enrichment.Aircraft;
-import com.ram.nuitparser.model.enrichment.Airline;
-import com.ram.nuitparser.model.enrichment.AirportExtended;
-import com.ram.nuitparser.model.enrichment.Country;
+import com.ram.nuitparser.model.enrichment.*;
 import com.ram.nuitparser.model.telex.asm.AsmMessage;
 import jakarta.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
@@ -15,10 +14,9 @@ import java.util.*;
 
 @Service
 public class EnrichmentService {
-
+    private static final Logger logger = LoggerFactory.getLogger(EnrichmentService.class);
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    // Changed to Lists since JSON files contain arrays
     private List<Airline> airlines = new ArrayList<>();
     private List<AirportExtended> airports = new ArrayList<>();
     private List<Aircraft> aircraftList = new ArrayList<>();
@@ -26,117 +24,143 @@ public class EnrichmentService {
 
     @PostConstruct
     public void init() {
+        logger.info("Initializing EnrichmentService data loading");
         loadAirlines();
         loadAirports();
         loadAircraft();
         loadCountries();
+        logger.info("Enrichment data loaded: {} airlines, {} airports, {} aircraft, {} countries",
+                airlines.size(), airports.size(), aircraftList.size(), countries.size());
     }
 
     private void loadAirlines() {
+        logger.debug("Loading airlines dataset");
         try (InputStream input = getClass().getResourceAsStream("/data/airlines.json")) {
             if (input != null) {
                 airlines = objectMapper.readValue(input, new TypeReference<List<Airline>>() {});
+                logger.info("Loaded {} airline records", airlines.size());
             } else {
-                System.err.println("Airlines JSON file not found");
+                logger.error("Airlines JSON file not found in classpath");
             }
         } catch (Exception e) {
-            System.err.println("Failed to load airlines: " + e.getMessage());
+            logger.error("Failed to load airlines dataset: {}", e.getMessage(), e);
         }
     }
 
     private void loadAirports() {
+        logger.debug("Loading airports dataset");
         try (InputStream input = getClass().getResourceAsStream("/data/airportsExtended.json")) {
             if (input != null) {
                 airports = objectMapper.readValue(input, new TypeReference<List<AirportExtended>>() {});
+                logger.info("Loaded {} airport records", airports.size());
             } else {
-                System.err.println("Airports JSON file not found");
+                logger.error("Airports JSON file not found in classpath");
             }
         } catch (Exception e) {
-            System.err.println("Failed to load airports: " + e.getMessage());
+            logger.error("Failed to load airports dataset: {}", e.getMessage(), e);
         }
     }
 
     private void loadAircraft() {
+        logger.debug("Loading aircraft dataset");
         try (InputStream input = getClass().getResourceAsStream("/data/aircraft.json")) {
             if (input != null) {
                 aircraftList = objectMapper.readValue(input, new TypeReference<List<Aircraft>>() {});
+                logger.info("Loaded {} aircraft records", aircraftList.size());
             } else {
-                System.err.println("Aircraft JSON file not found");
+                logger.error("Aircraft JSON file not found in classpath");
             }
         } catch (Exception e) {
-            System.err.println("Failed to load aircraft data: " + e.getMessage());
+            logger.error("Failed to load aircraft dataset: {}", e.getMessage(), e);
         }
     }
 
     private void loadCountries() {
+        logger.debug("Loading countries dataset");
         try (InputStream input = getClass().getResourceAsStream("/data/countries.json")) {
             if (input != null) {
                 countries = objectMapper.readValue(input, new TypeReference<List<Country>>() {});
+                logger.info("Loaded {} country records", countries.size());
             } else {
-                System.err.println("Countries JSON file not found");
+                logger.error("Countries JSON file not found in classpath");
             }
         } catch (Exception e) {
-            System.err.println("Failed to load countries: " + e.getMessage());
+            logger.error("Failed to load countries dataset: {}", e.getMessage(), e);
         }
     }
 
-    // Lookup methods
     public Optional<Airline> getAirlineByIata(String iata) {
+        logger.debug("Looking up airline by IATA: {}", iata);
         return airlines.stream()
                 .filter(airline -> iata != null && iata.equals(airline.getIata()))
                 .findFirst();
     }
 
     public Optional<AirportExtended> getAirportByIata(String iata) {
+        logger.debug("Looking up airport by IATA: {}", iata);
         return airports.stream()
                 .filter(airport -> iata != null && iata.equals(airport.getIata()))
                 .findFirst();
     }
 
     public Optional<Aircraft> getAircraftByIata(String iata) {
+        logger.debug("Looking up aircraft by IATA: {}", iata);
         return aircraftList.stream()
                 .filter(aircraft -> iata != null && iata.equals(aircraft.getIataCode()))
                 .findFirst();
     }
 
     public Optional<Country> getCountryByCode(String code) {
+        logger.debug("Looking up country by code: {}", code);
         return countries.stream()
                 .filter(country -> code != null && code.equals(country.getIso_code()))
                 .findFirst();
     }
 
-    // ADD THIS MISSING METHOD
     public void enrich(AsmMessage message) {
         if (message == null) {
-            System.err.println("Enrichment skipped: null message");
+            logger.warn("Enrichment skipped: null message received");
             return;
         }
+
+        logger.info("Starting enrichment for flight: {}", message.getFlightDesignator());
 
         // Enrich airline information
         if (message.getFlightDesignator() != null && message.getFlightDesignator().length() >= 2) {
             String airlineCode = message.getFlightDesignator().substring(0, 2);
-            getAirlineByIata(airlineCode).ifPresent(airline -> {
+            logger.debug("Extracted airline code: {}", airlineCode);
+
+            getAirlineByIata(airlineCode).ifPresentOrElse(airline -> {
                 message.setAirlineName(airline.getName());
                 message.setAirlineCountry(airline.getCountry());
+                logger.debug("Enriched airline: {} - {}", airlineCode, airline.getName());
+            }, () -> {
+                logger.warn("Airline not found for code: {}", airlineCode);
             });
         }
 
         // Enrich departure airport
         if (message.getDepartureAirport() != null) {
-            getAirportByIata(message.getDepartureAirport()).ifPresent(airport -> {
+            getAirportByIata(message.getDepartureAirport()).ifPresentOrElse(airport -> {
                 message.setDepartureAirportName(airport.getName());
                 message.setDepartureTimezone(airport.getTzDatabaseTimezone());
+                logger.debug("Enriched departure airport: {}", airport.getName());
+            }, () -> {
+                logger.warn("Airport not found for IATA: {}", message.getDepartureAirport());
             });
         }
 
         // Enrich arrival airport
         if (message.getArrivalAirport() != null) {
-            getAirportByIata(message.getArrivalAirport()).ifPresent(airport -> {
+            getAirportByIata(message.getArrivalAirport()).ifPresentOrElse(airport -> {
                 message.setArrivalAirportName(airport.getName());
                 message.setArrivalTimezone(airport.getTzDatabaseTimezone());
+                logger.debug("Enriched arrival airport: {}", airport.getName());
+            }, () -> {
+                logger.warn("Airport not found for IATA: {}", message.getArrivalAirport());
             });
         }
 
-        // Aircraft enrichment would go here if needed
+        logger.info("Completed enrichment for flight: {}", message.getFlightDesignator());
     }
 }
