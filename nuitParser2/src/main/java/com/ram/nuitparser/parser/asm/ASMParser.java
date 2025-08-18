@@ -1,6 +1,7 @@
 package com.ram.nuitparser.parser.asm;
 
 import com.ram.nuitparser.model.telex.asm.AsmMessage;
+import com.ram.nuitparser.parser.TelexParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -11,7 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
-public class ASMParser {
+public class ASMParser implements TelexParser<AsmMessage> {
     private static final Logger logger = LoggerFactory.getLogger(ASMParser.class);
 
     private static final Pattern ACTION_PATTERN = Pattern.compile("\\b(NEW|CNL|RIN|RPL|ADM|CON|EQT|FLT|RRT|TIM)\\b");

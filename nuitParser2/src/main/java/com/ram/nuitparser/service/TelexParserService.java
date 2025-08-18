@@ -1,5 +1,6 @@
 package com.ram.nuitparser.service;
 
+import com.ram.nuitparser.model.telex.TelexMessage;
 import com.ram.nuitparser.model.telex.asm.AsmMessage;
 import com.ram.nuitparser.enums.TelexType;
 import com.ram.nuitparser.parser.TelexRouter;
@@ -55,11 +56,11 @@ public class TelexParserService {
             logger.debug("Extracted sender: {}, receivers: {}", sender, receivers);
             logger.trace("First body line: {}", firstBodyLine);
 
-            TelexType telexType = detectType(firstBodyLine);
-            logger.info("Detected telex type: {}", telexType);
+            TelexType type = detectType(firstBodyLine); // FIXED: Initialize properly
+            logger.info("Detected telex type: {}", type);
 
             // Get parsed message from router
-            AsmMessage message = telexRouter.route(messageBody, telexType, sender, receivers);
+            TelexMessage message = telexRouter.route(messageBody, type, sender, receivers);
 
             if (message == null) {
                 logger.error("Parser returned null for telex");

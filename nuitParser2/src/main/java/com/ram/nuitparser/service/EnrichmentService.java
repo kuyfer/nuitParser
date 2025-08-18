@@ -3,6 +3,7 @@ package com.ram.nuitparser.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ram.nuitparser.model.enrichment.*;
+import com.ram.nuitparser.model.telex.TelexMessage;
 import com.ram.nuitparser.model.telex.asm.AsmMessage;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
@@ -117,7 +118,7 @@ public class EnrichmentService {
                 .findFirst();
     }
 
-    public void enrich(AsmMessage message) {
+    public void enrich(TelexMessage message) {
         if (message == null) {
             logger.warn("Enrichment skipped: null message received");
             return;
@@ -126,41 +127,38 @@ public class EnrichmentService {
         logger.info("Starting enrichment for flight: {}", message.getFlightDesignator());
 
         // Enrich airline information
-        if (message.getFlightDesignator() != null && message.getFlightDesignator().length() >= 2) {
-            String airlineCode = message.getFlightDesignator().substring(0, 2);
+        String designator = message.getFlightDesignator();
+        if (designator != null && designator.length() >= 2) {
+            String airlineCode = designator.substring(0, 2);
             logger.debug("Extracted airline code: {}", airlineCode);
 
             getAirlineByIata(airlineCode).ifPresentOrElse(airline -> {
                 message.setAirlineName(airline.getName());
                 message.setAirlineCountry(airline.getCountry());
                 logger.debug("Enriched airline: {} - {}", airlineCode, airline.getName());
-            }, () -> {
-                logger.warn("Airline not found for code: {}", airlineCode);
-            });
+            }, () -> logger.warn("Airline not found for code: {}", airlineCode));
         }
 
         // Enrich departure airport
-        if (message.getDepartureAirport() != null) {
-            getAirportByIata(message.getDepartureAirport()).ifPresentOrElse(airport -> {
+        String depAirport = message.getDepartureAirport();
+        if (depAirport != null) {
+            getAirportByIata(depAirport).ifPresentOrElse(airport -> {
                 message.setDepartureAirportName(airport.getName());
                 message.setDepartureTimezone(airport.getTzDatabaseTimezone());
                 logger.debug("Enriched departure airport: {}", airport.getName());
-            }, () -> {
-                logger.warn("Airport not found for IATA: {}", message.getDepartureAirport());
-            });
+            }, () -> logger.warn("Departure airport not found for IATA: {}", depAirport));
         }
 
         // Enrich arrival airport
-        if (message.getArrivalAirport() != null) {
-            getAirportByIata(message.getArrivalAirport()).ifPresentOrElse(airport -> {
+        String arrAirport = message.getArrivalAirport();
+        if (arrAirport != null) {
+            getAirportByIata(arrAirport).ifPresentOrElse(airport -> {
                 message.setArrivalAirportName(airport.getName());
                 message.setArrivalTimezone(airport.getTzDatabaseTimezone());
                 logger.debug("Enriched arrival airport: {}", airport.getName());
-            }, () -> {
-                logger.warn("Airport not found for IATA: {}", message.getArrivalAirport());
-            });
+            }, () -> logger.warn("Arrival airport not found for IATA: {}", arrAirport));
         }
 
-        logger.info("Completed enrichment for flight: {}", message.getFlightDesignator());
+        logger.info("Completed enrichment for flight: {}", designator);
     }
 }

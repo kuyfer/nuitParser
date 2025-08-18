@@ -1,10 +1,11 @@
 package com.ram.nuitparser.model.telex.asm;
 
+import com.ram.nuitparser.model.telex.TelexMessage;
 import lombok.Data;
 import java.util.List;
 
 @Data
-public class AsmMessage {
+public class AsmMessage implements TelexMessage {
     private String sender;
     private String receivers;
     private String action;          // NEW, RPL, CNL, etc.
@@ -47,4 +48,8 @@ public class AsmMessage {
                 '}';
     }
 
+    @Override
+    public String getType() {
+        return "ASM";
+    }
 }

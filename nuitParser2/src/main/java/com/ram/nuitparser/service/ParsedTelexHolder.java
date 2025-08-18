@@ -1,6 +1,6 @@
 package com.ram.nuitparser.service;
 
-import com.ram.nuitparser.model.telex.asm.AsmMessage;
+import com.ram.nuitparser.model.telex.TelexMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -9,22 +9,22 @@ import org.springframework.stereotype.Service;
 public class ParsedTelexHolder {
     private static final Logger logger = LoggerFactory.getLogger(ParsedTelexHolder.class);
 
-    private AsmMessage asmMessage;
+    private TelexMessage telexMessage;  // Changed from AsmMessage to TelexMessage
     private String rawTelex;
 
-    public void store(AsmMessage message, String raw) {
+    public void store(TelexMessage message, String raw) {  // Updated parameter type
         logger.info("Storing parsed telex in holder");
-        logger.debug("Message: {}, Raw length: {}",
-                message != null ? message.getFlightDesignator() : "null",
+        logger.debug("Message type: {}, Raw length: {}",
+                message != null ? message.getType() : "null",
                 raw != null ? raw.length() : 0);
 
-        this.asmMessage = message;
+        this.telexMessage = message;
         this.rawTelex = raw;
     }
 
-    public AsmMessage getAsmMessage() {
+    public TelexMessage getTelexMessage() {  // Renamed method for clarity
         logger.debug("Retrieving parsed telex from holder");
-        return asmMessage;
+        return telexMessage;
     }
 
     public String getRawTelex() {

@@ -1,5 +1,6 @@
 package com.ram.nuitparser.controller;
 
+import com.ram.nuitparser.model.telex.TelexMessage;
 import com.ram.nuitparser.model.telex.asm.AsmMessage;
 import com.ram.nuitparser.service.ParsedTelexHolder;
 import org.slf4j.Logger;
@@ -28,7 +29,7 @@ public class TelexController {
         logger.info("Received request for telex data");
 
         // Get the parsed message
-        AsmMessage message = holder.getAsmMessage();
+        TelexMessage message = holder.getTelexMessage();
         String rawTelex = holder.getRawTelex();
 
         // Handle case where no telex has been processed
@@ -50,6 +51,6 @@ public class TelexController {
     // Response DTO
     public static record TelexResponse(
             String raw,
-            AsmMessage parsed
+           TelexMessage parsed
     ) {}
 }
