@@ -5,12 +5,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 @Service
 public class ParsedTelexHolder {
     private static final Logger logger = LoggerFactory.getLogger(ParsedTelexHolder.class);
 
-    private TelexMessage telexMessage;  // Changed from AsmMessage to TelexMessage
-    private String rawTelex;
+    private final List<TelexMessage> telexMessages = new ArrayList<>();
+    private final List<String> rawTelexes = new ArrayList<>();
 
     public void store(TelexMessage message, String raw) {  // Updated parameter type
         logger.info("Storing parsed telex in holder");
@@ -18,17 +22,18 @@ public class ParsedTelexHolder {
                 message != null ? message.getType() : "null",
                 raw != null ? raw.length() : 0);
 
-        this.telexMessage = message;
-        this.rawTelex = raw;
+        telexMessages.add(message);
+        rawTelexes.add(raw);
     }
 
-    public TelexMessage getTelexMessage() {  // Renamed method for clarity
+    public List<TelexMessage> getAllTelexMessages() {  // Renamed method for clarity
         logger.debug("Retrieving parsed telex from holder");
-        return telexMessage;
+        return Collections.unmodifiableList(telexMessages);
     }
 
-    public String getRawTelex() {
+    public List<String> getAllRawTelexes() {
         logger.debug("Retrieving raw telex from holder");
-        return rawTelex;
+        return Collections.unmodifiableList(rawTelexes);
+
     }
 }

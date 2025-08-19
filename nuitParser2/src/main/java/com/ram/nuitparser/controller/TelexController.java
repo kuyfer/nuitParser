@@ -1,7 +1,6 @@
 package com.ram.nuitparser.controller;
 
 import com.ram.nuitparser.model.telex.TelexMessage;
-import com.ram.nuitparser.model.telex.asm.AsmMessage;
 import com.ram.nuitparser.service.ParsedTelexHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +9,10 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
 
 @RestController
 @RequestMapping("/api/telex")
@@ -25,32 +28,50 @@ public class TelexController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getTelex() {
-        logger.info("Received request for telex data");
+    public ResponseEntity<?> getAllTelexes() {
+        logger.info("Received request for all telex data");
 
-        // Get the parsed message
-        TelexMessage message = holder.getTelexMessage();
-        String rawTelex = holder.getRawTelex();
+        // Get all parsed messages and raw telexes
+        List<TelexMessage> messages = holder.getAllTelexMessages();
+        List<String> rawTelexes = holder.getAllRawTelexes();
 
-        // Handle case where no telex has been processed
-        if (message == null && rawTelex == null) {
+        // Handle case where no telexes have been processed
+        if (messages.isEmpty() && rawTelexes.isEmpty()) {
             logger.warn("No telex data available - returning 204");
             return ResponseEntity.noContent().build();
         }
 
-        logger.debug("Building telex response");
-        TelexResponse response = new TelexResponse(
-                rawTelex,
-                message
-        );
+        logger.debug("Building telex response with {} messages", messages.size());
+        List<TelexResponse> response = createResponseList(messages, rawTelexes);
 
-        logger.info("Returning telex data");
+        logger.info("Returning {} telex records", response.size());
         return ResponseEntity.ok(response);
+    }
+
+    private List<TelexResponse> createResponseList(
+            List<TelexMessage> messages,
+            List<String> rawTelexes
+    ) {
+        // Ensure both lists have the same size
+        int minSize = Math.min(messages.size(), rawTelexes.size());
+
+        // Create a list of responses by iterating through the indices
+        List<TelexResponse> responses = new ArrayList<>(minSize);
+        for (int i = 0; i < minSize; i++) {
+            responses.add(new TelexResponse(rawTelexes.get(i), messages.get(i)));
+        }
+
+        return responses;
+
+        // Alternative using streams (more concise but less readable):
+        // return IntStream.range(0, minSize)
+        //         .mapToObj(i -> new TelexResponse(rawTelexes.get(i), messages.get(i)))
+        //         .collect(Collectors.toList());
     }
 
     // Response DTO
     public static record TelexResponse(
             String raw,
-           TelexMessage parsed
+            TelexMessage parsed
     ) {}
 }

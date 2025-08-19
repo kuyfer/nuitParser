@@ -93,6 +93,10 @@ public class TelexParserService {
             logger.debug("Identified MVT telex type");
             return TelexType.MVT;
         }
+        if (line.toUpperCase().contains("LDM")) {
+            logger.debug("Identified LDM telex type");
+            return TelexType.LDM;
+        }
         logger.warn("Unknown telex type - defaulting to UNKNOWN");
         return TelexType.UNKNOWN;
     }

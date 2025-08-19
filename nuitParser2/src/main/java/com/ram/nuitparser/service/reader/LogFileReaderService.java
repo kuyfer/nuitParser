@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 @Service
 public class LogFileReaderService {
@@ -36,19 +37,35 @@ public class LogFileReaderService {
             }
 
             logger.debug("Reading telex log file");
-            String rawTelex = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8).trim();
+            String rawLogContent = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8).trim();
 
-            if (rawTelex.isEmpty()) {
+            if (rawLogContent.isEmpty()) {
                 logger.warn("Telex log file is empty");
                 return;
             }
 
-            logger.info("Storing raw telex ({} characters)", rawTelex.length());
-            parsedTelexHolder.store(null, rawTelex);
+            // Split the log into individual telex messages using double newline separator
+            String[] telexMessages = rawLogContent.split("\\n\\s*\\n");
+            logger.info("Found {} telex messages in log file", telexMessages.length);
 
-            logger.info("Processing telex through pipeline");
-            telexParserService.parse(rawTelex);
-            logger.info("Telex processing completed");
+            for (int i = 0; i < telexMessages.length; i++) {
+                String rawTelex = telexMessages[i].trim();
+                if (rawTelex.isEmpty()) {
+                    logger.debug("Skipping empty telex message");
+                    continue;
+                }
+
+                logger.info("Processing telex message {}/{} ({} chars)",
+                        i + 1, telexMessages.length, rawTelex.length());
+
+                // Process each telex through the pipeline
+                telexParserService.parse(rawTelex);
+
+                // Optional: Add delay between processing if needed
+                // Thread.sleep(100);
+            }
+
+            logger.info("Completed processing {} telex messages", telexMessages.length);
 
         } catch (Exception e) {
             logger.error("Critical error reading telex log: {}", e.getMessage(), e);
