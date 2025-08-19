@@ -526,3 +526,418 @@
 2025-08-19T15:50:52.693+01:00  INFO 7144 --- [nuitParser2] [http-nio-8080-exec-1] c.r.n.controller.TelexController         : Returning 4 telex records
 2025-08-19T15:50:59.361+01:00  INFO 7144 --- [nuitParser2] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
 2025-08-19T15:50:59.374+01:00  INFO 7144 --- [nuitParser2] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-08-19T16:40:00.529+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : Starting NuitParser2Application using Java 24.0.1 with PID 15592 (C:\Users\pc\Desktop\stage\nuitParser2\target\classes started by pc in C:\Users\pc\Desktop\stage\nuitParser2)
+2025-08-19T16:40:00.534+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-08-19T16:40:00.536+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : No active profile set, falling back to 1 default profile: "default"
+2025-08-19T16:40:00.694+01:00  INFO 15592 --- [nuitParser2] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-08-19T16:40:00.695+01:00  INFO 15592 --- [nuitParser2] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-08-19T16:40:04.542+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-08-19T16:40:04.571+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-08-19T16:40:04.572+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-08-19T16:40:04.670+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-08-19T16:40:04.671+01:00  INFO 15592 --- [nuitParser2] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3974 ms
+2025-08-19T16:40:05.052+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.controller.TelexController         : TelexController initialized
+2025-08-19T16:40:05.069+01:00  INFO 15592 --- [nuitParser2] [restartedMain] com.ram.nuitparser.parser.TelexRouter    : TelexRouter initialized with 4 parsers
+2025-08-19T16:40:05.078+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Initializing EnrichmentService data loading
+2025-08-19T16:40:05.079+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loading airlines dataset
+2025-08-19T16:40:05.337+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loaded 6162 airline records
+2025-08-19T16:40:05.340+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loading airports dataset
+2025-08-19T16:40:05.582+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loaded 7698 airport records
+2025-08-19T16:40:05.583+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loading aircraft dataset
+2025-08-19T16:40:05.592+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loaded 246 aircraft records
+2025-08-19T16:40:05.593+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loading countries dataset
+2025-08-19T16:40:05.603+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loaded 261 country records
+2025-08-19T16:40:05.603+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Enrichment data loaded: 6162 airlines, 7698 airports, 246 aircraft, 261 countries
+2025-08-19T16:40:05.606+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : TelexParserService initialized
+2025-08-19T16:40:05.608+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : LogFileReaderService initialized
+2025-08-19T16:40:05.614+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : Reading initial telex log content from: logs/telex.log
+2025-08-19T16:40:05.616+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : Telex log file is empty, waiting for content
+2025-08-19T16:40:05.616+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : Initial telex log processing completed, position: 0, modified: 1755617736579
+2025-08-19T16:40:05.617+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : Starting scheduled telex log monitoring
+2025-08-19T16:40:06.425+01:00  WARN 15592 --- [nuitParser2] [restartedMain] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2025-08-19T16:40:08.231+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-08-19T16:40:08.258+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2025-08-19T16:40:08.501+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-08-19T16:40:08.546+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : Started NuitParser2Application in 9.177 seconds (process running for 10.734)
+2025-08-19T16:40:08.574+01:00 DEBUG 15592 --- [nuitParser2] [scheduling-1] c.r.n.s.reader.LogFileReaderService      : No changes detected in telex log file (last modified: 1755617736579)
+2025-08-19T16:40:08.580+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : Application started successfully
+2025-08-19T16:40:09.133+01:00  INFO 15592 --- [nuitParser2] [RMI TCP Connection(1)-192.168.56.1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-08-19T16:40:09.134+01:00  INFO 15592 --- [nuitParser2] [RMI TCP Connection(1)-192.168.56.1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-08-19T16:40:09.138+01:00  INFO 15592 --- [nuitParser2] [RMI TCP Connection(1)-192.168.56.1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2025-08-19T16:40:13.292+01:00  INFO 15592 --- [nuitParser2] [http-nio-8080-exec-1] c.r.n.controller.TelexController         : Received request for all telex data
+2025-08-19T16:40:13.292+01:00 DEBUG 15592 --- [nuitParser2] [http-nio-8080-exec-1] c.r.n.service.ParsedTelexHolder          : Retrieving parsed telex from holder
+2025-08-19T16:40:13.293+01:00 DEBUG 15592 --- [nuitParser2] [http-nio-8080-exec-1] c.r.n.service.ParsedTelexHolder          : Retrieving raw telex from holder
+2025-08-19T16:40:13.293+01:00  WARN 15592 --- [nuitParser2] [http-nio-8080-exec-1] c.r.n.controller.TelexController         : No telex data available - returning 204
+2025-08-19T16:40:13.834+01:00  INFO 15592 --- [nuitParser2] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 2 class path changes (0 additions, 0 deletions, 2 modifications)
+2025-08-19T16:40:13.844+01:00  INFO 15592 --- [nuitParser2] [Thread-5] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-08-19T16:40:13.861+01:00  INFO 15592 --- [nuitParser2] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-08-19T16:40:13.973+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : Starting NuitParser2 application
+2025-08-19T16:40:14.070+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : Starting NuitParser2Application using Java 24.0.1 with PID 15592 (C:\Users\pc\Desktop\stage\nuitParser2\target\classes started by pc in C:\Users\pc\Desktop\stage\nuitParser2)
+2025-08-19T16:40:14.071+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-08-19T16:40:14.071+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : No active profile set, falling back to 1 default profile: "default"
+2025-08-19T16:40:15.119+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-08-19T16:40:15.123+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-08-19T16:40:15.124+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-08-19T16:40:15.191+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-08-19T16:40:15.200+01:00  INFO 15592 --- [nuitParser2] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1120 ms
+2025-08-19T16:40:15.364+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.controller.TelexController         : TelexController initialized
+2025-08-19T16:40:15.384+01:00  INFO 15592 --- [nuitParser2] [restartedMain] com.ram.nuitparser.parser.TelexRouter    : TelexRouter initialized with 4 parsers
+2025-08-19T16:40:15.524+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Initializing EnrichmentService data loading
+2025-08-19T16:40:15.524+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loading airlines dataset
+2025-08-19T16:40:15.798+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loaded 6162 airline records
+2025-08-19T16:40:15.799+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loading airports dataset
+2025-08-19T16:40:16.043+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loaded 7698 airport records
+2025-08-19T16:40:16.044+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loading aircraft dataset
+2025-08-19T16:40:16.054+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loaded 246 aircraft records
+2025-08-19T16:40:16.055+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loading countries dataset
+2025-08-19T16:40:16.061+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loaded 261 country records
+2025-08-19T16:40:16.062+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Enrichment data loaded: 6162 airlines, 7698 airports, 246 aircraft, 261 countries
+2025-08-19T16:40:16.064+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : TelexParserService initialized
+2025-08-19T16:40:16.066+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : LogFileReaderService initialized
+2025-08-19T16:40:16.070+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : Reading initial telex log content from: logs/telex.log
+2025-08-19T16:40:16.072+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : Telex log file is empty, waiting for content
+2025-08-19T16:40:16.073+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : Initial telex log processing completed, position: 0, modified: 1755617736579
+2025-08-19T16:40:16.073+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : Starting scheduled telex log monitoring
+2025-08-19T16:40:16.325+01:00  WARN 15592 --- [nuitParser2] [restartedMain] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2025-08-19T16:40:16.666+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-08-19T16:40:16.670+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2025-08-19T16:40:16.707+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-08-19T16:40:16.728+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : Started NuitParser2Application in 2.746 seconds (process running for 18.916)
+2025-08-19T16:40:16.728+01:00 DEBUG 15592 --- [nuitParser2] [scheduling-1] c.r.n.s.reader.LogFileReaderService      : No changes detected in telex log file (last modified: 1755617736579)
+2025-08-19T16:40:16.733+01:00  INFO 15592 --- [nuitParser2] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2025-08-19T16:40:16.733+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : Application started successfully
+2025-08-19T16:40:18.120+01:00  INFO 15592 --- [nuitParser2] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 2 class path changes (0 additions, 2 deletions, 0 modifications)
+2025-08-19T16:40:18.122+01:00  INFO 15592 --- [nuitParser2] [Thread-7] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-08-19T16:40:18.133+01:00  INFO 15592 --- [nuitParser2] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-08-19T16:40:18.216+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : Starting NuitParser2 application
+2025-08-19T16:40:18.278+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : Starting NuitParser2Application using Java 24.0.1 with PID 15592 (C:\Users\pc\Desktop\stage\nuitParser2\target\classes started by pc in C:\Users\pc\Desktop\stage\nuitParser2)
+2025-08-19T16:40:18.278+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-08-19T16:40:18.278+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : No active profile set, falling back to 1 default profile: "default"
+2025-08-19T16:40:19.056+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-08-19T16:40:19.057+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-08-19T16:40:19.058+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-08-19T16:40:19.083+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-08-19T16:40:19.083+01:00  INFO 15592 --- [nuitParser2] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 800 ms
+2025-08-19T16:40:19.141+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.controller.TelexController         : TelexController initialized
+2025-08-19T16:40:19.151+01:00  INFO 15592 --- [nuitParser2] [restartedMain] com.ram.nuitparser.parser.TelexRouter    : TelexRouter initialized with 4 parsers
+2025-08-19T16:40:19.158+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Initializing EnrichmentService data loading
+2025-08-19T16:40:19.158+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loading airlines dataset
+2025-08-19T16:40:19.211+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loaded 6162 airline records
+2025-08-19T16:40:19.211+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loading airports dataset
+2025-08-19T16:40:19.381+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loaded 7698 airport records
+2025-08-19T16:40:19.382+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loading aircraft dataset
+2025-08-19T16:40:19.387+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loaded 246 aircraft records
+2025-08-19T16:40:19.388+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loading countries dataset
+2025-08-19T16:40:19.396+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loaded 261 country records
+2025-08-19T16:40:19.397+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Enrichment data loaded: 6162 airlines, 7698 airports, 246 aircraft, 261 countries
+2025-08-19T16:40:19.398+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : TelexParserService initialized
+2025-08-19T16:40:19.491+01:00  WARN 15592 --- [nuitParser2] [restartedMain] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2025-08-19T16:40:19.635+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-08-19T16:40:19.641+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2025-08-19T16:40:19.697+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-08-19T16:40:19.709+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : Started NuitParser2Application in 1.486 seconds (process running for 21.896)
+2025-08-19T16:40:19.712+01:00  INFO 15592 --- [nuitParser2] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2025-08-19T16:40:19.713+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : Application started successfully
+2025-08-19T16:40:21.506+01:00  INFO 15592 --- [nuitParser2] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 2 class path changes (2 additions, 0 deletions, 0 modifications)
+2025-08-19T16:40:21.508+01:00  INFO 15592 --- [nuitParser2] [Thread-11] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-08-19T16:40:21.530+01:00  INFO 15592 --- [nuitParser2] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-08-19T16:40:21.612+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : Starting NuitParser2 application
+2025-08-19T16:40:21.676+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : Starting NuitParser2Application using Java 24.0.1 with PID 15592 (C:\Users\pc\Desktop\stage\nuitParser2\target\classes started by pc in C:\Users\pc\Desktop\stage\nuitParser2)
+2025-08-19T16:40:21.676+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-08-19T16:40:21.677+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : No active profile set, falling back to 1 default profile: "default"
+2025-08-19T16:40:22.438+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-08-19T16:40:22.439+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-08-19T16:40:22.440+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-08-19T16:40:22.470+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-08-19T16:40:22.470+01:00  INFO 15592 --- [nuitParser2] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 789 ms
+2025-08-19T16:40:22.529+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.controller.TelexController         : TelexController initialized
+2025-08-19T16:40:22.537+01:00  INFO 15592 --- [nuitParser2] [restartedMain] com.ram.nuitparser.parser.TelexRouter    : TelexRouter initialized with 4 parsers
+2025-08-19T16:40:22.542+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Initializing EnrichmentService data loading
+2025-08-19T16:40:22.543+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loading airlines dataset
+2025-08-19T16:40:22.595+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loaded 6162 airline records
+2025-08-19T16:40:22.596+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loading airports dataset
+2025-08-19T16:40:22.800+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loaded 7698 airport records
+2025-08-19T16:40:22.800+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loading aircraft dataset
+2025-08-19T16:40:22.807+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loaded 246 aircraft records
+2025-08-19T16:40:22.807+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loading countries dataset
+2025-08-19T16:40:22.814+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loaded 261 country records
+2025-08-19T16:40:22.814+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Enrichment data loaded: 6162 airlines, 7698 airports, 246 aircraft, 261 countries
+2025-08-19T16:40:22.816+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : TelexParserService initialized
+2025-08-19T16:40:22.816+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : LogFileReaderService initialized
+2025-08-19T16:40:22.817+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : Starting telex log processing
+2025-08-19T16:40:22.818+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : Reading telex log file
+2025-08-19T16:40:22.819+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : Found 4 telex messages in log file
+2025-08-19T16:40:22.820+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : Processing telex message 1/4 (68 chars)
+2025-08-19T16:40:22.820+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Starting telex parsing process
+2025-08-19T16:40:22.822+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Processing 7 non-empty lines
+2025-08-19T16:40:22.823+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Extracted sender: AFRPPYA, receivers: AFRFACA LFPGZDCA
+2025-08-19T16:40:22.823+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Detecting telex type from: ASM
+2025-08-19T16:40:22.824+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Identified ASM telex type
+2025-08-19T16:40:22.824+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Detected telex type: ASM
+2025-08-19T16:40:22.824+01:00  INFO 15592 --- [nuitParser2] [restartedMain] com.ram.nuitparser.parser.TelexRouter    : Getting parser for type: ASM
+2025-08-19T16:40:22.826+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] com.ram.nuitparser.parser.TelexRouter    : Returning ASM parser
+2025-08-19T16:40:22.826+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.asm.ASMParser    : Starting ASM message parsing
+2025-08-19T16:40:22.827+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.asm.ASMParser    : Sender: AFRPPYA, Receivers: AFRFACA LFPGZDCA
+2025-08-19T16:40:22.828+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.asm.ASMParser    : Processing 5 lines in telex body
+2025-08-19T16:40:22.829+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.asm.ASMParser    : Processing line 1: ASM
+2025-08-19T16:40:22.830+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.asm.ASMParser    : Processing line 2: XY123/24MAR
+2025-08-19T16:40:22.830+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.asm.ASMParser    : Processing line 3: JFKLAX
+2025-08-19T16:40:22.830+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.asm.ASMParser    : Processing line 4: B777
+2025-08-19T16:40:22.831+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.asm.ASMParser    : Processing line 5: 0800 1100
+2025-08-19T16:40:22.831+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.asm.ASMParser    : Successfully parsed ASM message. Found 0 DEIs
+2025-08-19T16:40:22.831+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Starting enrichment for parsed message
+2025-08-19T16:40:22.831+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Starting enrichment for flight: null
+2025-08-19T16:40:22.832+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Completed enrichment for flight: null
+2025-08-19T16:40:22.832+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Storing parsed and enriched telex
+2025-08-19T16:40:22.832+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.ParsedTelexHolder          : Storing parsed telex in holder
+2025-08-19T16:40:22.832+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.ParsedTelexHolder          : Message type: ASM, Raw length: 68
+2025-08-19T16:40:22.833+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Telex processing completed successfully
+2025-08-19T16:40:22.833+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : Processing telex message 2/4 (68 chars)
+2025-08-19T16:40:22.833+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Starting telex parsing process
+2025-08-19T16:40:22.834+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Processing 6 non-empty lines
+2025-08-19T16:40:22.834+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Extracted sender: DLPPSIA, receivers: AALFJSJ KLAXZDCA
+2025-08-19T16:40:22.834+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Detecting telex type from: MVT
+2025-08-19T16:40:22.834+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Identified MVT telex type
+2025-08-19T16:40:22.835+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Detected telex type: MVT
+2025-08-19T16:40:22.835+01:00  INFO 15592 --- [nuitParser2] [restartedMain] com.ram.nuitparser.parser.TelexRouter    : Getting parser for type: MVT
+2025-08-19T16:40:22.835+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] com.ram.nuitparser.parser.TelexRouter    : Returning MVT parser
+2025-08-19T16:40:22.836+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.mvt.MVTParser    : Starting MVT message parsing
+2025-08-19T16:40:22.837+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.mvt.MVTParser    : Sender: DLPPSIA, Receivers: AALFJSJ KLAXZDCA
+2025-08-19T16:40:22.837+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Starting enrichment for parsed message
+2025-08-19T16:40:22.838+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Starting enrichment for flight: null
+2025-08-19T16:40:22.838+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Completed enrichment for flight: null
+2025-08-19T16:40:22.838+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Storing parsed and enriched telex
+2025-08-19T16:40:22.838+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.ParsedTelexHolder          : Storing parsed telex in holder
+2025-08-19T16:40:22.838+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.ParsedTelexHolder          : Message type: MVT, Raw length: 68
+2025-08-19T16:40:22.838+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Telex processing completed successfully
+2025-08-19T16:40:22.839+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : Processing telex message 3/4 (68 chars)
+2025-08-19T16:40:22.839+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Starting telex parsing process
+2025-08-19T16:40:22.839+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Processing 5 non-empty lines
+2025-08-19T16:40:22.839+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Extracted sender: BAFPPYA, receivers: UAFACA EGLLZDCA
+2025-08-19T16:40:22.839+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Detecting telex type from: SSM
+2025-08-19T16:40:22.839+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Identified SSM telex type
+2025-08-19T16:40:22.839+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Detected telex type: SSM
+2025-08-19T16:40:22.840+01:00  INFO 15592 --- [nuitParser2] [restartedMain] com.ram.nuitparser.parser.TelexRouter    : Getting parser for type: SSM
+2025-08-19T16:40:22.840+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] com.ram.nuitparser.parser.TelexRouter    : Returning SSM parser
+2025-08-19T16:40:22.840+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.ssm.SSMParser    : Starting SSM message parsing
+2025-08-19T16:40:22.840+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.ssm.SSMParser    : Sender: BAFPPYA, Receivers: UAFACA EGLLZDCA
+2025-08-19T16:40:22.843+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Starting enrichment for parsed message
+2025-08-19T16:40:22.843+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Starting enrichment for flight: 
+2025-08-19T16:40:22.844+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Looking up airport by IATA: 
+2025-08-19T16:40:22.848+01:00  WARN 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Departure airport not found for IATA: 
+2025-08-19T16:40:22.848+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Looking up airport by IATA: 
+2025-08-19T16:40:22.851+01:00  WARN 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Arrival airport not found for IATA: 
+2025-08-19T16:40:22.851+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Completed enrichment for flight: 
+2025-08-19T16:40:22.851+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Storing parsed and enriched telex
+2025-08-19T16:40:22.851+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.ParsedTelexHolder          : Storing parsed telex in holder
+2025-08-19T16:40:22.851+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.ParsedTelexHolder          : Message type: SSM, Raw length: 68
+2025-08-19T16:40:22.851+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Telex processing completed successfully
+2025-08-19T16:40:22.851+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : Processing telex message 4/4 (66 chars)
+2025-08-19T16:40:22.851+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Starting telex parsing process
+2025-08-19T16:40:22.851+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Processing 6 non-empty lines
+2025-08-19T16:40:22.851+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Extracted sender: KLPPSIA, receivers: AFRFACA RJAAZDCA
+2025-08-19T16:40:22.851+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Detecting telex type from: LDM
+2025-08-19T16:40:22.851+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Identified LDM telex type
+2025-08-19T16:40:22.851+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Detected telex type: LDM
+2025-08-19T16:40:22.852+01:00  INFO 15592 --- [nuitParser2] [restartedMain] com.ram.nuitparser.parser.TelexRouter    : Getting parser for type: LDM
+2025-08-19T16:40:22.852+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] com.ram.nuitparser.parser.TelexRouter    : Returning LDM parser
+2025-08-19T16:40:22.852+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.ldm.LDMParser    : Starting LDM message parsing
+2025-08-19T16:40:22.852+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.ldm.LDMParser    : Sender: KLPPSIA, Receivers: AFRFACA RJAAZDCA
+2025-08-19T16:40:22.852+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Starting enrichment for parsed message
+2025-08-19T16:40:22.852+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Starting enrichment for flight: 
+2025-08-19T16:40:22.852+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Looking up airport by IATA: 
+2025-08-19T16:40:22.853+01:00  WARN 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Departure airport not found for IATA: 
+2025-08-19T16:40:22.854+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Looking up airport by IATA: 
+2025-08-19T16:40:22.855+01:00  WARN 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Arrival airport not found for IATA: 
+2025-08-19T16:40:22.855+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Completed enrichment for flight: 
+2025-08-19T16:40:22.855+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Storing parsed and enriched telex
+2025-08-19T16:40:22.856+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.ParsedTelexHolder          : Storing parsed telex in holder
+2025-08-19T16:40:22.856+01:00 DEBUG 15592 --- [nuitParser2] [restartedMain] c.r.n.service.ParsedTelexHolder          : Message type: LDM, Raw length: 66
+2025-08-19T16:40:22.856+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Telex processing completed successfully
+2025-08-19T16:40:22.856+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : Completed processing 4 telex messages
+2025-08-19T16:40:22.954+01:00  WARN 15592 --- [nuitParser2] [restartedMain] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2025-08-19T16:40:23.127+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-08-19T16:40:23.131+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2025-08-19T16:40:23.159+01:00  INFO 15592 --- [nuitParser2] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-08-19T16:40:23.173+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : Started NuitParser2Application in 1.553 seconds (process running for 25.36)
+2025-08-19T16:40:23.179+01:00  INFO 15592 --- [nuitParser2] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation delta:
+
+
+==========================
+CONDITION EVALUATION DELTA
+==========================
+
+
+Positive matches:
+-----------------
+
+    None
+
+
+Negative matches:
+-----------------
+
+   TaskSchedulingAutoConfiguration#scheduledBeanLazyInitializationExcludeFilter:
+      Did not match:
+         - @ConditionalOnBean (names: org.springframework.context.annotation.internalScheduledAnnotationProcessor; SearchStrategy: all) did not find any beans named org.springframework.context.annotation.internalScheduledAnnotationProcessor (OnBeanCondition)
+
+   TaskSchedulingConfigurations.TaskSchedulerConfiguration:
+      Did not match:
+         - @ConditionalOnBean (names: org.springframework.context.annotation.internalScheduledAnnotationProcessor; SearchStrategy: all) did not find any beans named org.springframework.context.annotation.internalScheduledAnnotationProcessor (OnBeanCondition)
+
+
+Exclusions:
+-----------
+
+    None
+
+
+Unconditional classes:
+----------------------
+
+    None
+
+
+
+2025-08-19T16:40:23.180+01:00  INFO 15592 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : Application started successfully
+2025-08-19T16:40:38.595+01:00  INFO 15592 --- [nuitParser2] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-08-19T16:40:38.595+01:00  INFO 15592 --- [nuitParser2] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-08-19T16:40:38.597+01:00  INFO 15592 --- [nuitParser2] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2025-08-19T16:40:38.601+01:00  INFO 15592 --- [nuitParser2] [http-nio-8080-exec-1] c.r.n.controller.TelexController         : Received request for all telex data
+2025-08-19T16:40:38.602+01:00 DEBUG 15592 --- [nuitParser2] [http-nio-8080-exec-1] c.r.n.service.ParsedTelexHolder          : Retrieving parsed telex from holder
+2025-08-19T16:40:38.602+01:00 DEBUG 15592 --- [nuitParser2] [http-nio-8080-exec-1] c.r.n.service.ParsedTelexHolder          : Retrieving raw telex from holder
+2025-08-19T16:40:38.602+01:00 DEBUG 15592 --- [nuitParser2] [http-nio-8080-exec-1] c.r.n.controller.TelexController         : Building telex response with 4 messages
+2025-08-19T16:40:38.604+01:00  INFO 15592 --- [nuitParser2] [http-nio-8080-exec-1] c.r.n.controller.TelexController         : Returning 4 telex records
+2025-08-19T16:40:53.121+01:00  INFO 15592 --- [nuitParser2] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-08-19T16:40:53.132+01:00  INFO 15592 --- [nuitParser2] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-08-19T16:40:57.950+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : Starting NuitParser2Application using Java 24.0.1 with PID 17628 (C:\Users\pc\Desktop\stage\nuitParser2\target\classes started by pc in C:\Users\pc\Desktop\stage\nuitParser2)
+2025-08-19T16:40:57.952+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-08-19T16:40:57.954+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : No active profile set, falling back to 1 default profile: "default"
+2025-08-19T16:40:58.066+01:00  INFO 17628 --- [nuitParser2] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-08-19T16:40:58.067+01:00  INFO 17628 --- [nuitParser2] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-08-19T16:41:00.247+01:00  INFO 17628 --- [nuitParser2] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-08-19T16:41:00.276+01:00  INFO 17628 --- [nuitParser2] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-08-19T16:41:00.276+01:00  INFO 17628 --- [nuitParser2] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-08-19T16:41:00.333+01:00  INFO 17628 --- [nuitParser2] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-08-19T16:41:00.334+01:00  INFO 17628 --- [nuitParser2] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2265 ms
+2025-08-19T16:41:00.606+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.controller.TelexController         : TelexController initialized
+2025-08-19T16:41:00.618+01:00  INFO 17628 --- [nuitParser2] [restartedMain] com.ram.nuitparser.parser.TelexRouter    : TelexRouter initialized with 4 parsers
+2025-08-19T16:41:00.624+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Initializing EnrichmentService data loading
+2025-08-19T16:41:00.625+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loading airlines dataset
+2025-08-19T16:41:00.765+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loaded 6162 airline records
+2025-08-19T16:41:00.768+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loading airports dataset
+2025-08-19T16:41:00.981+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loaded 7698 airport records
+2025-08-19T16:41:00.982+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loading aircraft dataset
+2025-08-19T16:41:00.989+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loaded 246 aircraft records
+2025-08-19T16:41:00.989+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loading countries dataset
+2025-08-19T16:41:00.996+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Loaded 261 country records
+2025-08-19T16:41:00.996+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Enrichment data loaded: 6162 airlines, 7698 airports, 246 aircraft, 261 countries
+2025-08-19T16:41:00.998+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : TelexParserService initialized
+2025-08-19T16:41:00.999+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : LogFileReaderService initialized
+2025-08-19T16:41:01.000+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : Starting telex log processing
+2025-08-19T16:41:01.001+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : Reading telex log file
+2025-08-19T16:41:01.002+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : Found 4 telex messages in log file
+2025-08-19T16:41:01.002+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : Processing telex message 1/4 (68 chars)
+2025-08-19T16:41:01.002+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Starting telex parsing process
+2025-08-19T16:41:01.003+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Processing 7 non-empty lines
+2025-08-19T16:41:01.004+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Extracted sender: AFRPPYA, receivers: AFRFACA LFPGZDCA
+2025-08-19T16:41:01.004+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Detecting telex type from: ASM
+2025-08-19T16:41:01.005+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Identified ASM telex type
+2025-08-19T16:41:01.005+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Detected telex type: ASM
+2025-08-19T16:41:01.006+01:00  INFO 17628 --- [nuitParser2] [restartedMain] com.ram.nuitparser.parser.TelexRouter    : Getting parser for type: ASM
+2025-08-19T16:41:01.007+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] com.ram.nuitparser.parser.TelexRouter    : Returning ASM parser
+2025-08-19T16:41:01.007+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.asm.ASMParser    : Starting ASM message parsing
+2025-08-19T16:41:01.008+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.asm.ASMParser    : Sender: AFRPPYA, Receivers: AFRFACA LFPGZDCA
+2025-08-19T16:41:01.008+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.asm.ASMParser    : Processing 5 lines in telex body
+2025-08-19T16:41:01.009+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.asm.ASMParser    : Processing line 1: ASM
+2025-08-19T16:41:01.009+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.asm.ASMParser    : Processing line 2: XY123/24MAR
+2025-08-19T16:41:01.009+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.asm.ASMParser    : Processing line 3: JFKLAX
+2025-08-19T16:41:01.010+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.asm.ASMParser    : Processing line 4: B777
+2025-08-19T16:41:01.010+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.asm.ASMParser    : Processing line 5: 0800 1100
+2025-08-19T16:41:01.010+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.asm.ASMParser    : Successfully parsed ASM message. Found 0 DEIs
+2025-08-19T16:41:01.011+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Starting enrichment for parsed message
+2025-08-19T16:41:01.011+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Starting enrichment for flight: null
+2025-08-19T16:41:01.011+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Completed enrichment for flight: null
+2025-08-19T16:41:01.011+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Storing parsed and enriched telex
+2025-08-19T16:41:01.011+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.ParsedTelexHolder          : Storing parsed telex in holder
+2025-08-19T16:41:01.011+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.ParsedTelexHolder          : Message type: ASM, Raw length: 68
+2025-08-19T16:41:01.012+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Telex processing completed successfully
+2025-08-19T16:41:01.012+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : Processing telex message 2/4 (68 chars)
+2025-08-19T16:41:01.012+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Starting telex parsing process
+2025-08-19T16:41:01.012+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Processing 6 non-empty lines
+2025-08-19T16:41:01.012+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Extracted sender: DLPPSIA, receivers: AALFJSJ KLAXZDCA
+2025-08-19T16:41:01.012+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Detecting telex type from: MVT
+2025-08-19T16:41:01.012+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Identified MVT telex type
+2025-08-19T16:41:01.013+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Detected telex type: MVT
+2025-08-19T16:41:01.013+01:00  INFO 17628 --- [nuitParser2] [restartedMain] com.ram.nuitparser.parser.TelexRouter    : Getting parser for type: MVT
+2025-08-19T16:41:01.013+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] com.ram.nuitparser.parser.TelexRouter    : Returning MVT parser
+2025-08-19T16:41:01.013+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.mvt.MVTParser    : Starting MVT message parsing
+2025-08-19T16:41:01.013+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.mvt.MVTParser    : Sender: DLPPSIA, Receivers: AALFJSJ KLAXZDCA
+2025-08-19T16:41:01.014+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Starting enrichment for parsed message
+2025-08-19T16:41:01.015+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Starting enrichment for flight: null
+2025-08-19T16:41:01.015+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Completed enrichment for flight: null
+2025-08-19T16:41:01.016+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Storing parsed and enriched telex
+2025-08-19T16:41:01.016+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.ParsedTelexHolder          : Storing parsed telex in holder
+2025-08-19T16:41:01.016+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.ParsedTelexHolder          : Message type: MVT, Raw length: 68
+2025-08-19T16:41:01.016+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Telex processing completed successfully
+2025-08-19T16:41:01.016+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : Processing telex message 3/4 (68 chars)
+2025-08-19T16:41:01.016+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Starting telex parsing process
+2025-08-19T16:41:01.016+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Processing 5 non-empty lines
+2025-08-19T16:41:01.017+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Extracted sender: BAFPPYA, receivers: UAFACA EGLLZDCA
+2025-08-19T16:41:01.017+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Detecting telex type from: SSM
+2025-08-19T16:41:01.017+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Identified SSM telex type
+2025-08-19T16:41:01.017+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Detected telex type: SSM
+2025-08-19T16:41:01.017+01:00  INFO 17628 --- [nuitParser2] [restartedMain] com.ram.nuitparser.parser.TelexRouter    : Getting parser for type: SSM
+2025-08-19T16:41:01.017+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] com.ram.nuitparser.parser.TelexRouter    : Returning SSM parser
+2025-08-19T16:41:01.017+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.ssm.SSMParser    : Starting SSM message parsing
+2025-08-19T16:41:01.017+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.ssm.SSMParser    : Sender: BAFPPYA, Receivers: UAFACA EGLLZDCA
+2025-08-19T16:41:01.017+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Starting enrichment for parsed message
+2025-08-19T16:41:01.018+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Starting enrichment for flight: 
+2025-08-19T16:41:01.018+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Looking up airport by IATA: 
+2025-08-19T16:41:01.022+01:00  WARN 17628 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Departure airport not found for IATA: 
+2025-08-19T16:41:01.023+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Looking up airport by IATA: 
+2025-08-19T16:41:01.024+01:00  WARN 17628 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Arrival airport not found for IATA: 
+2025-08-19T16:41:01.025+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Completed enrichment for flight: 
+2025-08-19T16:41:01.025+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Storing parsed and enriched telex
+2025-08-19T16:41:01.025+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.ParsedTelexHolder          : Storing parsed telex in holder
+2025-08-19T16:41:01.025+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.ParsedTelexHolder          : Message type: SSM, Raw length: 68
+2025-08-19T16:41:01.025+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Telex processing completed successfully
+2025-08-19T16:41:01.025+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : Processing telex message 4/4 (66 chars)
+2025-08-19T16:41:01.026+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Starting telex parsing process
+2025-08-19T16:41:01.026+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Processing 6 non-empty lines
+2025-08-19T16:41:01.026+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Extracted sender: KLPPSIA, receivers: AFRFACA RJAAZDCA
+2025-08-19T16:41:01.026+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Detecting telex type from: LDM
+2025-08-19T16:41:01.026+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Identified LDM telex type
+2025-08-19T16:41:01.027+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Detected telex type: LDM
+2025-08-19T16:41:01.027+01:00  INFO 17628 --- [nuitParser2] [restartedMain] com.ram.nuitparser.parser.TelexRouter    : Getting parser for type: LDM
+2025-08-19T16:41:01.027+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] com.ram.nuitparser.parser.TelexRouter    : Returning LDM parser
+2025-08-19T16:41:01.027+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.ldm.LDMParser    : Starting LDM message parsing
+2025-08-19T16:41:01.027+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.ram.nuitparser.parser.ldm.LDMParser    : Sender: KLPPSIA, Receivers: AFRFACA RJAAZDCA
+2025-08-19T16:41:01.027+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Starting enrichment for parsed message
+2025-08-19T16:41:01.027+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Starting enrichment for flight: 
+2025-08-19T16:41:01.028+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Looking up airport by IATA: 
+2025-08-19T16:41:01.030+01:00  WARN 17628 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Departure airport not found for IATA: 
+2025-08-19T16:41:01.030+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Looking up airport by IATA: 
+2025-08-19T16:41:01.032+01:00  WARN 17628 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Arrival airport not found for IATA: 
+2025-08-19T16:41:01.032+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.EnrichmentService          : Completed enrichment for flight: 
+2025-08-19T16:41:01.032+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Storing parsed and enriched telex
+2025-08-19T16:41:01.032+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.ParsedTelexHolder          : Storing parsed telex in holder
+2025-08-19T16:41:01.033+01:00 DEBUG 17628 --- [nuitParser2] [restartedMain] c.r.n.service.ParsedTelexHolder          : Message type: LDM, Raw length: 66
+2025-08-19T16:41:01.033+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.service.TelexParserService         : Telex processing completed successfully
+2025-08-19T16:41:01.033+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.r.n.s.reader.LogFileReaderService      : Completed processing 4 telex messages
+2025-08-19T16:41:01.457+01:00  WARN 17628 --- [nuitParser2] [restartedMain] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+2025-08-19T16:41:01.931+01:00  INFO 17628 --- [nuitParser2] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-08-19T16:41:01.949+01:00  INFO 17628 --- [nuitParser2] [restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2025-08-19T16:41:02.054+01:00  INFO 17628 --- [nuitParser2] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-08-19T16:41:02.083+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : Started NuitParser2Application in 5.063 seconds (process running for 6.433)
+2025-08-19T16:41:02.095+01:00  INFO 17628 --- [nuitParser2] [restartedMain] c.ram.nuitparser.NuitParser2Application  : Application started successfully
+2025-08-19T16:41:02.586+01:00  INFO 17628 --- [nuitParser2] [RMI TCP Connection(2)-192.168.56.1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-08-19T16:41:02.587+01:00  INFO 17628 --- [nuitParser2] [RMI TCP Connection(2)-192.168.56.1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-08-19T16:41:02.589+01:00  INFO 17628 --- [nuitParser2] [RMI TCP Connection(2)-192.168.56.1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2025-08-19T16:41:10.960+01:00  INFO 17628 --- [nuitParser2] [http-nio-8080-exec-1] c.r.n.controller.TelexController         : Received request for all telex data
+2025-08-19T16:41:10.961+01:00 DEBUG 17628 --- [nuitParser2] [http-nio-8080-exec-1] c.r.n.service.ParsedTelexHolder          : Retrieving parsed telex from holder
+2025-08-19T16:41:10.961+01:00 DEBUG 17628 --- [nuitParser2] [http-nio-8080-exec-1] c.r.n.service.ParsedTelexHolder          : Retrieving raw telex from holder
+2025-08-19T16:41:10.962+01:00 DEBUG 17628 --- [nuitParser2] [http-nio-8080-exec-1] c.r.n.controller.TelexController         : Building telex response with 4 messages
+2025-08-19T16:41:10.963+01:00  INFO 17628 --- [nuitParser2] [http-nio-8080-exec-1] c.r.n.controller.TelexController         : Returning 4 telex records
+2025-08-19T16:41:41.333+01:00  INFO 17628 --- [nuitParser2] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-08-19T16:41:41.342+01:00  INFO 17628 --- [nuitParser2] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
