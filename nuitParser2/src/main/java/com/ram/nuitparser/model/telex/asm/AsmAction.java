@@ -3,7 +3,7 @@ package com.ram.nuitparser.model.telex.asm;
 public enum AsmAction {
 
     NEW, // New flight leg
-    CNL, // Cancelled flight
+    CNL, // Canceled flight
     RIN, // Reinstate flight
     RPL, // Replace flight
     ADM, // Administrative change

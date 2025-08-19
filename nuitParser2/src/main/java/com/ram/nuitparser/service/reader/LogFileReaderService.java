@@ -1,6 +1,5 @@
 package com.ram.nuitparser.service.reader;
 
-import com.ram.nuitparser.service.ParsedTelexHolder;
 import com.ram.nuitparser.service.TelexParserService;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
@@ -9,21 +8,17 @@ import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
 @Service
 public class LogFileReaderService {
     private static final Logger logger = LoggerFactory.getLogger(LogFileReaderService.class);
 
     private final TelexParserService telexParserService;
-    private final ParsedTelexHolder parsedTelexHolder;
 
     public LogFileReaderService(
-            TelexParserService telexParserService,
-            ParsedTelexHolder parsedTelexHolder
+            TelexParserService telexParserService
     ) {
         this.telexParserService = telexParserService;
-        this.parsedTelexHolder = parsedTelexHolder;
         logger.info("LogFileReaderService initialized");
     }
 

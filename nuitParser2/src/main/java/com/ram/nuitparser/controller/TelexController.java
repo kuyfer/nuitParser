@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 @RestController
 @RequestMapping("/api/telex")
@@ -62,15 +61,10 @@ public class TelexController {
         }
 
         return responses;
-
-        // Alternative using streams (more concise but less readable):
-        // return IntStream.range(0, minSize)
-        //         .mapToObj(i -> new TelexResponse(rawTelexes.get(i), messages.get(i)))
-        //         .collect(Collectors.toList());
     }
 
     // Response DTO
-    public static record TelexResponse(
+    public record TelexResponse(
             String raw,
             TelexMessage parsed
     ) {}

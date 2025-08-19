@@ -1,7 +1,5 @@
 package com.ram.nuitparser.model.telex;
 
-import lombok.Data;
-
 
 public interface TelexMessage {
     String getType();

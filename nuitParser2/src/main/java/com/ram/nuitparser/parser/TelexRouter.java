@@ -2,10 +2,6 @@ package com.ram.nuitparser.parser;
 
 import com.ram.nuitparser.enums.TelexType;
 import com.ram.nuitparser.model.telex.TelexMessage;
-import com.ram.nuitparser.model.telex.asm.AsmMessage;
-import com.ram.nuitparser.model.telex.mvt.MvtMessage;
-import com.ram.nuitparser.model.telex.ssm.SsmMessage;
-import com.ram.nuitparser.model.telex.ldm.LdmMessage;
 import com.ram.nuitparser.parser.asm.ASMParser;
 import com.ram.nuitparser.parser.ldm.LDMParser;
 import com.ram.nuitparser.parser.mvt.MVTParser;

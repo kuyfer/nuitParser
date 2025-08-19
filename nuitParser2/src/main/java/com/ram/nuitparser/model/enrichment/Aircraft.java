@@ -8,11 +8,11 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Aircraft {
     @JsonProperty("iataCode")
-    private String iataCode;    // e.g., "CRV"
+    private String iataCode;
 
     @JsonProperty("icaoCode")
     private String icaoCode;
 
     @JsonProperty("name")
-    private String name;        // e.g., "Aerospatiale Se.210 Caravelle"
+    private String name;
 }

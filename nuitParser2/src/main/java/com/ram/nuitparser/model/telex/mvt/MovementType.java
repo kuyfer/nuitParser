@@ -1,4 +1,4 @@
-package com.ram.nuitparser.enums;
+package com.ram.nuitparser.model.telex.mvt;
 
 public enum MovementType {
     DEP,  // Departure

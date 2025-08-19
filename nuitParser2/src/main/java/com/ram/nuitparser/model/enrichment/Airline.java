@@ -32,5 +32,4 @@ public class Airline {
     @JsonProperty("Active")
     private String active;
 
-    // Getters and setters (or use Lombok)
 }

@@ -62,7 +62,7 @@ public class SSMParser implements TelexParser<SsmMessage> {
                 logger.debug("Found aircraft type: {}", acMatcher.group(1));
             }
 
-            // Check for effective date
+            // Check for the effective date
             Matcher effMatcher = EFFECTIVE_PATTERN.matcher(line);
             if (effMatcher.find()) {
                 message.setEffectiveDate(effMatcher.group(1));

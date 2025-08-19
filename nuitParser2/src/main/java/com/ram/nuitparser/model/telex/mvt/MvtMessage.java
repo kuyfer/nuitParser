@@ -1,6 +1,5 @@
 package com.ram.nuitparser.model.telex.mvt;
 
-import com.ram.nuitparser.enums.MovementType;
 import com.ram.nuitparser.model.telex.TelexMessage;
 import lombok.Data;
 

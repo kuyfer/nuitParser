@@ -1,7 +1,6 @@
 package com.ram.nuitparser.service;
 
 import com.ram.nuitparser.model.telex.TelexMessage;
-import com.ram.nuitparser.model.telex.asm.AsmMessage;
 import com.ram.nuitparser.enums.TelexType;
 import com.ram.nuitparser.parser.TelexRouter;
 import org.slf4j.Logger;

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ram.nuitparser.model.enrichment.*;
 import com.ram.nuitparser.model.telex.TelexMessage;
-import com.ram.nuitparser.model.telex.asm.AsmMessage;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +37,8 @@ public class EnrichmentService {
         logger.debug("Loading airlines dataset");
         try (InputStream input = getClass().getResourceAsStream("/data/airlines.json")) {
             if (input != null) {
-                airlines = objectMapper.readValue(input, new TypeReference<List<Airline>>() {});
+                airlines = objectMapper.readValue(input, new TypeReference<>() {
+                });
                 logger.info("Loaded {} airline records", airlines.size());
             } else {
                 logger.error("Airlines JSON file not found in classpath");
@@ -52,7 +52,8 @@ public class EnrichmentService {
         logger.debug("Loading airports dataset");
         try (InputStream input = getClass().getResourceAsStream("/data/airportsExtended.json")) {
             if (input != null) {
-                airports = objectMapper.readValue(input, new TypeReference<List<AirportExtended>>() {});
+                airports = objectMapper.readValue(input, new TypeReference<>() {
+                });
                 logger.info("Loaded {} airport records", airports.size());
             } else {
                 logger.error("Airports JSON file not found in classpath");
@@ -66,7 +67,8 @@ public class EnrichmentService {
         logger.debug("Loading aircraft dataset");
         try (InputStream input = getClass().getResourceAsStream("/data/aircraft.json")) {
             if (input != null) {
-                aircraftList = objectMapper.readValue(input, new TypeReference<List<Aircraft>>() {});
+                aircraftList = objectMapper.readValue(input, new TypeReference<>() {
+                });
                 logger.info("Loaded {} aircraft records", aircraftList.size());
             } else {
                 logger.error("Aircraft JSON file not found in classpath");
@@ -80,7 +82,8 @@ public class EnrichmentService {
         logger.debug("Loading countries dataset");
         try (InputStream input = getClass().getResourceAsStream("/data/countries.json")) {
             if (input != null) {
-                countries = objectMapper.readValue(input, new TypeReference<List<Country>>() {});
+                countries = objectMapper.readValue(input, new TypeReference<>() {
+                });
                 logger.info("Loaded {} country records", countries.size());
             } else {
                 logger.error("Countries JSON file not found in classpath");
