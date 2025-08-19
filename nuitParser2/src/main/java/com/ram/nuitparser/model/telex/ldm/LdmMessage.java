@@ -29,36 +29,4 @@ public class LdmMessage implements TelexMessage {
     private String departureTimezone;
     private String arrivalAirportName;
     private String arrivalTimezone;
-
-    // Getters and Setters
-    @Override
-    public String getType() {
-        return type;
-    }
-
-
-    @Override
-    public void setAirlineCountry(String country) {
-        this.airlineCountry = country;
-    }
-
-    @Override
-    public void setDepartureAirportName(String name) {
-        this.departureAirportName = name;
-    }
-
-    @Override
-    public void setDepartureTimezone(String timezone) {
-        this.departureTimezone = timezone;
-    }
-
-    @Override
-    public void setArrivalAirportName(String name) {
-        this.arrivalAirportName = name;
-    }
-
-    @Override
-    public void setArrivalTimezone(String timezone) {
-        this.arrivalTimezone = timezone;
-    }
- }
+}
