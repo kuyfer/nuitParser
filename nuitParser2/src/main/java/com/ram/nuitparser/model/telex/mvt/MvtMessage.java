@@ -35,6 +35,35 @@ public class MvtMessage implements TelexMessage {
     private String departureStand;
     private String arrivalStand;
     private List<String> routePoints;
+    private String remarks;
+
+
+
+
+
+
+        private String type = "MVT";
+        private String departureTime;
+        private String arrivalTime;
+        private String status;
+        private String runway;
+        private String gate;
+        private String baggageCarousel;
+        private String delayReason;
+
+
+        // Enrichment fields
+        private String airlineName;
+        private String airlineCountry;
+        private String departureAirportName;
+        private String departureTimezone;
+        private String arrivalAirportName;
+        private String arrivalTimezone;
+
+        // Lombok @Data annotation will generate getters and setters for all fields
+
+
+
 
     @Override
     public String getType() {
