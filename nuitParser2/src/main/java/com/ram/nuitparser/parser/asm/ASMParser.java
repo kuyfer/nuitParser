@@ -16,7 +16,7 @@ public class ASMParser implements TelexParser<AsmMessage> {
     private static final Logger logger = LoggerFactory.getLogger(ASMParser.class);
 
     // Patterns for parsing ASM message components based on Avinor specification
-    private static final Pattern ACTION_PATTERN = Pattern.compile("\\b(RPL|NEW|CNL|CHG|COR)\\b");
+    private static final Pattern ACTION_PATTERN = Pattern.compile("\\b(RPL|NEW|CNL|CHG|COR|RIN|ADM|CON|EQT|FLT|RRT|TIM)\\b");
     private static final Pattern FLIGHT_PATTERN = Pattern.compile("([A-Z]{2})(\\d{2,4})([A-Z]?)\\s*/\\s*(\\d{1,2}[A-Z]{3})");
     private static final Pattern AIRCRAFT_PATTERN = Pattern.compile("\\b([A-Z]\\d{3}|[A-Z]{2}\\d{2}|[A-Z]\\d{2}[A-Z])\\b");
     private static final Pattern EQUIPMENT_PATTERN = Pattern.compile("\\.([A-Z]\\d+Y\\d+)\\b");
@@ -27,7 +27,7 @@ public class ASMParser implements TelexParser<AsmMessage> {
     private static final Pattern CREW_PATTERN = Pattern.compile("\\b([A-Z]{3,6})\\b");
     private static final Pattern MEAL_PATTERN = Pattern.compile("\\b([A-Z])\\b");
 
-   @Override
+    @Override
     public AsmMessage parse(String body, String sender, String receivers, String priority, String destination, String origin, String msgId, String header, String dblSig, String smi) {
         logger.info("Starting ASM message parsing");
         AsmMessage message = new AsmMessage();
@@ -80,8 +80,11 @@ public class ASMParser implements TelexParser<AsmMessage> {
 
         Matcher actionMatcher = ACTION_PATTERN.matcher(line);
         if (actionMatcher.find()) {
-            message.setAction(actionMatcher.group(1));
-            logger.debug("Found action: {}", actionMatcher.group(1));
+            String actionCode = actionMatcher.group(1);
+
+            // Set the action code - the description will be available via getActionDescription()
+            message.setAction(actionCode);
+            logger.debug("Found action: {} - {}", actionCode, message.getActionDescription());
         }
     }
 
