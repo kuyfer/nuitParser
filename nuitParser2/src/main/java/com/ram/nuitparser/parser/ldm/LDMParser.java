@@ -35,7 +35,7 @@ public class LDMParser implements TelexParser<LdmMessage> {
         message.setDestination(destination);
         message.setOrigin(origin);
         message.setMsgId(msgId);
-        message.setRawBody(body);
+
 
         String[] lines = body.split("\\n");
 

@@ -11,8 +11,6 @@ public interface TelexMessage {
     void setOrigin(String origin);
     String getMsgId();
     void setMsgId(String msgId);
-    String getRawBody();
-    void setRawBody(String rawBody);
 
     // Flight information (common across all telex types)
     String getFlightDesignator();

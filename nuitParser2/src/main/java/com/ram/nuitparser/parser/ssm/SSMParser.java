@@ -27,7 +27,6 @@ public class SSMParser implements TelexParser<SsmMessage> {
     public SsmMessage parse(String body, String priority, String destination, String origin, String msgId, String header, String dblSig, String smi) {
         logger.info("Starting SSM message parsing");
         SsmMessage message = new SsmMessage();
-        message.setRawBody(body);
         message.setPriority(priority);
         message.setDestination(destination);
         message.setOrigin(origin);

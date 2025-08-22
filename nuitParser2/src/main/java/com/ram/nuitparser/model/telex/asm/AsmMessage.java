@@ -24,7 +24,6 @@ public class AsmMessage implements TelexMessage {
     private String destination;
     private String origin;
     private String msgId;
-    private String rawBody;
 
     // Additional fields from ASM specification
     private String flightNumber;

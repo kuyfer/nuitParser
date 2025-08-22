@@ -37,7 +37,6 @@ public class ASMParser implements TelexParser<AsmMessage> {
         message.setDestination(destination);
         message.setOrigin(origin);
         message.setMsgId(msgId);
-        message.setRawBody(body);
 
         List<String> deiList = new ArrayList<>();
 

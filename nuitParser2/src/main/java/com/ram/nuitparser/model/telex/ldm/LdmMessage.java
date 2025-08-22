@@ -12,7 +12,6 @@ public class LdmMessage implements TelexMessage {
     private String aircraftRegistration;
     private String aircraftType;
     private String dateOfFlight;
-    private String rawBody;
 
     // Header fields (common across all telex types)
     private String priority;

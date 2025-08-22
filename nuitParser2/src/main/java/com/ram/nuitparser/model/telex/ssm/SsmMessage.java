@@ -17,7 +17,6 @@ public class SsmMessage implements TelexMessage {
     private String arrivalTime;
     private String route;
     private String remarks;
-    private String rawBody;
 
     // Header fields (common across all telex types)
     private String priority;

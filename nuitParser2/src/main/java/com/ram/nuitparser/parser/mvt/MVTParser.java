@@ -31,7 +31,7 @@ public class MVTParser implements TelexParser<MvtMessage> {
         message.setDestination(destination);
         message.setOrigin(origin);
         message.setMsgId(msgId);
-        message.setRawBody(body);
+
 
         String[] lines = body.split("\\n");
 
