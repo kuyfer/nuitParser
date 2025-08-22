@@ -22,7 +22,7 @@ public class MVTParser implements TelexParser<MvtMessage> {
     private static final Pattern DELAY_PATTERN = Pattern.compile("DELAY\\s+(.+)", Pattern.CASE_INSENSITIVE);
 
     @Override
-    public MvtMessage parse(String body, String sender, String receivers, String priority, String destination, String origin, String msgId, String header, String dblSig, String smi) {
+    public MvtMessage parse(String body, String priority, String destination, String origin, String msgId, String header, String dblSig, String smi) {
         logger.info("Starting MVT message parsing");
         MvtMessage message = new MvtMessage();
 

@@ -66,9 +66,6 @@ public class TelexParserService {
                 logger.debug("Type detected from body: {}", type);
             }
 
-            String sender = extractSender(headers);
-            String receivers = extractReceivers(headers);
-
             // Extract additional headers
             String priority = headers.getOrDefault("PRIORITY", "");
             String destination = headers.getOrDefault("DESTINATION", "");
@@ -79,7 +76,7 @@ public class TelexParserService {
             String smi = headers.getOrDefault("SMI", "");
 
             // Pass all extracted information to the router
-            TelexMessage message = telexRouter.route(telexBody, type, sender, receivers,
+            TelexMessage message = telexRouter.route(telexBody, type,
                     priority, destination, origin,
                     msgId, headerValue, dblSig, smi);
 

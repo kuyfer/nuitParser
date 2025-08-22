@@ -26,7 +26,7 @@ public class LDMParser implements TelexParser<LdmMessage> {
     private static final Pattern DAA_PATTERN = Pattern.compile("DAA/([A-Z]+)");
 
     @Override
-    public LdmMessage parse(String body, String sender, String receivers, String priority, String destination, String origin, String msgId, String header, String dblSig, String smi) {
+    public LdmMessage parse(String body, String priority, String destination, String origin, String msgId, String header, String dblSig, String smi) {
         logger.info("Starting LDM message parsing");
         LdmMessage message = new LdmMessage();
 

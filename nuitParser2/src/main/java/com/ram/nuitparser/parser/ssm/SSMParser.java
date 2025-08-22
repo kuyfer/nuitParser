@@ -24,7 +24,7 @@ public class SSMParser implements TelexParser<SsmMessage> {
     private static final Pattern DISCONTINUATION_PATTERN = Pattern.compile("UNTIL:\\s*(\\d{1,2}[A-Z]{3}\\d{2,4})", Pattern.CASE_INSENSITIVE);
 
     @Override
-    public SsmMessage parse(String body, String sender, String receivers, String priority, String destination, String origin, String msgId, String header, String dblSig, String smi) {
+    public SsmMessage parse(String body, String priority, String destination, String origin, String msgId, String header, String dblSig, String smi) {
         logger.info("Starting SSM message parsing");
         SsmMessage message = new SsmMessage();
         message.setRawBody(body);
@@ -32,7 +32,7 @@ public class SSMParser implements TelexParser<SsmMessage> {
         message.setDestination(destination);
         message.setOrigin(origin);
         message.setMsgId(msgId);
-        
+
         String[] lines = body.split("\\n");
 
         for (int i = 0; i < lines.length; i++) {

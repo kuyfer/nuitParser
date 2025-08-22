@@ -28,7 +28,7 @@ public class ASMParser implements TelexParser<AsmMessage> {
     private static final Pattern MEAL_PATTERN = Pattern.compile("\\b([A-Z])\\b");
 
     @Override
-    public AsmMessage parse(String body, String sender, String receivers, String priority, String destination, String origin, String msgId, String header, String dblSig, String smi) {
+    public AsmMessage parse(String body, String priority, String destination, String origin, String msgId, String header, String dblSig, String smi) {
         logger.info("Starting ASM message parsing");
         AsmMessage message = new AsmMessage();
 
