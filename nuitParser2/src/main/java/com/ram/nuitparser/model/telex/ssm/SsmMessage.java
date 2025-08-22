@@ -20,6 +20,13 @@ public class SsmMessage implements TelexMessage {
     private String route;
     private String remarks;
 
+    // Header fields
+    private String priority;
+    private String destination;
+    private String origin;
+    private String msgId;
+    private String header;
+
     // Enrichment fields
     private String airlineName;
     private String airlineCountry;

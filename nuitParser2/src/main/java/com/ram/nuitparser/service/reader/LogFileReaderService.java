@@ -4,10 +4,15 @@ import com.ram.nuitparser.service.TelexParserService;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.io.InputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LogFileReaderService {
@@ -15,55 +20,67 @@ public class LogFileReaderService {
 
     private final TelexParserService telexParserService;
 
-    public LogFileReaderService(
-            TelexParserService telexParserService
-    ) {
+    @Value("${telex.directory.path:telex_files}")
+    private String telexDirectoryPath;
+
+    public LogFileReaderService(TelexParserService telexParserService) {
         this.telexParserService = telexParserService;
         logger.info("LogFileReaderService initialized");
     }
 
     @PostConstruct
-    public void readTelexLog() {
-        logger.info("Starting telex log processing");
-        try (InputStream inputStream = getClass().getResourceAsStream("/logs/telex.log")) {
-            if (inputStream == null) {
-                logger.error("Telex log file not found in /logs/telex.log");
-                return;
+    public void init() {
+        processExistingFiles();
+        logger.info("Started directory monitoring for telex files");
+    }
+
+    @Scheduled(fixedRate = 10000)
+    public void checkForNewFiles() {
+        Path dir = Paths.get(telexDirectoryPath);
+        if (!Files.exists(dir) || !Files.isDirectory(dir)) {
+            logger.warn("Telex directory does not exist: {}", telexDirectoryPath);
+            return;
+        }
+
+        try {
+            List<Path> files = Files.list(dir)
+                    .filter(path -> !Files.isDirectory(path) && !path.getFileName().toString().startsWith("."))
+                    .collect(Collectors.toList());
+
+            for (Path file : files) {
+                processFile(file);
             }
+        } catch (IOException e) {
+            logger.error("Error checking for new files: {}", e.getMessage(), e);
+        }
+    }
 
-            logger.debug("Reading telex log file");
-            String rawLogContent = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8).trim();
+    private void processExistingFiles() {
+        Path dir = Paths.get(telexDirectoryPath);
+        if (!Files.exists(dir) || !Files.isDirectory(dir)) {
+            logger.warn("Telex directory does not exist: {}", telexDirectoryPath);
+            return;
+        }
 
-            if (rawLogContent.isEmpty()) {
-                logger.warn("Telex log file is empty");
-                return;
+        try {
+            List<Path> files = Files.list(dir)
+                    .filter(path -> !Files.isDirectory(path) && !path.getFileName().toString().startsWith("."))
+                    .collect(Collectors.toList());
+
+            for (Path file : files) {
+                processFile(file);
             }
+        } catch (IOException e) {
+            logger.error("Error processing existing files: {}", e.getMessage(), e);
+        }
+    }
 
-            // Split the log into individual telex messages using double newline separator
-            String[] telexMessages = rawLogContent.split("\\n\\s*\\n");
-            logger.info("Found {} telex messages in log file", telexMessages.length);
-
-            for (int i = 0; i < telexMessages.length; i++) {
-                String rawTelex = telexMessages[i].trim();
-                if (rawTelex.isEmpty()) {
-                    logger.debug("Skipping empty telex message");
-                    continue;
-                }
-
-                logger.info("Processing telex message {}/{} ({} chars)",
-                        i + 1, telexMessages.length, rawTelex.length());
-
-                // Process each telex through the pipeline
-                telexParserService.parse(rawTelex);
-
-                // Optional: Add delay between processing if needed
-                // Thread.sleep(100);
-            }
-
-            logger.info("Completed processing {} telex messages", telexMessages.length);
-
-        } catch (Exception e) {
-            logger.error("Critical error reading telex log: {}", e.getMessage(), e);
+    private void processFile(Path file) {
+        try {
+            String content = new String(Files.readAllBytes(file), StandardCharsets.UTF_8);
+            telexParserService.parse(content); // Pass raw content only
+        } catch (IOException e) {
+            logger.error("Error reading file {}: {}", file.getFileName(), e.getMessage(), e);
         }
     }
 }

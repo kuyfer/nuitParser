@@ -27,24 +27,26 @@ public class TelexRouter {
         logger.info("TelexRouter initialized with 4 parsers");
     }
 
-    public TelexMessage route(String body, TelexType type, String sender, String receivers) {
+    public TelexMessage route(String body, TelexType type, String sender, String receivers,
+                              String priority, String destination, String origin,
+                              String msgId, String header, String dblSig, String smi) {
         logger.info("Getting parser for type: {}", type);
         switch (type) {
             case ASM -> {
                 logger.debug("Returning ASM parser");
-                return asmParser.parse(body, sender, receivers);
+                return asmParser.parse(body, sender, receivers, priority, destination, origin, msgId, header, dblSig, smi);
             }
             case SSM -> {
                 logger.debug("Returning SSM parser");
-                return ssmParser.parse(body, sender, receivers);
+                return ssmParser.parse(body, sender, receivers, priority, destination, origin, msgId, header, dblSig, smi);
             }
             case MVT -> {
                 logger.debug("Returning MVT parser");
-                return mvtParser.parse(body, sender, receivers);
+                return mvtParser.parse(body, sender, receivers, priority, destination, origin, msgId, header, dblSig, smi);
             }
             case LDM -> {
                 logger.debug("Returning LDM parser");
-                return ldmParser.parse(body, sender, receivers);
+                return ldmParser.parse(body, sender, receivers, priority, destination, origin, msgId, header, dblSig, smi);
             }
             default -> {
                 logger.error("No parser available for type: {}", type);

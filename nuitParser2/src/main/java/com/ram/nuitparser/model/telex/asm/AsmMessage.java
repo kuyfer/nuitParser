@@ -21,6 +21,23 @@ public class AsmMessage implements TelexMessage {
     private String arrivalTime;
     private String rawBody;
 
+    // Header fields
+    private String priority;
+    private String destination;
+    private String origin;
+    private String msgId;
+    private String header;
+
+    // Additional fields from ASM specification
+    private String flightNumber;
+    private String flightSuffix;
+    private String operationalSuffix;
+    private String daysOfOperation;
+    private String periodOfOperation;
+    private String crewInformation;
+    private String mealService;
+    private String specialHandling;
+
     // Enrichment fields
     private String airlineName;
     private String airlineCountry;

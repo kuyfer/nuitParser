@@ -15,145 +15,173 @@ import java.util.regex.Pattern;
 public class ASMParser implements TelexParser<AsmMessage> {
     private static final Logger logger = LoggerFactory.getLogger(ASMParser.class);
 
-    private static final Pattern ACTION_PATTERN = Pattern.compile("\\b(NEW|CNL|RIN|RPL|ADM|CON|EQT|FLT|RRT|TIM)\\b");
-    private static final Pattern FLIGHT_PATTERN = Pattern.compile("\\b([A-Z]{2}\\d{1,4})/(\\d{1,2}[A-Z]{3}\\d{2})\\b");
-    private static final Pattern DEI_PATTERN = Pattern.compile("\\b(\\d+/[A-Z0-9]+)\\b");
-    private static final Pattern AIRCRAFT_PATTERN = Pattern.compile("\\b([A-Z]\\w{2,3})\\s*\\.([A-Z]\\d+)\\b");
-    private static final Pattern AIRPORT_PATTERN = Pattern.compile("\\b([A-Z]{3})(\\d{4,6})\\b");
+    // Patterns for parsing ASM message components based on Avinor specification
+    private static final Pattern ACTION_PATTERN = Pattern.compile("\\b(RPL|NEW|CNL|CHG|COR)\\b");
+    private static final Pattern FLIGHT_PATTERN = Pattern.compile("([A-Z]{2})(\\d{2,4})([A-Z]?)\\s*/\\s*(\\d{1,2}[A-Z]{3})");
+    private static final Pattern AIRCRAFT_PATTERN = Pattern.compile("\\b([A-Z]\\d{3}|[A-Z]{2}\\d{2}|[A-Z]\\d{2}[A-Z])\\b");
+    private static final Pattern EQUIPMENT_PATTERN = Pattern.compile("\\.([A-Z]\\d+Y\\d+)\\b");
+    private static final Pattern DEI_PATTERN = Pattern.compile("\\b(\\d+/[A-Z]{2,3})\\b");
+    private static final Pattern AIRPORT_TIME_PATTERN = Pattern.compile("\\b([A-Z]{3})(\\d{4})\\b");
+    private static final Pattern DAYS_OPERATION_PATTERN = Pattern.compile("\\b([1-7]+)\\b");
+    private static final Pattern PERIOD_OPERATION_PATTERN = Pattern.compile("\\b(\\d{1,2}[A-Z]{3})\\s*(\\d{1,2}[A-Z]{3})\\b");
+    private static final Pattern CREW_PATTERN = Pattern.compile("\\b([A-Z]{3,6})\\b");
+    private static final Pattern MEAL_PATTERN = Pattern.compile("\\b([A-Z])\\b");
 
-    public AsmMessage parse(String body, String sender, String receivers) {
+   @Override
+    public AsmMessage parse(String body, String sender, String receivers, String priority, String destination, String origin, String msgId, String header, String dblSig, String smi) {
         logger.info("Starting ASM message parsing");
-        logger.debug("Sender: {}, Receivers: {}", sender, receivers);
-
-        if (body == null || body.isBlank()) {
-            logger.warn("Empty telex body received - skipping parsing");
-            return null;
-        }
-
         AsmMessage message = new AsmMessage();
         message.setSender(sender);
         message.setReceivers(receivers);
+        message.setPriority(priority);
+        message.setDestination(destination);
+        message.setOrigin(origin);
+        message.setMsgId(msgId);
+        message.setHeader(header);
         message.setRawBody(body);
 
         List<String> deiList = new ArrayList<>();
-        List<String> airports = new ArrayList<>();
-        List<String> times = new ArrayList<>();
 
-        logger.debug("Processing {} lines in telex body", body.split("\\n").length);
-        int lineNum = 0;
-        for (String line : body.split("\\n")) {
-            lineNum++;
-            line = line.trim();
-            if (line.isEmpty()) {
-                logger.trace("Skipping empty line {}", lineNum);
-                continue;
-            }
+        String[] lines = body.split("\\n");
+        logger.debug("Processing {} lines in ASM message", lines.length);
 
-            logger.debug("Processing line {}: {}", lineNum, line);
+        for (int i = 0; i < lines.length; i++) {
+            String line = lines[i].trim();
+            if (line.isEmpty()) continue;
+
+            logger.debug("Processing line {}: {}", i, line);
+
+            // Extract action code (RPL, NEW, CNL, etc.)
             extractAction(message, line);
-            extractFlightInfo(message, line);
-            extractDEIs(deiList, line);
-            extractAircraftInfo(message, line);
-            extractAirportsAndTimes(airports, times, line);
-        }
 
-        // Assign departure/arrival airports and times
-        if (!airports.isEmpty()) {
-            message.setDepartureAirport(airports.get(0));
-            logger.debug("Set departure airport: {}", airports.get(0));
-            if (airports.size() > 1) {
-                message.setArrivalAirport(airports.get(1));
-                logger.debug("Set arrival airport: {}", airports.get(1));
-            }
-        }
-        if (!times.isEmpty()) {
-            message.setDepartureTime(times.get(0));
-            logger.debug("Set departure time: {}", times.get(0));
-            if (times.size() > 1) {
-                message.setArrivalTime(times.get(1));
-                logger.debug("Set arrival time: {}", times.get(1));
-            }
+            // Extract flight information
+            extractFlightInfo(message, line);
+
+            // Extract aircraft information
+            extractAircraftInfo(message, line);
+
+            // Extract DEIs (Data Element Identifiers)
+            extractDEIs(deiList, line);
+
+            // Extract airport and time information
+            extractAirportAndTimeInfo(message, line);
+
+            // Extract operational information
+            extractOperationalInfo(message, line);
         }
 
         message.setDeIdentifiers(deiList);
-        logger.info("Successfully parsed ASM message. Found {} DEIs", deiList.size());
+        logger.info("Completed ASM message parsing for flight: {}", message.getFlightDesignator());
         return message;
     }
 
     private void extractAction(AsmMessage message, String line) {
+        if (message.getAction() != null) return;
+
         Matcher actionMatcher = ACTION_PATTERN.matcher(line);
-        if (actionMatcher.find() && message.getAction() == null) {
-            String action = actionMatcher.group(1);
-            message.setAction(action);
-            logger.debug("Extracted action code: {}", action);
+        if (actionMatcher.find()) {
+            message.setAction(actionMatcher.group(1));
+            logger.debug("Found action: {}", actionMatcher.group(1));
         }
     }
 
     private void extractFlightInfo(AsmMessage message, String line) {
-        if (message.getFlightDesignator() != null) {
-            logger.trace("Flight designator already set - skipping extraction");
-            return;
-        }
+        if (message.getFlightDesignator() != null) return;
 
         Matcher flightMatcher = FLIGHT_PATTERN.matcher(line);
         if (flightMatcher.find()) {
-            String designator = flightMatcher.group(1);
-            String date = flightMatcher.group(2);
-            message.setFlightDesignator(designator);
+            String airlineCode = flightMatcher.group(1);
+            String flightNumber = flightMatcher.group(2);
+            String flightSuffix = flightMatcher.group(3);
+            String date = flightMatcher.group(4);
+
+            message.setFlightDesignator(airlineCode + flightNumber + flightSuffix);
+            message.setFlightNumber(flightNumber);
+            message.setFlightSuffix(flightSuffix);
             message.setFlightDate(date);
-            logger.info("Extracted flight designator: {} and date: {}", designator, date);
+
+            logger.debug("Found flight: {} on date: {}", message.getFlightDesignator(), date);
+        }
+    }
+
+    private void extractAircraftInfo(AsmMessage message, String line) {
+        if (message.getAircraftType() != null) return;
+
+        // Extract aircraft type
+        Matcher aircraftMatcher = AIRCRAFT_PATTERN.matcher(line);
+        if (aircraftMatcher.find()) {
+            message.setAircraftType(aircraftMatcher.group(1));
+            logger.debug("Found aircraft type: {}", aircraftMatcher.group(1));
+        }
+
+        // Extract equipment version
+        Matcher equipmentMatcher = EQUIPMENT_PATTERN.matcher(line);
+        if (equipmentMatcher.find()) {
+            message.setEquipmentVersion(equipmentMatcher.group(1));
+            logger.debug("Found equipment version: {}", equipmentMatcher.group(1));
         }
     }
 
     private void extractDEIs(List<String> deiList, String line) {
         Matcher deiMatcher = DEI_PATTERN.matcher(line);
-        int count = 0;
         while (deiMatcher.find()) {
-            String dei = deiMatcher.group(1);
-            deiList.add(dei);
-            count++;
-            logger.trace("Extracted DEI: {}", dei);
-        }
-        if (count > 0) {
-            logger.debug("Extracted {} DEIs from line", count);
+            deiList.add(deiMatcher.group(1));
+            logger.debug("Found DEI: {}", deiMatcher.group(1));
         }
     }
 
-    private void extractAircraftInfo(AsmMessage message, String line) {
-        if (message.getAircraftType() != null) {
-            logger.trace("Aircraft type already set - skipping extraction");
-            return;
+    private void extractAirportAndTimeInfo(AsmMessage message, String line) {
+        Matcher airportTimeMatcher = AIRPORT_TIME_PATTERN.matcher(line);
+        List<String> airports = new ArrayList<>();
+        List<String> times = new ArrayList<>();
+
+        while (airportTimeMatcher.find()) {
+            String airport = airportTimeMatcher.group(1);
+            String time = airportTimeMatcher.group(2);
+
+            airports.add(airport);
+            times.add(time);
+
+            logger.debug("Found airport: {} with time: {}", airport, time);
         }
 
-        Matcher acMatcher = AIRCRAFT_PATTERN.matcher(line);
-        if (acMatcher.find()) {
-            String type = acMatcher.group(1);
-            String version = acMatcher.group(2);
-            message.setAircraftType(type);
-            message.setEquipmentVersion(version);
-            logger.info("Extracted aircraft type: {} and version: {}", type, version);
+        // Assign departure and arrival airports/times
+        if (airports.size() >= 2 && times.size() >= 2) {
+            message.setDepartureAirport(airports.get(0));
+            message.setDepartureTime(times.get(0));
+            message.setArrivalAirport(airports.get(1));
+            message.setArrivalTime(times.get(1));
         }
     }
 
-    private void extractAirportsAndTimes(List<String> airports, List<String> times, String line) {
-        Matcher aptMatcher = AIRPORT_PATTERN.matcher(line);
-        int count = 0;
-        while (aptMatcher.find()) {
-            String airport = aptMatcher.group(1);
-            String time = aptMatcher.group(2);
-
-            if (airport != null && !airport.isEmpty()) {
-                airports.add(airport);
-                logger.trace("Found airport: {}", airport);
-            }
-            if (time != null && !time.isEmpty()) {
-                times.add(time);
-                logger.trace("Found time: {}", time);
-            }
-            count++;
+    private void extractOperationalInfo(AsmMessage message, String line) {
+        // Extract days of operation
+        Matcher daysMatcher = DAYS_OPERATION_PATTERN.matcher(line);
+        if (daysMatcher.find() && message.getDaysOfOperation() == null) {
+            message.setDaysOfOperation(daysMatcher.group(1));
+            logger.debug("Found days of operation: {}", daysMatcher.group(1));
         }
-        if (count > 0) {
-            logger.debug("Extracted {} airport/time pairs from line", count);
+
+        // Extract period of operation
+        Matcher periodMatcher = PERIOD_OPERATION_PATTERN.matcher(line);
+        if (periodMatcher.find() && message.getPeriodOfOperation() == null) {
+            String period = periodMatcher.group(1) + " " + periodMatcher.group(2);
+            message.setPeriodOfOperation(period);
+            logger.debug("Found period of operation: {}", period);
+        }
+
+        // Extract crew information
+        Matcher crewMatcher = CREW_PATTERN.matcher(line);
+        if (crewMatcher.find() && message.getCrewInformation() == null) {
+            message.setCrewInformation(crewMatcher.group(1));
+            logger.debug("Found crew information: {}", crewMatcher.group(1));
+        }
+
+        // Extract meal service information
+        Matcher mealMatcher = MEAL_PATTERN.matcher(line);
+        if (mealMatcher.find() && message.getMealService() == null) {
+            message.setMealService(mealMatcher.group(1));
+            logger.debug("Found meal service: {}", mealMatcher.group(1));
         }
     }
 }

@@ -7,7 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TelexParserService {
@@ -28,75 +30,158 @@ public class TelexParserService {
         logger.info("TelexParserService initialized");
     }
 
-    public void parse(String rawTelex) {
-        logger.info("Starting telex parsing process");
-        if (rawTelex == null || rawTelex.isBlank()) {
-            logger.error("Empty or null telex received - aborting parsing");
+    public void parse(String rawContent) {
+        if (rawContent == null || rawContent.isBlank()) {
+            logger.error("Empty or null telex content - aborting parsing");
             return;
         }
 
         try {
-            List<String> lines = rawTelex.lines()
+            Map<String, String> headers = extractHeaders(rawContent);
+            String telexBody = extractTelexBody(rawContent);
+
+            if (telexBody.isBlank()) {
+                logger.warn("No telex body found");
+                return;
+            }
+
+            List<String> lines = telexBody.lines()
                     .filter(line -> !line.trim().isEmpty())
                     .toList();
 
-            logger.debug("Processing {} non-empty lines", lines.size());
-
-            if (lines.size() < 3) {
-                logger.error("Telex message too short to parse ({} lines)", lines.size());
+            if (lines.isEmpty()) {
+                logger.warn("Telex body is empty after trimming blank lines");
                 return;
             }
 
-            String sender = lines.get(0).trim();
-            String receivers = lines.get(1).trim();
-            String firstBodyLine = lines.get(2).trim();
-            String messageBody = String.join("\n", lines.subList(2, lines.size()));
+            String firstBodyLine = lines.get(0).trim();
 
-            logger.debug("Extracted sender: {}, receivers: {}", sender, receivers);
-            logger.trace("First body line: {}", firstBodyLine);
+            // Determine type from SMI if available, otherwise from first body line
+            TelexType type;
+            if (headers.containsKey("SMI")) {
+                type = detectType(headers.get("SMI"));
+                logger.debug("Type detected from SMI: {}", type);
+            } else {
+                type = detectType(firstBodyLine);
+                logger.debug("Type detected from body: {}", type);
+            }
 
-            TelexType type = detectType(firstBodyLine); // FIXED: Initialize properly
-            logger.info("Detected telex type: {}", type);
+            String sender = extractSender(headers);
+            String receivers = extractReceivers(headers);
 
-            // Get parsed message from router
-            TelexMessage message = telexRouter.route(messageBody, type, sender, receivers);
+            // Extract additional headers
+            String priority = headers.getOrDefault("PRIORITY", "");
+            String destination = headers.getOrDefault("DESTINATION", "");
+            String origin = headers.getOrDefault("ORIGIN", "");
+            String msgId = headers.getOrDefault("MSGID", "");
+            String headerValue = headers.getOrDefault("HEADER", "");
+            String dblSig = headers.getOrDefault("DBLSIG", "");
+            String smi = headers.getOrDefault("SMI", "");
+
+            // Pass all extracted information to the router
+            TelexMessage message = telexRouter.route(telexBody, type, sender, receivers,
+                    priority, destination, origin,
+                    msgId, headerValue, dblSig, smi);
 
             if (message == null) {
-                logger.error("Parser returned null for telex");
+                logger.error("Router returned null for telex");
                 return;
             }
 
-            logger.info("Starting enrichment for parsed message");
             enrichmentService.enrich(message);
+            parsedTelexHolder.store(message, telexBody);
 
-            logger.info("Storing parsed and enriched telex");
-            parsedTelexHolder.store(message, rawTelex);
-            logger.info("Telex processing completed successfully");
+            logger.info("Telex processed successfully");
 
         } catch (Exception e) {
             logger.error("Critical error parsing telex: {}", e.getMessage(), e);
         }
     }
 
+    private Map<String, String> extractHeaders(String content) {
+        Map<String, String> headers = new HashMap<>();
+        String[] lines = content.split("\\r?\\n");
+        String currentHeader = null;
+        StringBuilder currentValue = new StringBuilder();
+
+        for (String line : lines) {
+            if (line.startsWith("=")) {
+                if (currentHeader != null) {
+                    headers.put(currentHeader, currentValue.toString().trim());
+                }
+
+                String headerLine = line.substring(1);
+                int spaceIndex = headerLine.indexOf(' ');
+
+                if (spaceIndex > 0) {
+                    currentHeader = headerLine.substring(0, spaceIndex).trim();
+                    currentValue = new StringBuilder(headerLine.substring(spaceIndex + 1).trim());
+                } else {
+                    currentHeader = headerLine.trim();
+                    currentValue = new StringBuilder();
+                }
+            } else if (currentHeader != null) {
+                if (!currentValue.isEmpty()) currentValue.append(" ");
+                currentValue.append(line.trim());
+            }
+        }
+
+        if (currentHeader != null) {
+            headers.put(currentHeader, currentValue.toString().trim());
+        }
+        return headers;
+    }
+
+    private String extractTelexBody(String content) {
+        String[] lines = content.split("\\r?\\n");
+        StringBuilder telexBody = new StringBuilder();
+        boolean inTextSection = false;
+
+        for (String line : lines) {
+            if (line.startsWith("=TEXT")) {
+                inTextSection = true;
+                continue;
+            }
+            if (inTextSection) {
+                if (line.startsWith("=")) break;
+                telexBody.append(line).append("\n");
+            }
+        }
+        return telexBody.toString().trim();
+    }
+
+    private String extractSender(Map<String, String> headers) {
+        String sender = headers.get("ORIGIN");
+        if (sender != null && !sender.isBlank()) return sender.trim();
+
+        if (headers.containsKey("MSGID")) {
+            return headers.get("MSGID").split(" ")[0];
+        }
+
+        return "UNKNOWN";
+    }
+
+    private String extractReceivers(Map<String, String> headers) {
+        String destination = headers.get("DESTINATION");
+        if (destination != null && !destination.isBlank()) return destination.trim();
+
+        StringBuilder receivers = new StringBuilder();
+        for (String key : headers.keySet()) {
+            if (key.startsWith("STX,")) {
+                if (!receivers.isEmpty()) receivers.append(" ");
+                receivers.append(key.substring(4));
+            }
+        }
+
+        return !receivers.isEmpty() ? receivers.toString() : "UNKNOWN";
+    }
+
     private TelexType detectType(String line) {
-        logger.debug("Detecting telex type from: {}", line);
-        if (line.toUpperCase().contains("ASM")) {
-            logger.debug("Identified ASM telex type");
-            return TelexType.ASM;
-        }
-        if (line.toUpperCase().contains("SSM")) {
-            logger.debug("Identified SSM telex type");
-            return TelexType.SSM;
-        }
-        if (line.toUpperCase().contains("MVT")) {
-            logger.debug("Identified MVT telex type");
-            return TelexType.MVT;
-        }
-        if (line.toUpperCase().contains("LDM")) {
-            logger.debug("Identified LDM telex type");
-            return TelexType.LDM;
-        }
-        logger.warn("Unknown telex type - defaulting to UNKNOWN");
+        String upper = line.toUpperCase();
+        if (upper.contains("ASM")) return TelexType.ASM;
+        if (upper.contains("SSM")) return TelexType.SSM;
+        if (upper.contains("MVT")) return TelexType.MVT;
+        if (upper.contains("LDM")) return TelexType.LDM;
         return TelexType.UNKNOWN;
     }
 }

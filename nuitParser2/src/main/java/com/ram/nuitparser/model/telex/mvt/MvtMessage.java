@@ -13,12 +13,23 @@ public class MvtMessage implements TelexMessage {
     private String arrivalAirport;
     private String aircraftRegistration;
     private String aircraftType;
-    private String departureTime;
-    private String arrivalTime;
-    private String status;
-    private String runway;
-    private String gate;
-    private String baggageCarousel;
+    private String dateOfFlight;
+
+    // Header fields
+    private String priority;
+    private String destination;
+    private String origin;
+    private String msgId;
+    private String header;
+
+    // Movement times
+    private String actualOffBlockTime;
+    private String actualTakeoffTime;
+    private String actualLandingTime;
+    private String actualInBlockTime;
+
+    // Status information
+    private String movementStatus; // DEPARTED, ARRIVED, etc.
     private String delayReason;
     private String remarks;
 

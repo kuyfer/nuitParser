@@ -24,11 +24,16 @@ public class SSMParser implements TelexParser<SsmMessage> {
     private static final Pattern DISCONTINUATION_PATTERN = Pattern.compile("UNTIL:\\s*(\\d{1,2}[A-Z]{3}\\d{2,4})", Pattern.CASE_INSENSITIVE);
 
     @Override
-    public SsmMessage parse(String body, String sender, String receivers) {
+    public SsmMessage parse(String body, String sender, String receivers, String priority, String destination, String origin, String msgId, String header, String dblSig, String smi) {
         logger.info("Starting SSM message parsing");
         SsmMessage message = new SsmMessage();
         message.setSender(sender);
         message.setReceivers(receivers);
+        message.setPriority(priority);
+        message.setDestination(destination);
+        message.setOrigin(origin);
+        message.setMsgId(msgId);
+        message.setHeader(header);
 
         String[] lines = body.split("\\n");
 
@@ -80,37 +85,6 @@ public class SSMParser implements TelexParser<SsmMessage> {
             Matcher daysMatcher = DAYS_PATTERN.matcher(line);
             if (daysMatcher.find()) {
                 message.setDaysOfOperation(daysMatcher.group(1));
-                logger.debug("Found days of operation: {}", daysMatcher.group(1));
-            }
-
-            // Check for departure time
-            if (line.toUpperCase().contains("DEP") || line.toUpperCase().contains("OUT")) {
-                Matcher timeMatcher = TIME_PATTERN.matcher(line);
-                if (timeMatcher.find()) {
-                    message.setDepartureTime(timeMatcher.group(1));
-                    logger.debug("Found departure time: {}", timeMatcher.group(1));
-                }
-            }
-
-            // Check for arrival time
-            if (line.toUpperCase().contains("ARR") || line.toUpperCase().contains("IN")) {
-                Matcher timeMatcher = TIME_PATTERN.matcher(line);
-                if (timeMatcher.find()) {
-                    message.setArrivalTime(timeMatcher.group(1));
-                    logger.debug("Found arrival time: {}", timeMatcher.group(1));
-                }
-            }
-
-            // Check for remarks (anything that doesn't match other patterns)
-            if (i > 0 && message.getRemarks() == null &&
-                    !line.isEmpty() &&
-                    !routeMatcher.find() &&
-                    !acMatcher.find() &&
-                    !effMatcher.find() &&
-                    !untilMatcher.find() &&
-                    !daysMatcher.find()) {
-                message.setRemarks(line);
-                logger.debug("Found remarks: {}", line);
             }
         }
 
