@@ -29,13 +29,13 @@ public class LDMParser implements TelexParser<LdmMessage> {
     public LdmMessage parse(String body, String sender, String receivers, String priority, String destination, String origin, String msgId, String header, String dblSig, String smi) {
         logger.info("Starting LDM message parsing");
         LdmMessage message = new LdmMessage();
-        message.setSender(sender);
-        message.setReceivers(receivers);
+
+        // Set only the common header fields (sender and receivers are no longer in the model)
         message.setPriority(priority);
         message.setDestination(destination);
         message.setOrigin(origin);
         message.setMsgId(msgId);
-        message.setHeader(header);
+        message.setRawBody(body);
 
         String[] lines = body.split("\\n");
 

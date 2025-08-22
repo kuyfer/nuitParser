@@ -1,12 +1,8 @@
 package com.ram.nuitparser.model.telex;
 
 public interface TelexMessage {
+    // Core telex metadata
     String getType();
-    String getFlightDesignator();
-    String getDepartureAirport();
-    String getArrivalAirport();
-
-    // Header fields
     String getPriority();
     void setPriority(String priority);
     String getDestination();
@@ -15,14 +11,15 @@ public interface TelexMessage {
     void setOrigin(String origin);
     String getMsgId();
     void setMsgId(String msgId);
-    String getHeader();
-    void setHeader(String header);
-    String getSender();
-    void setSender(String sender);
-    String getReceivers();
-    void setReceivers(String receivers);
+    String getRawBody();
+    void setRawBody(String rawBody);
 
-    // Enrichment methods
+    // Flight information (common across all telex types)
+    String getFlightDesignator();
+    String getDepartureAirport();
+    String getArrivalAirport();
+
+    // Enrichment methods (for external data enhancement)
     void setAirlineName(String name);
     void setAirlineCountry(String country);
     void setDepartureAirportName(String name);

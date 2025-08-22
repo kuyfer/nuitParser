@@ -6,21 +6,19 @@ import lombok.Data;
 @Data
 public class LdmMessage implements TelexMessage {
     private String type = "LDM";
-    private String sender;
-    private String receivers;
     private String flightDesignator;
     private String departureAirport;
     private String arrivalAirport;
     private String aircraftRegistration;
     private String aircraftType;
     private String dateOfFlight;
+    private String rawBody;
 
-    // Header fields
+    // Header fields (common across all telex types)
     private String priority;
     private String destination;
     private String origin;
     private String msgId;
-    private String header;
 
     // Load details
     private int passengerCount;

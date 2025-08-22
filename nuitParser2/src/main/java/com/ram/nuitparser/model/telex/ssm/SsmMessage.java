@@ -6,8 +6,6 @@ import lombok.Data;
 @Data
 public class SsmMessage implements TelexMessage {
     private String type = "SSM";
-    private String sender;
-    private String receivers;
     private String flightDesignator;
     private String departureAirport;
     private String arrivalAirport;
@@ -19,13 +17,13 @@ public class SsmMessage implements TelexMessage {
     private String arrivalTime;
     private String route;
     private String remarks;
+    private String rawBody;
 
-    // Header fields
+    // Header fields (common across all telex types)
     private String priority;
     private String destination;
     private String origin;
     private String msgId;
-    private String header;
 
     // Enrichment fields
     private String airlineName;

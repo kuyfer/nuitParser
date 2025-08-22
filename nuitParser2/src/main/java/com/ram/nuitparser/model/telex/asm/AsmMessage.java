@@ -7,9 +7,7 @@ import java.util.List;
 @Data
 public class AsmMessage implements TelexMessage {
     private String type = "ASM";
-    private String sender;
-    private String receivers;
-    private String action; // This will store the action code (e.g., "RPL", "NEW")
+    private String action;
     private String flightDesignator;
     private String flightDate;
     private List<String> deIdentifiers;
@@ -19,14 +17,14 @@ public class AsmMessage implements TelexMessage {
     private String departureTime;
     private String arrivalAirport;
     private String arrivalTime;
-    private String rawBody;
 
-    // Header fields
+
+    // Header fields (common across all telex types)
     private String priority;
     private String destination;
     private String origin;
     private String msgId;
-    private String header;
+    private String rawBody;
 
     // Additional fields from ASM specification
     private String flightNumber;
