@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class TelexParserService {
@@ -54,28 +56,24 @@ public class TelexParserService {
                 return;
             }
 
-            String firstBodyLine = lines.get(0).trim();
+            String firstBodyLine = lines.getFirst().trim();
 
             // Determine type from SMI if available, otherwise from first body line
-            TelexType type;
-            if (headers.containsKey("SMI")) {
-                type = detectType(headers.get("SMI"));
-                logger.debug("Type detected from SMI: {}", type);
-            } else {
-                type = detectType(firstBodyLine);
-                logger.debug("Type detected from body: {}", type);
-            }
+            TelexType type = detectTypeFromHeadersOrBody(headers, firstBodyLine);
 
-            // Extract additional headers
+            // Extract headers with logging
             String priority = headers.getOrDefault("PRIORITY", "");
-            String destination = headers.getOrDefault("DESTINATION", "");
+            String destination = extractReceivers(headers);
             String origin = headers.getOrDefault("ORIGIN", "");
             String msgId = headers.getOrDefault("MSGID", "");
             String headerValue = headers.getOrDefault("HEADER", "");
             String dblSig = headers.getOrDefault("DBLSIG", "");
             String smi = headers.getOrDefault("SMI", "");
 
-            // Pass all extracted information to the router
+            logger.debug("Parsed headers - Priority: {}, Destination: {}, Origin: {}, MsgId: {}",
+                    priority, destination, origin, msgId);
+
+            // Route the message
             TelexMessage message = telexRouter.route(telexBody, type,
                     priority, destination, origin,
                     msgId, headerValue, dblSig, smi);
@@ -85,10 +83,11 @@ public class TelexParserService {
                 return;
             }
 
+            // Enrich and store the message
             enrichmentService.enrich(message);
             parsedTelexHolder.store(message, telexBody);
 
-            logger.info("Telex processed successfully");
+            logger.info("Successfully processed {} telex for flight: {}", type, message.getFlightDesignator());
 
         } catch (Exception e) {
             logger.error("Critical error parsing telex: {}", e.getMessage(), e);
@@ -103,10 +102,13 @@ public class TelexParserService {
 
         for (String line : lines) {
             if (line.startsWith("=")) {
+                // Save previous header
                 if (currentHeader != null) {
                     headers.put(currentHeader, currentValue.toString().trim());
+                    logger.debug("Header extracted: {} = {}", currentHeader, currentValue.toString().trim());
                 }
 
+                // Start new header
                 String headerLine = line.substring(1);
                 int spaceIndex = headerLine.indexOf(' ');
 
@@ -118,14 +120,18 @@ public class TelexParserService {
                     currentValue = new StringBuilder();
                 }
             } else if (currentHeader != null) {
+                // Continue current header
                 if (!currentValue.isEmpty()) currentValue.append(" ");
                 currentValue.append(line.trim());
             }
         }
 
+        // Save the last header
         if (currentHeader != null) {
             headers.put(currentHeader, currentValue.toString().trim());
+            logger.debug("Final header extracted: {} = {}", currentHeader, currentValue.toString().trim());
         }
+
         return headers;
     }
 
@@ -144,33 +150,54 @@ public class TelexParserService {
                 telexBody.append(line).append("\n");
             }
         }
-        return telexBody.toString().trim();
-    }
 
-    private String extractSender(Map<String, String> headers) {
-        String sender = headers.get("ORIGIN");
-        if (sender != null && !sender.isBlank()) return sender.trim();
-
-        if (headers.containsKey("MSGID")) {
-            return headers.get("MSGID").split(" ")[0];
-        }
-
-        return "UNKNOWN";
+        String body = telexBody.toString().trim();
+        logger.debug("Extracted telex body: {}", body);
+        return body;
     }
 
     private String extractReceivers(Map<String, String> headers) {
-        String destination = headers.get("DESTINATION");
-        if (destination != null && !destination.isBlank()) return destination.trim();
+        String destinationBlock = headers.get("DESTINATION");
+        if (destinationBlock == null || destinationBlock.isBlank()) {
+            logger.debug("No DESTINATION header found");
+            return "";
+        }
+
+        logger.debug("Original DESTINATION block: {}", destinationBlock);
+
+        // Strip TYPE B (case insensitive)
+        String cleaned = destinationBlock.replaceAll("(?i)TYPE B", "").trim();
+        logger.debug("After removing TYPE B: {}", cleaned);
+
+        // Extract IDs from STX,<ID>
+        Pattern pattern = Pattern.compile("STX,([A-Z0-9]+)");
+        Matcher matcher = pattern.matcher(cleaned);
 
         StringBuilder receivers = new StringBuilder();
-        for (String key : headers.keySet()) {
-            if (key.startsWith("STX,")) {
-                if (!receivers.isEmpty()) receivers.append(" ");
-                receivers.append(key.substring(4));
+        while (matcher.find()) {
+            String id = matcher.group(1).trim();
+            if (!id.isEmpty()) {
+                if (!receivers.isEmpty()) receivers.append(",");
+                receivers.append(id);
+                logger.debug("Found receiver ID: {}", id);
             }
         }
 
-        return !receivers.isEmpty() ? receivers.toString() : "UNKNOWN";
+        String result = receivers.toString();
+        logger.info("Extracted receiver IDs: {}", result);
+        return result;
+    }
+
+    private TelexType detectTypeFromHeadersOrBody(Map<String, String> headers, String firstBodyLine) {
+        if (headers.containsKey("SMI")) {
+            TelexType type = detectType(headers.get("SMI"));
+            logger.debug("Type detected from SMI: {}", type);
+            return type;
+        } else {
+            TelexType type = detectType(firstBodyLine);
+            logger.debug("Type detected from body: {}", type);
+            return type;
+        }
     }
 
     private TelexType detectType(String line) {

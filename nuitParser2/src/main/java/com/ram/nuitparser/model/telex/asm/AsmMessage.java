@@ -43,9 +43,6 @@ public class AsmMessage implements TelexMessage {
     private String arrivalAirportName;
     private String arrivalTimezone;
 
-    /**
-     * Returns the full description of the action based on the action code
-     */
     public String getActionDescription() {
         if (action == null) {
             return "Unknown action";
@@ -53,28 +50,21 @@ public class AsmMessage implements TelexMessage {
 
         try {
             AsmAction actionEnum = AsmAction.valueOf(action);
-            switch (actionEnum) {
-                case NEW: return "New flight leg";
-                case CNL: return "Canceled flight";
-                case RIN: return "Reinstate flight";
-                case RPL: return "Replace flight";
-                case ADM: return "Administrative change";
-                case CON: return "Consolidation";
-                case EQT: return "Equipment change";
-                case FLT: return "Flight data change";
-                case RRT: return "Route change";
-                case TIM: return "Time change";
-                default: return action;
-            }
+            return switch (actionEnum) {
+                case NEW -> "New flight leg";
+                case CNL -> "Canceled flight";
+                case RIN -> "Reinstate flight";
+                case RPL -> "Replace flight";
+                case ADM -> "Administrative change";
+                case CON -> "Consolidation";
+                case EQT -> "Equipment change";
+                case FLT -> "Flight data change";
+                case RRT -> "Route change";
+                case TIM -> "Time change";
+                default -> action;
+            };
         } catch (IllegalArgumentException e) {
             return action; // Return the code as is if not found in enum
         }
-    }
-
-    /**
-     * Returns both the code and description for display purposes
-     */
-    public String getActionWithDescription() {
-        return action + " - " + getActionDescription();
     }
 }
