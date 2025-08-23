@@ -61,7 +61,6 @@ public class AsmMessage implements TelexMessage {
                 case FLT -> "Flight data change";
                 case RRT -> "Route change";
                 case TIM -> "Time change";
-                default -> action;
             };
         } catch (IllegalArgumentException e) {
             return action; // Return the code as is if not found in enum

@@ -18,7 +18,6 @@ public class MVTParser implements TelexParser<MvtMessage> {
     private static final Pattern AIRCRAFT_REG_PATTERN = Pattern.compile("\\.([A-Z]{5})\\.");
     private static final Pattern AIRPORT_PATTERN = Pattern.compile("\\.([A-Z]{3})");
     private static final Pattern TIME_PATTERN = Pattern.compile("(\\d{4})");
-    private static final Pattern STATUS_PATTERN = Pattern.compile("(AD|EO|EA)", Pattern.CASE_INSENSITIVE);
     private static final Pattern DELAY_PATTERN = Pattern.compile("DELAY\\s+(.+)", Pattern.CASE_INSENSITIVE);
 
     @Override
@@ -58,7 +57,7 @@ public class MVTParser implements TelexParser<MvtMessage> {
             }
 
             // Process remarks (anything that doesn't match other patterns)
-            if (i > 0 && message.getRemarks() == null && !line.isEmpty()) {
+            if (message.getRemarks() == null && !line.isEmpty()) {
                 message.setRemarks(line);
                 logger.debug("Found remarks: {}", line);
             }
@@ -102,8 +101,8 @@ public class MVTParser implements TelexParser<MvtMessage> {
     private void parseTimesAndStatus(String line, MvtMessage message) {
         // Extract status codes and times
         String[] parts = line.split("\\s+");
-        for (int i = 0; i < parts.length; i++) {
-            String part = parts[i].toUpperCase();
+        for (String s : parts) {
+            String part = s.toUpperCase();
 
             if (part.startsWith("AD")) {
                 // Actual Departure (off-block time)
