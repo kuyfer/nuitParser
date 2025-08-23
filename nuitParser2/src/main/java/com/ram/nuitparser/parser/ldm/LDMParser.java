@@ -84,7 +84,6 @@ public class LDMParser implements TelexParser<LdmMessage> {
             Matcher daaMatcher = DAA_PATTERN.matcher(line);
             if (daaMatcher.find()) {
                 message.setDaaStatus(daaMatcher.group(1));
-                continue;
             }
         }
 
