@@ -5,10 +5,7 @@ import com.ram.nuitparser.service.ParsedTelexHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,23 +24,35 @@ public class TelexController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllTelexes() {
-        logger.info("Received request for all telex data");
+    public ResponseEntity<?> getTelexes(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "50") int size) {
 
-        // Get all parsed messages and raw telexes
-        List<TelexMessage> messages = holder.getAllTelexMessages();
-        List<String> rawTelexes = holder.getAllRawTelexes();
+        logger.info("Received request for telex data - page: {}, size: {}", page, size);
+
+        // Get paginated messages and raw telexes
+        List<TelexMessage> messages = holder.getTelexMessages(page, size);
+        List<String> rawTelexes = holder.getRawTelexes(page, size);
 
         // Handle case where no telexes have been processed
         if (messages.isEmpty() && rawTelexes.isEmpty()) {
-            logger.warn("No telex data available - returning 204");
+            logger.warn("No telex data available for page {} - returning 204", page);
             return ResponseEntity.noContent().build();
         }
 
-        logger.debug("Building telex response with {} messages", messages.size());
-        List<TelexResponse> response = createResponseList(messages, rawTelexes);
+        logger.debug("Building telex response with {} messages for page {}", messages.size(), page);
+        List<TelexResponse> content = createResponseList(messages, rawTelexes);
 
-        logger.info("Returning {} telex records", response.size());
+        // Add pagination metadata
+        long totalCount = holder.getTotalCount();
+        int totalPages = (int) Math.ceil((double) totalCount / size);
+
+        TelexPageResponse response = new TelexPageResponse(
+                content, page, size, totalCount, totalPages
+        );
+
+        logger.info("Returning {} telex records for page {} of {}",
+                content.size(), page, totalPages);
         return ResponseEntity.ok(response);
     }
 
@@ -63,7 +72,16 @@ public class TelexController {
         return responses;
     }
 
-    // Response DTO
+    // Response DTO with pagination
+    public record TelexPageResponse(
+            List<TelexResponse> content,
+            int currentPage,
+            int pageSize,
+            long totalElements,
+            int totalPages
+    ) {}
+
+    // Individual telex response
     public record TelexResponse(
             String raw,
             TelexMessage parsed

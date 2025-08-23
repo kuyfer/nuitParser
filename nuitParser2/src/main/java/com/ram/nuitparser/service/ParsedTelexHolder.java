@@ -16,7 +16,7 @@ public class ParsedTelexHolder {
     private final List<TelexMessage> telexMessages = new ArrayList<>();
     private final List<String> rawTelexes = new ArrayList<>();
 
-    public void store(TelexMessage message, String raw) {  // Updated parameter type
+    public void store(TelexMessage message, String raw) {
         logger.info("Storing parsed telex in holder");
         logger.debug("Message type: {}, Raw length: {}",
                 message != null ? message.getType() : "null",
@@ -26,7 +26,7 @@ public class ParsedTelexHolder {
         rawTelexes.add(raw);
     }
 
-    public List<TelexMessage> getAllTelexMessages() {  // Renamed method for clarity
+    public List<TelexMessage> getAllTelexMessages() {
         logger.debug("Retrieving parsed telex from holder");
         return Collections.unmodifiableList(telexMessages);
     }
@@ -34,6 +34,36 @@ public class ParsedTelexHolder {
     public List<String> getAllRawTelexes() {
         logger.debug("Retrieving raw telex from holder");
         return Collections.unmodifiableList(rawTelexes);
+    }
 
+    // New methods for pagination support
+    public List<TelexMessage> getTelexMessages(int page, int size) {
+        logger.debug("Retrieving paginated telex messages - page: {}, size: {}", page, size);
+        return getPaginatedList(telexMessages, page, size);
+    }
+
+    public List<String> getRawTelexes(int page, int size) {
+        logger.debug("Retrieving paginated raw telexes - page: {}, size: {}", page, size);
+        return getPaginatedList(rawTelexes, page, size);
+    }
+
+    public long getTotalCount() {
+        long count = telexMessages.size();
+        logger.debug("Retrieving total telex count: {}", count);
+        return count;
+    }
+
+    private <T> List<T> getPaginatedList(List<T> list, int page, int size) {
+        if (list.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        int fromIndex = page * size;
+        if (fromIndex >= list.size()) {
+            return Collections.emptyList();
+        }
+
+        int toIndex = Math.min(fromIndex + size, list.size());
+        return new ArrayList<>(list.subList(fromIndex, toIndex));
     }
 }
