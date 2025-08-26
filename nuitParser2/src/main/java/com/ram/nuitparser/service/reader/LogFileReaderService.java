@@ -32,7 +32,6 @@ public class LogFileReaderService {
     @PostConstruct
     public void init() {
         startWatching();
-        logger.info("Started directory monitoring for telex files using WatchService");
     }
 
     @PreDestroy
@@ -45,19 +44,14 @@ public class LogFileReaderService {
     private void startWatching() {
         Path dir = Paths.get(telexDirectoryPath);
 
-        // Create directory if it doesn't exist
+        // Check if directory exists
         if (!Files.exists(dir)) {
-            try {
-                Files.createDirectories(dir);
-                logger.info("Created telex directory: {}", telexDirectoryPath);
-            } catch (IOException e) {
-                logger.error("Failed to create telex directory: {}", telexDirectoryPath, e);
-                return;
-            }
+            logger.error("Telex directory does not exist: {}", telexDirectoryPath);
+            return;
         }
 
         if (!Files.isDirectory(dir)) {
-            logger.warn("Telex path is not a directory: {}", telexDirectoryPath);
+            logger.error("Telex path is not a directory: {}", telexDirectoryPath);
             return;
         }
 
@@ -67,6 +61,7 @@ public class LogFileReaderService {
 
             watching = true;
             executorService.submit(this::watchDirectory);
+            logger.info("Started directory monitoring for telex files using WatchService");
 
         } catch (IOException e) {
             logger.error("Error setting up WatchService for directory: {}", telexDirectoryPath, e);
